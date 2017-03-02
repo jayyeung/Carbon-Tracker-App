@@ -8,14 +8,20 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //make	model	year	trany	displ
+        //Acura	NSX	1994	Automatic 4-spd	6	3	Premium	16	22
+        Car car = new Car("Acura", "NSX", 1994,"Automatic 4-spd", 3);
         try {
-            VehicleData v = new VehicleData(this);
+            CarManager carManager = new CarManager(this);
+            carManager.add(car);
+            carManager.update(car, "BMW", car.getModel(),car.getYear(),car.getTranyType(),car.getEngineDisplacment());
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
