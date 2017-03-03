@@ -17,9 +17,8 @@ public class Journey {
         calculateCO2();
     }
 
-    private void calculateCO2()
-    {
-        if(car.getFuelType() == "Diesel") {
+    private void calculateCO2() {
+        if (car.getFuelType() == "Diesel") {
             CO2_COVERTOR = 10.16;
         }
         /*

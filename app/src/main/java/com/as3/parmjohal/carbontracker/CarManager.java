@@ -79,4 +79,8 @@ public class CarManager {
 
         return car;
     }
+
+    public ArrayList<Car> getCarCollection() {
+        return ( ArrayList<Car>) carCollection.clone();
+    }
 }
