@@ -115,4 +115,32 @@ public class VehicleData {
 
         return carYears;
     }
+
+    public ArrayList<Car> getPossibleCars(String make, String model, int year)
+    {
+        ArrayList<Car> possibleCars = new ArrayList<Car>();
+        Car car = new Car();
+        car.setMake(make);
+        car.setModel(model);
+        car.setYear(year);
+
+        for(int i =0; i < allCars.size(); i++)
+        {
+            if(similarCars(allCars.get(i), car))
+            {
+                possibleCars.add(allCars.get(i));
+                Log.i("Possible Car: ", allCars.get(i).toString());
+            }
+        }
+
+        return possibleCars;
+    }
+
+    private boolean similarCars(Car car1, Car car2)
+    {
+        boolean checkMake = car1.getMake().equals(car2.getMake());
+        boolean checkModel= car1.getModel().equals(car2.getModel());
+        boolean checkYear = car1.getYear() == car2.getYear();
+        return checkMake && checkModel && checkYear;
+    }
 }

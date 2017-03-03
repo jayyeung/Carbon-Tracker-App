@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             CarManager carManager = new CarManager(this);
             carManager.add(car);
-            carManager.update(car, "BMW", car.getModel(),car.getYear(),car.getTranyType(),car.getEngineDisplacment());
+            carManager.update(car, car.getMake(), "Integra",car.getYear(),car.getTranyType(),car.getEngineDisplacment());
         } catch (IOException e) {
             e.printStackTrace();
         }

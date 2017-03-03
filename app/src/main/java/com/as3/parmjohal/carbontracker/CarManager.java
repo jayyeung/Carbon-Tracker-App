@@ -21,16 +21,29 @@ public class CarManager {
         VehicleData vehicleData = new VehicleData(context);
         allCars = vehicleData.getAllCars();
     }
-    public void add(Car car)
+    public boolean add(Car car)
+    {
+       if(getCarFromCSVFile(car) != null)
+       {
+           carCollection.add(car);
+           return true;
+       }
+       else {
+           return false;
+       }
+    }
+
+    private Car getCarFromCSVFile(Car car)
     {
         for(int i = 0; i < allCars.size(); i++)
         {
             if(allCars.get(i).equals(car))
             {
-                carCollection.add(allCars.get(i));
                 Log.i("ADDED ", allCars.get(i).toString());
+                return allCars.get(i);
             }
         }
+        return null;
     }
 
     public void remove(Car car)
@@ -43,13 +56,13 @@ public class CarManager {
         Car car = getCarFromArray(updateCar);
         Log.i("Before ", car.toString());
 
-        int index = getIndex(car);
         car.setMake(make);
         car.setModel(model);
         car.setYear(year);
         car.setTranyType(tranyType);
         car.setEngineDisplacment(engineDisplacment);
         //carCollection.set(index, car);
+
         Log.i("After ", car.toString());
     }
 
