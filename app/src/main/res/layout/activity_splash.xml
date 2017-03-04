@@ -42,20 +42,6 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Continue to dashboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:id="@+id/continue_dashboard"
-        android:background="@null"
-        android:fontFamily="sans-serif"
-        android:textColor="@android:color/background_light"
-        android:textAllCaps="false"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp" />
-
-    <Button
         android:id="@+id/new_journey_btn"
         android:text="Start a New Journey"
         android:textColor="#FFFFFF"
@@ -75,6 +61,21 @@
         android:layout_height="70sp"
         android:layout_marginTop="168dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Continue to dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:id="@+id/continue_dashboard"
+        android:background="@null"
+        android:fontFamily="sans-serif"
+        android:textColor="@android:color/background_light"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:alpha="0.8"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
