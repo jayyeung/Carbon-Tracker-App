@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +10,28 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import static android.R.attr.onClick;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        Button new_journey = (Button) findViewById(R.id.new_journey_btn),
+                to_dash = (Button) findViewById(R.id.continue_dashboard);
+
+        // continue to dashboard
+        to_dash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dashboard = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(dashboard);
+                finish();
+            }
+        });
+
 
         playAnimations();
     }
