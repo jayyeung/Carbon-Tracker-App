@@ -5,4 +5,8 @@
     <color name="colorPrimary">#2ecc71</color>
     <color name="colorPrimaryDark">#27ae60</color>
     <color name="colorAccent">#1abc9c</color>
+
+    <!-- fab colours -->
+    <color name="fadedBackground">#000000</color>
+    <color name="fabTransport">#3498db</color>
 </resources>
