@@ -17,19 +17,24 @@ public class CarManager {
     private ArrayList<Car> carCollection = new ArrayList<>();
     private ArrayList<Car> allCars;
 
-    public CarManager(Context context) throws IOException {
-        VehicleData vehicleData = new VehicleData(context);
+    public CarManager(Context context) {
+        VehicleData vehicleData = null;
+        try {
+            vehicleData = new VehicleData(context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         allCars = vehicleData.getAllCars();
     }
-    public boolean add(Car car)
+    public Car add(Car car)
     {
        if(getCarFromCSVFile(car) != null)
        {
-           carCollection.add(car);
-           return true;
+           carCollection.add(getCarFromCSVFile(car));
+           return getCarFromCSVFile(car);
        }
        else {
-           return false;
+           return null;
        }
     }
 

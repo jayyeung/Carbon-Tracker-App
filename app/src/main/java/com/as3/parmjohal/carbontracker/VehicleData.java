@@ -27,20 +27,21 @@ public class VehicleData {
 
     //make	model	year	trany	cylinders	displ	fuelType	city08	highway08
     public VehicleData(Context context) throws IOException {
-
         initalizeCars(context);
-        getCarYears("Acura", "Integra");
+
+        getPossibleCars("Toyota", "Truck 2WD", 1985);
     }
 
-    private void initalizeCars(Context context) throws IOException {
+    private void initalizeCars(Context context) {
 
         InputStream inputStream = context.getResources().openRawResource(R.raw.vehiclesinfo);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
         String line = "";
 
-        while ((line = reader.readLine()) != null) {
+        try {
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
 
-            try {
 
                 String tokens[] = line.split(",");
                 Car car = new Car();
@@ -59,11 +60,14 @@ public class VehicleData {
                 if (!carMakers.contains(car.getMake())) {
                     carMakers.add(car.getMake());
                 }
-            } catch (java.lang.NumberFormatException e) {
-
             }
+            inputStream.close();
+            reader.close();
         }
+        catch (IOException e)
+        {
 
+        }
     }
 
     public ArrayList<String> getModels(String maker) {

@@ -1,34 +1,41 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.util.Log;
+
 /**
  * Created by ParmJohal on 2017-03-03.
  */
 
 public class Journey {
 
-    //private Route route = null;
+    private Route route = null;
     private Car car = null;
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
 
-    public Journey(Car car /* , Route route */) {
+    public Journey(Car car , Route route ) {
         this.car = car;
-        //this.route =route;
+        this.route =route;
         calculateCO2();
     }
 
     private void calculateCO2() {
-        if (car.getFuelType() == "Diesel") {
+        if (car.getFuelType().equals("Diesel")) {
             CO2_COVERTOR = 10.16;
         }
-        /*
-        int hwyGallons = route.getHwyDistance() / car.getHighwayFuel() ;
-        int cityGallons = route.getCityDistance() / car.getCityFuel();
+        else if(car.getFuelType().equals("Electricity"))
+        {
+            CO2_COVERTOR = 0;
+        }
+
+
+        double hwyGallons = (double) route.getHwyDistance() / (double) car.getHighwayFuel() ;
+        double cityGallons = (double) route.getCityDistance() / (double) car.getCityFuel();
         double hwyCO2 = CO2_COVERTOR * hwyGallons;
         double cityCO2 = CO2_COVERTOR * cityGallons;
 
         co2 = hwyCO2 + cityCO2;
-        */
+
     }
 
     public String getCarInfo()
@@ -39,7 +46,7 @@ public class Journey {
 
     public String getRouteInfo()
     {
-        return "";
+        return route.getRouteName() + "City: " + route.getCityDistance() + "HWY: " + route.getHwyDistance();
     }
 
     public double getCo2() {

@@ -53,4 +53,13 @@ public class Route {
         return routeName != null ? routeName.equals(route.routeName) : route.routeName == null;
 
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "cityDistance=" + cityDistance +
+                ", hwyDistance=" + hwyDistance +
+                ", routeName='" + routeName + '\'' +
+                '}';
+    }
 }
