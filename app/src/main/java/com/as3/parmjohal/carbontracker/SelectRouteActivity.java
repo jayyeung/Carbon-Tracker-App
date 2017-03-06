@@ -28,6 +28,9 @@ public class SelectRouteActivity extends AppCompatActivity {
 
         populateListView();
         registerClickCallBack();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
 
@@ -107,6 +110,9 @@ public class SelectRouteActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.action_add:
                 Intent intent = AddRouteActivity.makeIntent(SelectRouteActivity.this);
                 startActivity(intent);
