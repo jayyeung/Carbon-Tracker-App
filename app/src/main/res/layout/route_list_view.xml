@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:text="Year , Make"
+        android:text="Miles in highway"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/distanceH"
@@ -13,12 +13,20 @@
         android:textSize="14sp" />
 
     <TextView
-        android:text="Car Name"
+        android:text="Route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/routeName"
         android:textSize="14sp"
         android:layout_marginTop="28dp"
         android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/distanceH" />
+
+    <TextView
+        android:text="Miles in City"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distaceC"
+        android:layout_below="@+id/distanceH"
         android:layout_alignStart="@+id/distanceH" />
 </RelativeLayout>

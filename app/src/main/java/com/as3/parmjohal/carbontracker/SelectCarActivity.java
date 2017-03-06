@@ -97,7 +97,6 @@ public class SelectCarActivity extends AppCompatActivity {
 
                 Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent2);
-                //startActivityForResult(intent2, REQUEST_CODE_FOR_EDIT);
                 return true;
             }
         });

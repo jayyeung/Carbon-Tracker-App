@@ -18,7 +18,10 @@
         <activity android:name=".SelectCarActivity" />
         <activity android:name=".AddCarActivity" />
         <activity android:name=".SelectRouteActivity" />
-        <activity android:name=".EditCarActivity"></activity>
+        <activity android:name=".EditCarActivity" />
+        <activity android:name=".AddRouteActivity" />
+        <activity android:name=".ConfirmTripActivity" />
+        <activity android:name=".EditRouteActivity"></activity>
     </application>
 
 </manifest>
