@@ -15,6 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SelectCarActivity" />
+        <activity android:name=".AddCarActivity" />
+        <activity android:name=".SelectRouteActivity" />
+        <activity android:name=".EditCarActivity" />
+        <activity android:name=".AddRouteActivity" />
+        <activity android:name=".ConfirmTripActivity" />
+        <activity android:name=".EditRouteActivity"></activity>
     </application>
 
 </manifest>
