@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class EditRouteActivity extends AppCompatActivity {
+    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private EditText routeName;
+    private EditText distanceHighway;
+    private EditText distanceCity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +25,15 @@ public class EditRouteActivity extends AppCompatActivity {
         setTitle("Edit Route");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        routeName = (EditText) findViewById(R.id.editRouteName);
+        distanceHighway = (EditText) findViewById(R.id.editHighwayDistance);
+        distanceCity = (EditText) findViewById(R.id.editCityDistance);
+
+        routeName.setText(model.getCurrentRoute().getRouteName());
+        distanceCity.setText(""+model.getCurrentRoute().getCityDistance());
+        distanceHighway.setText(""+model.getCurrentRoute().getHwyDistance());
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,9 +49,7 @@ public class EditRouteActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_confirm:
-                EditText routeName = (EditText) findViewById(R.id.editRouteName);
-                EditText distanceHighway = (EditText) findViewById(R.id.editHighwayDistance);
-                EditText distanceCity = (EditText) findViewById(R.id.editCityDistance);
+
                 String route = routeName.getText().toString();
                 String highway = distanceHighway.getText().toString();
                 String city = distanceCity.getText().toString();
@@ -56,6 +68,14 @@ public class EditRouteActivity extends AppCompatActivity {
                     else {
                         //add Name, and distance to new route
                         //add route to collection
+                        int intHighway = Integer.parseInt(highway);
+                        int  intCity = Integer.parseInt(city);
+                        Route addRoute= new Route(intCity,intHighway,route);
+
+                        model.getRouteManager().update(model.getCurrentRoute(),addRoute);
+
+                        Intent intent = SelectRouteActivity.makeIntent(EditRouteActivity.this);
+                        startActivity(intent);
                         finish();
                         return true;
                     }
@@ -63,12 +83,6 @@ public class EditRouteActivity extends AppCompatActivity {
 
                 }
 
-
-            case R.id.action_decline:
-
-                finish();
-
-                return true;
 
 
             default:

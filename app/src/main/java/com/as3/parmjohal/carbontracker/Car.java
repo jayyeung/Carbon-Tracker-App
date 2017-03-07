@@ -12,7 +12,7 @@ public class Car {
     private String model = "";
     private String fuelType = "";
     private String tranyType = "";
-    private String name = " ";
+    private String name = "";
 
     private int year = 0;
     private int numCylinders = 0;
@@ -31,6 +31,16 @@ public class Car {
         this.tranyType = tranyType;
         this.engineDisplacment = engineDisplacment;
         this.name = name;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+
     }
 
     public String getMake() {

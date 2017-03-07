@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class SelectRouteActivity extends AppCompatActivity {
-
-    ArrayList<String> routeList = new ArrayList<String>();
+    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    ArrayList<Route> routeList = new ArrayList<Route>();
 
 
     @Override
@@ -25,6 +26,8 @@ public class SelectRouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_route);
 
         setTitle("Select Route");
+
+        routeList = model.getRouteManager().getRouteCollection();
 
         populateListView();
         registerClickCallBack();
@@ -35,12 +38,8 @@ public class SelectRouteActivity extends AppCompatActivity {
 
 
     private void populateListView() {
-        //Test, Delete This
-        routeList.add("test");
-        routeList.add("test2");
-        routeList.add("test3");
 
-        ArrayAdapter<String> adapter = new SelectRouteActivity.MyListAdaptder();
+        ArrayAdapter<Route> adapter = new SelectRouteActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.routeListView);
         list.setAdapter(adapter);
     }
@@ -48,7 +47,7 @@ public class SelectRouteActivity extends AppCompatActivity {
     /**
      * Sets up the complex Listview
      */
-    private class MyListAdaptder extends ArrayAdapter<String> {
+    private class MyListAdaptder extends ArrayAdapter<Route> {
         public MyListAdaptder() {
             super(SelectRouteActivity.this, R.layout.route_list_view, routeList);
         }
@@ -58,16 +57,19 @@ public class SelectRouteActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.route_list_view, parent, false);
             }
+            Route thisRoute= routeList.get(position);
+
+
 
 
             //Change according to getting the strings of Route
 
-            //  TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
-            //  routeName.setText();//fill
-            //  TextView highway= (TextView) itemView.findViewById(R.id.distanceH);
-            //  highway.setText();//fill
-            //  TextView city= (TextView) itemView.findViewById(R.id.distanceC);
-            //  city.setText();//fill
+              TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
+              routeName.setText(thisRoute.getRouteName());
+              TextView highway= (TextView) itemView.findViewById(R.id.distanceH);
+              highway.setText("" + thisRoute.getHwyDistance());//fill
+              TextView city= (TextView) itemView.findViewById(R.id.distanceC);
+              city.setText(""+ thisRoute.getCityDistance());//fill
 
             return itemView;
 
@@ -83,7 +85,7 @@ public class SelectRouteActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 
 
-                String Car = "String";//Change To Car Class and Get car from car colection (position)
+                model.setCurrentRoute(routeList.get(position));
                 Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
                 startActivity(intent);
 
@@ -94,11 +96,12 @@ public class SelectRouteActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 
-                String route = "String";//Change To Car Class and Get car from car colection (position)
-
+                model.setCurrentRoute(routeList.get(position));
                 Intent intent2 = EditRouteActivity.makeIntent(SelectRouteActivity.this);
                 startActivity(intent2);
+                finish();
                 return true;
+
             }
         });
     }
@@ -116,6 +119,7 @@ public class SelectRouteActivity extends AppCompatActivity {
             case R.id.action_add:
                 Intent intent = AddRouteActivity.makeIntent(SelectRouteActivity.this);
                 startActivity(intent);
+                finish();
                 return true;
 
 

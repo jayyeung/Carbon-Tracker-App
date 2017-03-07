@@ -11,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class SelectCarActivity extends AppCompatActivity {
+    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-    //Replace with Car Collection. keep name of carList
-    ArrayList<String> carList = new ArrayList<String>();
+
+    ArrayList<Car> carList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +37,15 @@ public class SelectCarActivity extends AppCompatActivity {
 
 
     private void populateListView() {
+        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-        //Test, Delete This
-        carList.add("test");
-        carList.add("test2");
+        carList = model.getCarManager().getCarCollection();
 
-        ArrayAdapter<String> adapter = new MyListAdaptder();
+
+        ArrayAdapter<Car> adapter = new SelectCarActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.carListView);
         list.setAdapter(adapter);
+
 
     }
 
@@ -50,10 +53,11 @@ public class SelectCarActivity extends AppCompatActivity {
     /**
      * Sets up the complex Listview
      */
-    private class MyListAdaptder extends ArrayAdapter<String> {
+    private class MyListAdaptder extends ArrayAdapter<Car> {
         public MyListAdaptder() {
             super(SelectCarActivity.this, R.layout.car_list_view, carList);
         }
+
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
@@ -63,11 +67,17 @@ public class SelectCarActivity extends AppCompatActivity {
 
 
             //Change according to getting the strings of Car
+            Car thisCar = carList.get(position);
 
-            //  TextView carName = (TextView) itemView.findViewById(R.id.carName);
-            //  carName.setText();//fill
-            //  TextView description= (TextView) itemView.findViewById(R.id.carDescription);
-            //  description.setText();//fill
+
+
+
+            TextView carName = (TextView) itemView.findViewById(R.id.carName);
+            carName.setText(thisCar.getName());
+            TextView description = (TextView) itemView.findViewById(R.id.carDescription);
+            description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
+            TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
+            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
 
             return itemView;
 
@@ -75,14 +85,13 @@ public class SelectCarActivity extends AppCompatActivity {
         }
 
     }
+
     private void registerClickCallBack() {
         ListView clicklist = (ListView) findViewById(R.id.carListView);
         clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-
-                String Car = "String";//Change To Car Class and Get car from car colection (position)
+                model.setCurrentCar(carList.get(position));
                 Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent);
 
@@ -93,11 +102,12 @@ public class SelectCarActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 
-                String Car = "String";//Change To Car Class and Get car from car colection (position)
-
+                model.setCurrentCar(carList.get(position));
                 Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent2);
+                finish();
                 return true;
+
             }
         });
     }
@@ -119,6 +129,7 @@ public class SelectCarActivity extends AppCompatActivity {
             case R.id.action_add:
                 Intent intent = AddCarActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent);
+                finish();
                 return true;
 
 
@@ -128,3 +139,4 @@ public class SelectCarActivity extends AppCompatActivity {
 
     }
 }
+

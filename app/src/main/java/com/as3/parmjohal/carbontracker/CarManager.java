@@ -28,10 +28,14 @@ public class CarManager {
     }
     public Car add(Car car)
     {
+        String name = car.getName();
        if(getCarFromCSVFile(car) != null)
        {
            carCollection.add(getCarFromCSVFile(car));
-           return getCarFromCSVFile(car);
+           Car addCar = getCarFromCSVFile(car);
+           addCar.setName(name);
+           return addCar;
+
        }
        else {
            return null;
@@ -56,16 +60,16 @@ public class CarManager {
         carCollection.remove(car);
     }
 
-    public void update(Car updateCar, String make, String model, int year, String tranyType, double engineDisplacment)
+    public void update(Car updateCar, Car newCar)
     {
         Car car = getCarFromArray(updateCar);
         Log.i("Before ", car.toString());
 
-        car.setMake(make);
-        car.setModel(model);
-        car.setYear(year);
-        car.setTranyType(tranyType);
-        car.setEngineDisplacment(engineDisplacment);
+        car.setMake(newCar.getMake());
+        car.setModel(newCar.getModel());
+        car.setYear(newCar.getYear());
+        car.setTranyType(newCar.getTranyType());
+        car.setEngineDisplacment(newCar.getEngineDisplacment());
         //carCollection.set(index, car);
 
         Log.i("After ", car.toString());

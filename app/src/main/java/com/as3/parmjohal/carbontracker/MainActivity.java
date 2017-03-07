@@ -19,25 +19,24 @@ public class MainActivity extends AppCompatActivity {
         //Toyota,Truck 2WD,1985,Manual 5-spd,4
 
         CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
-    //********************
-    //     TEST CODE
-    //********************
 
-        Car car = new Car("Pama","Toyota", "Truck 2WD", 1985,"Manual 5-spd", 2.4);
-        CarManager carManager = model.getCarManager();
+        startNewJourney();
 
-        Car car1 = carManager.add(car);
-        Route route = new Route(12,12, "WORK");
-        model.setCurrentRoute(route);
-        model.setCurrentCar(car1);
 
-        startActivity(new Intent(this, ConfirmTripActivity.class));
 
     }
 
     public static Intent makeIntent(Context context) {
-        Intent intent = new Intent(context, ConfirmTripActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         return intent;
     }
+    /**
+     Call This Method to Start New Journey
+     **/
+    private void startNewJourney() {
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
+    }
+
 
 }
