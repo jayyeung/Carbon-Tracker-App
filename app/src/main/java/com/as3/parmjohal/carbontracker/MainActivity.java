@@ -29,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
         Car car1 = carManager.add(car);
         Route route = new Route(12,12, "WORK");
-        Journey journey = new Journey(car1,route);
-        Log.i("Journey ", journey.getCarInfo() +" " + journey.getRouteInfo() + " " + "CO2: " +journey.getCo2());
+        model.setCurrentRoute(route);
+        model.setCurrentCar(car1);
+
+        startActivity(new Intent(this, ConfirmTripActivity.class));
+
     }
 
     public static Intent makeIntent(Context context) {

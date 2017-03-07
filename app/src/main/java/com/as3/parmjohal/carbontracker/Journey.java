@@ -46,10 +46,20 @@ public class Journey {
 
     public String getRouteInfo()
     {
-        return route.getRouteName() + "City: " + route.getCityDistance() + "HWY: " + route.getHwyDistance();
+        return route.getRouteName() + " City: " + route.getCityDistance() + " HWY: " + route.getHwyDistance();
     }
 
     public double getCo2() {
         return co2;
+    }
+
+    @Override
+    public String toString() {
+        return "Journey{" +
+                "route=" + route +
+                ", car=" + car +
+                ", co2=" + co2 +
+                ", CO2_COVERTOR=" + CO2_COVERTOR +
+                '}';
     }
 }
