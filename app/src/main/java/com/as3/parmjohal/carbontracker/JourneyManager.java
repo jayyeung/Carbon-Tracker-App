@@ -8,25 +8,25 @@ import java.util.ArrayList;
 
 public class JourneyManager {
 
-    private ArrayList<Journey> routeCollection = new ArrayList<>();
+    private ArrayList<Journey> journeyCollection = new ArrayList<>();
 
     public void add(Journey journey)
     {
-        routeCollection.add(journey);
+        journeyCollection.add(journey);
     }
 
     public void remove(Journey journey)
     {
-        routeCollection.remove(journey);
+        journeyCollection.remove(journey);
     }
 
     public void update(Journey currentjourney, Journey newJourney)
     {
-        int index = routeCollection.indexOf(currentjourney);
-        routeCollection.set(index, newJourney);
+        int index = journeyCollection.indexOf(currentjourney);
+        journeyCollection.set(index, newJourney);
     }
 
-    public ArrayList<Journey> getRouteCollection() {
-        return (ArrayList<Journey>) routeCollection.clone();
+    public ArrayList<Journey> getJourneyCollection() {
+        return (ArrayList<Journey>) journeyCollection.clone();
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_confirm_trip"
     android:layout_width="match_parent"
@@ -10,4 +11,81 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.as3.parmjohal.carbontracker.ConfirmTripActivity">
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle2"
+        android:id="@+id/imageView2"
+        android:layout_marginBottom="181dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Main Car:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginBottom="137dp"
+        android:id="@+id/textView4"
+        android:fontFamily="monospace"
+        android:textSize="21sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="Route:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/display_mainCar"
+        android:layout_alignStart="@+id/display_mainCar"
+        android:layout_marginTop="18dp"
+        android:id="@+id/textView6"
+        android:fontFamily="monospace"
+        android:textSize="21sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:id="@+id/display_mainCar"
+        android:fontFamily="monospace"
+        android:textSize="20sp"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_alignStart="@+id/textView4" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_CO2Units"
+        android:textSize="25sp"
+        android:fontFamily="monospace"
+        android:layout_below="@+id/display_CO2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_Route"
+        android:fontFamily="monospace"
+        android:textSize="20sp"
+        android:layout_below="@+id/textView6"
+        android:layout_alignStart="@+id/textView6" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_CO2"
+        android:fontFamily="monospace"
+        android:textSize="55sp"
+        android:textStyle="normal|bold"
+        android:layout_marginTop="92dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textView4" />
 </RelativeLayout>
