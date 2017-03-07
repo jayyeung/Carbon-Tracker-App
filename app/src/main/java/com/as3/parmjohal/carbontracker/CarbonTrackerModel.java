@@ -18,6 +18,8 @@ public class CarbonTrackerModel {
     private JourneyManager journeyManager = new JourneyManager();
 
     private static int count = 0;
+    private Car currentCar;
+    private Route currentRoute;
 
     private CarbonTrackerModel() {
 
@@ -54,5 +56,21 @@ public class CarbonTrackerModel {
     public VehicleData getVehicleData()
     {
         return vehicleData;
+    }
+
+    public Car getCurrentCar() {
+        return currentCar;
+    }
+
+    public void setCurrentCar(Car currentCar) {
+        this.currentCar = currentCar;
+    }
+
+    public Route getCurrentRoute() {
+        return currentRoute;
+    }
+
+    public void setCurrentRoute(Route currentRoute) {
+        this.currentRoute = currentRoute;
     }
 }
