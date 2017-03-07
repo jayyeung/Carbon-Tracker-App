@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     //********************
     //     TEST CODE
     //********************
+        startNewJourney();
 
         Car car = new Car("Pama","Toyota", "Truck 2WD", 1985,"Manual 5-spd", 2.4);
         CarManager carManager = model.getCarManager();
@@ -36,5 +37,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(context, ConfirmTripActivity.class);
         return intent;
     }
+    /**
+     Call This Method to Start New Journey
+     **/
+    private void startNewJourney() {
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
+    }
+
 
 }

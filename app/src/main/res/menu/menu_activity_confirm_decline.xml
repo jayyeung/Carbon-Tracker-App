@@ -6,11 +6,7 @@
         android:icon="@drawable/confirm"
         android:title="confirm"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_decline"
-        android:icon="@drawable/decline"
-        android:title="decline"
-        app:showAsAction="always" />
+
 
 
 </menu>

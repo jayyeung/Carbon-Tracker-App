@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class SelectCarActivity extends AppCompatActivity {
 
-    //Replace with Car Collection. keep name of carList
-    ArrayList<String> carList = new ArrayList<String>();
+
+    ArrayList<Car> carList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +35,12 @@ public class SelectCarActivity extends AppCompatActivity {
 
 
     private void populateListView() {
+        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        carList = model.getCarManager().getCarCollection();
 
-        //Test, Delete This
-        carList.add("test");
-        carList.add("test2");
 
-        ArrayAdapter<String> adapter = new MyListAdaptder();
+
+        ArrayAdapter<Car> adapter = new SelectCarActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.carListView);
         list.setAdapter(adapter);
 
@@ -50,7 +50,7 @@ public class SelectCarActivity extends AppCompatActivity {
     /**
      * Sets up the complex Listview
      */
-    private class MyListAdaptder extends ArrayAdapter<String> {
+    private class MyListAdaptder extends ArrayAdapter<Car> {
         public MyListAdaptder() {
             super(SelectCarActivity.this, R.layout.car_list_view, carList);
         }
@@ -85,6 +85,7 @@ public class SelectCarActivity extends AppCompatActivity {
                 String Car = "String";//Change To Car Class and Get car from car colection (position)
                 Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent);
+
 
 
             }

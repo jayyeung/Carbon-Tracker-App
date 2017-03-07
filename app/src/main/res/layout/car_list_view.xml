@@ -6,7 +6,7 @@
         android:text="Year , Make"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/distanceH"
+        android:id="@+id/carDescription"
         android:layout_marginStart="24dp"
         android:layout_below="@+id/carName"
         android:layout_alignParentStart="true"
@@ -20,5 +20,5 @@
         android:textSize="14sp"
         android:layout_marginTop="28dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/distanceH" />
+        android:layout_alignStart="@+id/carDescription" />
 </RelativeLayout>
