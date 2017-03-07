@@ -30,7 +30,7 @@ public class AddCarActivity extends AppCompatActivity {
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_confirm_decline, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_confirm_decline, menu);
         return true;
 
     }

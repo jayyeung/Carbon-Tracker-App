@@ -11,7 +11,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -19,41 +19,22 @@ public class MainActivity extends AppCompatActivity {
         //Toyota,Truck 2WD,1985,Manual 5-spd,4
 
         CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
-
-
-        //startNewJourney(); //test new journey UI
-
-
-
     //********************
     //     TEST CODE
     //********************
 
         Car car = new Car("Pama","Toyota", "Truck 2WD", 1985,"Manual 5-spd", 2.4);
         CarManager carManager = model.getCarManager();
+
         Car car1 = carManager.add(car);
         Route route = new Route(12,12, "WORK");
         Journey journey = new Journey(car1,route);
         Log.i("Journey ", journey.getCarInfo() +" " + journey.getRouteInfo() + " " + "CO2: " +journey.getCo2());
-
-
-
     }
-
-    /**
-     Call This Method to Start New Journey
-     **/
-    private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
-        startActivity(intent);
-    }
-
-    /**
-     * To return to Main Menu
-     */
 
     public static Intent makeIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, ConfirmTripActivity.class);
         return intent;
     }
+
 }

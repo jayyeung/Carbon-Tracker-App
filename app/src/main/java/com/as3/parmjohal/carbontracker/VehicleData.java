@@ -29,6 +29,8 @@ public class VehicleData {
     public VehicleData(Context context) throws IOException {
         initalizeCars(context);
 
+        getModels("Toyota");
+        getCarYears("Toyota", "Truck 2WD");
         getPossibleCars("Toyota", "Truck 2WD", 1985);
     }
 
@@ -80,6 +82,7 @@ public class VehicleData {
 
                 if (!carModels.contains(model)) {
                     carModels.add(model);
+                    Log.i("Model : ", model);
                 }
             }
         }
@@ -108,6 +111,8 @@ public class VehicleData {
             if(carMake.equals(maker) && carModel.equals(model))
             {
                     carYears.add(carYear);
+                    Log.i("Year : ", " " + carYear);
+
             }
         }
 
