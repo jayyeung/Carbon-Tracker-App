@@ -13,6 +13,7 @@ public class CarbonTrackerModel {
     protected static CarbonTrackerModel carbonTrackerModel = new CarbonTrackerModel();
 
     private static CarManager carManager ;
+    private static VehicleData vehicleData;
     private RouteManager routeManager = new RouteManager();
     private JourneyManager journeyManager = new JourneyManager();
 
@@ -26,6 +27,11 @@ public class CarbonTrackerModel {
     {
         if(count== 0) {
             carManager = new CarManager(context);
+            try {
+                vehicleData = new VehicleData(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         count++;
         return carbonTrackerModel;
@@ -43,5 +49,10 @@ public class CarbonTrackerModel {
 
     public JourneyManager getJourneyManager() {
         return journeyManager;
+    }
+
+    public VehicleData getVehicleData()
+    {
+        return vehicleData;
     }
 }
