@@ -173,17 +173,18 @@ public class AddCarActivity extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.route_list_view, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.car_list_view, parent, false);
             }
 
 
             //Change according to getting the strings of Car
+            Car thisCar = carList.get(position);
 
 
-              TextView carName = (TextView) itemView.findViewById(R.id.carName);
-            carName.setText("test");//fill
-              TextView description= (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText("test");//fill
+            TextView carName = (TextView) itemView.findViewById(R.id.carName);
+            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());//fill
+            TextView description= (TextView) itemView.findViewById(R.id.carDescription);
+            description.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
             registerClickCallBack();
 
             return itemView;
@@ -246,16 +247,15 @@ public class AddCarActivity extends AppCompatActivity {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
 
-                    }
+                    } Intent intent2= SelectCarActivity.makeIntent(AddCarActivity.this);
+                    startActivity(intent2);
                     Intent intent = SelectRouteActivity.makeIntent(AddCarActivity.this);
                     startActivity(intent);
+
                     finish();
                     return true;
                 }
 
-            case R.id.action_decline:
-                finish();
-                return true;
 
 
             default:

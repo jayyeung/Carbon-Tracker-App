@@ -28,10 +28,14 @@ public class CarManager {
     }
     public Car add(Car car)
     {
+        String name = car.getName();
        if(getCarFromCSVFile(car) != null)
        {
            carCollection.add(getCarFromCSVFile(car));
-           return getCarFromCSVFile(car);
+           Car addCar = getCarFromCSVFile(car);
+           addCar.setName(name);
+           return addCar;
+
        }
        else {
            return null;

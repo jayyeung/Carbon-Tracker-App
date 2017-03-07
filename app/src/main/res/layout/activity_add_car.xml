@@ -130,13 +130,12 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="30dp">
 
             <TextView
                 android:text="Select Car Type:"
                 android:layout_marginTop="10dp"
-
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView7"
