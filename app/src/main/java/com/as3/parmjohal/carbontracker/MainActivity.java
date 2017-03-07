@@ -4,9 +4,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -14,10 +11,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,20 +54,21 @@ public class MainActivity extends AppCompatActivity {
 
     // set Graph
     public void setGraph() {
-        float rainfall[] = {98.8f};
-        String months[] = {"Sept"};
+        float rainfall[] = {98.8f,8.8f,8.8f};
+        int months[] = {1,2,3};
 
-        List<BarEntry> entries = new ArrayList<>();
+        List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < rainfall.length; i++) {
-            entries.add(new BarEntry(rainfall[i], 0));
+            entries.add(new PieEntry(rainfall[i], months[i]));
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Rainfall for Van");
-        BarData data = new BarData(dataSet);
+        PieDataSet dataSet = new PieDataSet(entries, "Rainfall for Van");
+        PieData data = new PieData(dataSet);
 
         // set onto chart
-        BarChart chart = (BarChart) findViewById(R.id.chart);
+        PieChart chart = (PieChart) findViewById(R.id.chart);
         chart.setData(data);
+        chart.animateXY(1000,1000);
         chart.invalidate();
     }
 

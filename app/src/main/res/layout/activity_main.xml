@@ -45,29 +45,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:weightSum="1">
 
             <TextView
-                android:text="Your Carbon Progress "
+                android:text="@string/dashboard_welcome_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/scrollView2"
                 android:id="@+id/textView"
-                android:textSize="30sp"
-                android:textColor="@color/colorSubtitle" />
+                android:textSize="24sp"
+                android:textColor="@color/colorSubtitle"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <com.github.mikephil.charting.charts.BarChart
+            <com.github.mikephil.charting.charts.PieChart
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="19dp"
                 android:id="@+id/chart"
                 android:layout_weight="11.17">
 
-            </com.github.mikephil.charting.charts.BarChart>
+            </com.github.mikephil.charting.charts.PieChart>
 
 
             <TextView
@@ -90,7 +92,8 @@
                 android:layout_marginTop="16dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="16.0sp"
-                android:scrollbars="none"/>
+                android:scrollbars="none"
+                android:focusable="false" />
         </LinearLayout>
     </ScrollView>
 
