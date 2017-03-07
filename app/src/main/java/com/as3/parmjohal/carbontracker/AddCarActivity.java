@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddCarActivity extends AppCompatActivity {
     private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
@@ -243,6 +242,7 @@ public class AddCarActivity extends AppCompatActivity {
                 else{
                     carClicked.setName(carNameString);
                     model.getCarManager().add(carClicked);
+                    model.setCurrentCar(carClicked);
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());

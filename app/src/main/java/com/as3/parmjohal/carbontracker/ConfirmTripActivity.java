@@ -52,15 +52,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//reset activity stack
                 startActivity(intent);//go to dashboard
+                model.setCurrentCar(null);
+                model.setCurrentRoute(null);
                 finish();
-                return true;
-
-            case R.id.action_decline:
-                Intent intent2 = MainActivity.makeIntent(ConfirmTripActivity.this);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//reset activity stack
-                startActivity(intent2);//go to dashboard
-                finish();
-
                 return true;
 
 
@@ -79,9 +73,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
     {
         Car currentCar = model.getCurrentCar();
         Route currentRoute = model.getCurrentRoute();
-        model.setCurrentCar(null);
-        model.setCurrentRoute(null);
-
         journey = new Journey(currentCar,currentRoute);
     }
 

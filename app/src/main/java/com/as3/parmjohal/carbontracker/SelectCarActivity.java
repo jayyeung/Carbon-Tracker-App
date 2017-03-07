@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,9 +91,7 @@ public class SelectCarActivity extends AppCompatActivity {
         clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-
-                String Car = "String";//Change To Car Class and Get car from car colection (position)
+                model.setCurrentCar(carList.get(position));
                 Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent);
 
@@ -105,11 +102,12 @@ public class SelectCarActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 
-                String Car = "String";//Change To Car Class and Get car from car colection (position)
-
+                model.setCurrentCar(carList.get(position));
                 Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
                 startActivity(intent2);
+                finish();
                 return true;
+
             }
         });
     }

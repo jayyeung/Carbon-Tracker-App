@@ -95,7 +95,7 @@ public class AddRouteActivity extends AppCompatActivity {
         b.setPositiveButton("Don't Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass addJourney to Confirmtrip
+                model.setCurrentRoute(addRoute);
                 Intent intent = ConfirmTripActivity.makeIntent(AddRouteActivity.this);
                 startActivity(intent);
                 finish();
@@ -106,7 +106,11 @@ public class AddRouteActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                model.setCurrentRoute(addRoute);
                 model.getRouteManager().add(addRoute);
+                Intent intent2= SelectRouteActivity.makeIntent(AddRouteActivity.this);
+                startActivity(intent2);
+
                 Intent intent = ConfirmTripActivity.makeIntent(AddRouteActivity.this);
                 startActivity(intent);
                 finish();
