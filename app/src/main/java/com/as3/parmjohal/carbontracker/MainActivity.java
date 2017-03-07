@@ -4,27 +4,36 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab_transport;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
+    ArrayList<String> carList = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        try {
-            VehicleData v = new VehicleData(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();
@@ -33,6 +42,57 @@ public class MainActivity extends AppCompatActivity {
 
         // set FAB
         setFAB();
+
+        // set Graph
+        setGraph();
+
+        // show Journeys
+        carList.add("Test");
+        carList.add("Test");
+        carList.add("Test");
+        carList.add("Test");
+
+        setJourneys();
+    }
+
+    // set Graph
+    public void setGraph() {
+        float rainfall[] = {98.8f};
+        String months[] = {"Sept"};
+
+        List<BarEntry> entries = new ArrayList<>();
+        for (int i = 0; i < rainfall.length; i++) {
+            entries.add(new BarEntry(rainfall[i], 0));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Rainfall for Van");
+        BarData data = new BarData(dataSet);
+
+        // set onto chart
+        BarChart chart = (BarChart) findViewById(R.id.chart);
+        chart.setData(data);
+        chart.invalidate();
+    }
+
+    // set Journeys
+    public void setJourneys() {
+        ArrayAdapter<String> adapter = new MyListAdapter();
+        ListView list = (ListView) findViewById(R.id.journeys);
+        list.setAdapter(adapter);
+    }
+
+    private class MyListAdapter extends ArrayAdapter<String> {
+        public MyListAdapter() {
+            super(MainActivity.this, R.layout.dashboard_item, carList);
+        }
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
+            }
+
+            return itemView;
+        }
     }
 
     // set Floating Action Button

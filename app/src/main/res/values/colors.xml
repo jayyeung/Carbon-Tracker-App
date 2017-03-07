@@ -6,6 +6,11 @@
     <color name="colorPrimaryDark">#27ae60</color>
     <color name="colorAccent">#1abc9c</color>
 
+    <!-- text colours -->
+    <color name="colorHeading">#333333</color>
+    <color name="colorSubtitle">#b8b8b8</color>
+    <color name="colorBody">#c1c1c1</color>
+
     <!-- fab colours -->
     <color name="fadedBackground">#000000</color>
     <color name="fabTransport">#3498db</color>

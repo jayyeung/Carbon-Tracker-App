@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Button new_journey = (Button) findViewById(R.id.new_journey_btn),
+        final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
 
         // continue to dashboard
@@ -32,6 +34,14 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
+        // create a new journey
+        new_journey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new_journey.performLongClick();
+            }
+        });
+        registerForContextMenu(new_journey);
 
         playAnimations();
     }
@@ -74,5 +84,20 @@ public class SplashActivity extends AppCompatActivity {
 
         new_journey.startAnimation(slide_in);
         to_dash.startAnimation(fade_in);
+    }
+
+    // New Journey Popup
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Select Menu");
+        menu.add(0, v.getId(), 0, "Transportation");
+        menu.add(0, v.getId(), 0, "Food");
+        menu.add(0, v.getId(), 0, "Electricity");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return super.onContextItemSelected(item);
     }
 }
