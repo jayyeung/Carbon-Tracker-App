@@ -58,10 +58,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 route = routeName.getText().toString();
                 String stringHighway = distanceHighway.getText().toString();
                 String stringCity = distanceCity.getText().toString();
-                highway = Integer.parseInt(stringHighway);
-                city = Integer.parseInt(stringCity);
 
-                addRoute= new Route(city,highway,route);
 
 
 
@@ -74,15 +71,16 @@ public class AddRouteActivity extends AppCompatActivity {
                         Toast.makeText(AddRouteActivity.this, "Distance must contain only numbers", Toast.LENGTH_SHORT).show();
                         return false;
                     }
-                else if (checkDuplicate(addRoute)){
+                highway = Integer.parseInt(stringHighway);
+                city = Integer.parseInt(stringCity);
+                addRoute= new Route(city,highway,route);
+                if (checkDuplicate(addRoute)){
                     Toast.makeText(AddRouteActivity.this, "This Route Already Exists!", Toast.LENGTH_SHORT).show();
                 }
                     else {
-
-                        showDialog();
-                        return true;
+                    showDialog();
+                    return true;
                     }
-
 
             default:
                 return super.onOptionsItemSelected(item);
