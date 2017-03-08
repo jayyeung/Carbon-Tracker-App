@@ -12,7 +12,7 @@
     <color name="colorBody">#a3a3a3</color>
 
     <!-- fab colours -->
-    <color name="fadedBackground">#000000</color>
+    <color name="fadedBackground">#383838</color>
     <color name="fabTransport">#3498db</color>
 
     <!-- generic -->

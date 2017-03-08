@@ -28,7 +28,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
         getJourneyData();
 
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
-        setupTextView(R.id.display_CO2Units, "kg of CO2");
+        setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.display_mainCar, journey.getCarInfo());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
         Toast.makeText(this,journey.getDateInfo(), Toast.LENGTH_SHORT).show();
@@ -74,7 +74,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
     }
 
     private void addJourney() {
-
         model.getJourneyManager().add(journey);
     }
 

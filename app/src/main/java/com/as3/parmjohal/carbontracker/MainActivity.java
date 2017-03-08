@@ -134,23 +134,6 @@ public class MainActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(list);
     }
 
-    private void registerClickCallBack() {
-        final ListView list = (ListView) findViewById(R.id.journeys);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-                model.setCurrentJouney(journey.get(position));
-                model.setConfirmTrip(false);
-                Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                startActivity(intent);
-
-            }
-        });
-
-
-    }
-
     private class MyListAdapter extends ArrayAdapter<Journey> {
         public MyListAdapter() {
             super(MainActivity.this, R.layout.dashboard_item, journey);
@@ -177,6 +160,20 @@ public class MainActivity extends AppCompatActivity {
 
             return itemView;
         }
+    }
+
+    private void registerClickCallBack() {
+        final ListView list = (ListView) findViewById(R.id.journeys);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                model.setCurrentJouney(journey.get(position));
+                model.setConfirmTrip(false);
+                Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {

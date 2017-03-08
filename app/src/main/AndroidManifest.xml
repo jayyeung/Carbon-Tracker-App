@@ -10,19 +10,21 @@
         android:theme="@style/AppTheme">
 
         <!-- splash screen -->
-        <activity android:name=".SplashActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- dashboard -->
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait"
-            ></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
 
         <!-- journey -->
         <activity android:name=".SelectCarActivity" />
@@ -31,8 +33,7 @@
         <activity android:name=".EditCarActivity" />
         <activity android:name=".AddRouteActivity" />
         <activity android:name=".ConfirmTripActivity" />
-        <activity android:name=".EditRouteActivity"></activity>
-
+        <activity android:name=".EditRouteActivity" />
     </application>
 
 </manifest>
