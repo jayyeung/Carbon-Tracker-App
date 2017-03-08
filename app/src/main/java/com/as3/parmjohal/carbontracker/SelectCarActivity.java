@@ -43,8 +43,6 @@ public class SelectCarActivity extends AppCompatActivity {
 
     private void populateListView() {
 
-
-
         carList = model.getCarManager().getCarCollection();
 
         ArrayAdapter<Car> adapter = new SelectCarActivity.MyListAdaptder();

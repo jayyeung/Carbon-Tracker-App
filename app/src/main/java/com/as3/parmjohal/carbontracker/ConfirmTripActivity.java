@@ -26,6 +26,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getJourneyData();
+
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO2");
         setupTextView(R.id.display_mainCar, journey.getCarInfo());
@@ -49,7 +50,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
                 //Add code to add journey to collection here
 
-                addJourney();
+                if(model.isConfirmTrip()) {
+                    addJourney();
+                }
+                else {
+                    model.setConfirmTrip(true);
+                }
 
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//reset activity stack
@@ -74,9 +80,14 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void getJourneyData()
     {
-        Car currentCar = model.getCurrentCar();
-        Route currentRoute = model.getCurrentRoute();
-        journey = new Journey(currentCar,currentRoute);
+        if(model.isConfirmTrip()) {
+            Car currentCar = model.getCurrentCar();
+            Route currentRoute = model.getCurrentRoute();
+            journey = new Journey(currentCar, currentRoute);
+        }
+        else {
+            journey = model.getCurrentJouney();
+        }
     }
 
     private void setupTextView(int id, String displayString)
