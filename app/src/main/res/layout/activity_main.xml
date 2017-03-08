@@ -57,7 +57,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/journey_1"
+                    app:srcCompat="@drawable/dashboard_1"
                     android:id="@+id/background"
                     android:alpha="0.5"
                     android:layout_alignParentStart="true"
@@ -80,7 +80,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/chart"
                     android:layout_marginTop="20dp"
-                    android:layout_below="@+id/textView"
+                    android:layout_below="@+id/title"
                     android:elevation="5dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
@@ -88,13 +88,13 @@
                     android:layout_alignParentStart="true"></com.github.mikephil.charting.charts.PieChart>
 
                 <TextView
-                    android:text="Overview"
+                    android:text="Carbon Overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="9dp"
                     android:letterSpacing="0.2"
                     android:textAllCaps="true"
-                    android:id="@+id/textView"
+                    android:id="@+id/title"
                     android:textSize="14sp"
                     android:paddingTop="16dp"
                     android:textStyle="normal|bold"
@@ -125,7 +125,7 @@
                     android:paddingRight="16sp"
                     android:letterSpacing="0.2"
                     android:textAllCaps="true"
-                    android:id="@+id/textView"
+                    android:id="@+id/title"
                     android:textSize="14sp"
                     android:textStyle="normal|bold"
                     android:textColor="@color/colorHeading"

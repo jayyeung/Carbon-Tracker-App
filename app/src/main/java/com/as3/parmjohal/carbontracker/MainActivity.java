@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
-        getSupportActionBar().setElevation(0);
 
         // set FAB
         setFAB();
@@ -57,6 +57,24 @@ public class MainActivity extends AppCompatActivity {
         carList.add("Test");
 
         setJourneys();
+
+        // intro animation
+        animateDashboard();
+    }
+
+    // animate Dashboard
+    public void animateDashboard() {
+        ImageView background_img = (ImageView) findViewById(R.id.background);
+        PieChart chart = (PieChart) findViewById(R.id.chart);
+
+        Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        Animation fade_in2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+
+        fade_in.setDuration(2000);
+        background_img.startAnimation(fade_in);
+
+        fade_in2.setDuration(1800);
+        chart.startAnimation(fade_in2);
     }
 
     //set Graph
@@ -90,12 +108,9 @@ public class MainActivity extends AppCompatActivity {
         legend.setTextSize(16f);
         legend.setWordWrapEnabled(true);
 
-        Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-        fade_in.setDuration(1200);
-        chart.startAnimation(fade_in);
 
         chart.setData(data);
-        chart.animateXY(1000,1000);
+        chart.animateXY(1100,1100);
         chart.invalidate();
     }
 
@@ -104,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.journeys);
         list.setAdapter(adapter);
+
+        list.setFocusable(false);
         setListViewHeightBasedOnChildren(list);
     }
 
