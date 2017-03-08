@@ -122,10 +122,9 @@ public class SelectCarActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == R.id.edit_id)
         {
-            //do stuff if the edit is clicked
-            Toast.makeText(SelectCarActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
 
             model.setCurrentCar(clickedCar);
+            model.setCurrentPos(info.position);
             Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
             startActivityForResult(intent2,REQUEST_CODE_EDIT);
 
