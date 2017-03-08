@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab, fab_transport;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
+
     ArrayList<String> carList = new ArrayList<String>();
+    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -45,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // set carbon model
-        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();

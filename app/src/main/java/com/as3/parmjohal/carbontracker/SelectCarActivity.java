@@ -19,8 +19,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class SelectCarActivity extends AppCompatActivity {
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
+    CarbonTrackerModel model;
 
     ArrayList<Car> carList;
     private int position;
@@ -30,7 +30,7 @@ public class SelectCarActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_car);
-
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setTitle("Select Transportation");
 
         populateListView();
