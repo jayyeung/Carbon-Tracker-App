@@ -52,11 +52,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 addJourney();
 
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//reset activity stack
-                startActivity(intent);//go to dashboard
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//reset activity stack
                 model.setCurrentCar(null);
                 model.setCurrentRoute(null);
                 finish();
+                startActivity(intent);//go to dashboard
+
                 return true;
 
 
