@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ public class EditCarActivity extends AppCompatActivity {
     private Car carClicked;
     private boolean carIsClicked = false;
     private EditText editName;
+    private int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +188,7 @@ public class EditCarActivity extends AppCompatActivity {
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());//fill
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
+            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");//fill
             registerClickCallBack();
 
 
@@ -209,6 +211,9 @@ public class EditCarActivity extends AppCompatActivity {
                     viewClicked.setBackgroundColor(Color.GRAY);
 
                     carIsClicked = true;
+                    pos = position;
+
+
 
                 }
             });
@@ -238,6 +243,10 @@ public class EditCarActivity extends AppCompatActivity {
                     Toast.makeText(EditCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
                     return false;
                 }
+               else if(checkDuplicate(carClicked)){
+                    Toast.makeText(EditCarActivity.this, "This Car Already Exists", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
 
                 else{
                     carClicked.setName(carNameString);
@@ -248,9 +257,9 @@ public class EditCarActivity extends AppCompatActivity {
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
 
                     }
-                    Intent intent= SelectCarActivity.makeIntent(EditCarActivity.this);
-                    startActivity(intent);
 
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                     return true;
                 }
@@ -259,6 +268,17 @@ public class EditCarActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+    private boolean checkDuplicate(Car carClicked) {
+        for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && pos != i) {
+                return true;
+            }
+        }
+
+
+        return false;
 
     }
 

@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,9 @@ public class SelectCarActivity extends AppCompatActivity {
 
     ArrayList<Car> carList;
     private int position;
+    public static final int REQUEST_CODE_ADD= 1024;
+    public static final int REQUEST_CODE_EDIT= 1025;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,6 @@ public class SelectCarActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         carList = model.getCarManager().getCarCollection();
 
@@ -64,7 +67,7 @@ public class SelectCarActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.car_list_view, parent, false);
             }
 
-            //Change according to getting the strings of Car
+
             Car thisCar = carList.get(position);
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
@@ -74,7 +77,7 @@ public class SelectCarActivity extends AppCompatActivity {
             description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
 
             TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
-            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
+            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +thisCar.getEngineDisplacment()+"L");//fill
 
             return itemView;
         }
@@ -124,12 +127,32 @@ public class SelectCarActivity extends AppCompatActivity {
 
             model.setCurrentCar(clickedCar);
             Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
-            startActivity(intent2);
-            finish();
+            startActivityForResult(intent2,REQUEST_CODE_EDIT);
+
         }
         return super.onContextItemSelected(item);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_ADD):
+                if (resultCode == Activity.RESULT_OK) {
+                    Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                    startActivity(intent);
+                    populateListView();
+                    break;
+
+
+                }
+            case (REQUEST_CODE_EDIT):
+                if(resultCode == Activity.RESULT_OK){
+                    populateListView();
+                    break;
+
+                }
+        }
+
+    }
 
 
     public static Intent makeIntent(Context context) {
@@ -147,8 +170,7 @@ public class SelectCarActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = AddCarActivity.makeIntent(SelectCarActivity.this);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent,REQUEST_CODE_ADD);
                 return true;
 
 

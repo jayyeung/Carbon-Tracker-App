@@ -55,7 +55,9 @@ public class VehicleData {
                 car.setCityFuel(Integer.parseInt(tokens[7]));
                 car.setHighwayFuel(Integer.parseInt(tokens[8]));
 
-                allCars.add(car);
+                if(!car.getFuelType().equals("CNG")) {
+                    allCars.add(car);
+                }
                 if (!carMakers.contains(car.getMake())) {
                     carMakers.add(car.getMake());
                 }

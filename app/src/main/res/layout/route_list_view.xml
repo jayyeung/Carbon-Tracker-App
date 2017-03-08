@@ -8,14 +8,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/distanceH"
         android:textSize="14sp"
-        android:layout_below="@+id/distanceC"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Miles in City"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/distanceC"
         android:layout_below="@+id/routeName"
         android:layout_alignParentStart="true" />
 
@@ -27,5 +19,13 @@
         android:textSize="18sp"
         android:textStyle="normal|bold"
         android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Miles in City"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distanceC"
+        android:layout_below="@+id/distanceH"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

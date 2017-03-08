@@ -99,7 +99,7 @@
                     android:layout_alignParentStart="true"></com.github.mikephil.charting.charts.PieChart>
 
                 <TextView
-                    android:text="Carbon Overview"
+                    android:text="@string/carbon_overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="9dp"
@@ -126,7 +126,7 @@
 
 
                 <TextView
-                    android:text="ALL JOURNEYS"
+                    android:text="@string/all_journeys"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"

@@ -22,7 +22,7 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="Main Car:"
+        android:text="@string/main_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -35,7 +35,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Route:"
+        android:text="@string/route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/display_mainCar"

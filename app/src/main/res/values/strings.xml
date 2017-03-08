@@ -6,13 +6,26 @@
 
     <!-- route -->
     <string name="route_name">Route Name</string>
-    <string name="distance_on_highway">Distance on Highway</string>
-    <string name="distance_in_city">Distance in City</string>
+    <string name="distance_on_highway">Distance on Highway (km)</string>
+    <string name="distance_in_city">Distance in City (km)</string>
 
     <!-- car -->
     <string name="car_name">Car Name</string>
     <string name="car_make">Car Make</string>
     <string name="year">Year</string>
+    <string name="select_route_hold_to_edit_or_delete">Select Route (hold to edit or delete):</string>
+    <string name="car_s_name">Car\'s Name</string>
+    <string name="make">Make</string>
+    <string name="model">Model</string>
+    <string name="select_car_type">Select Car Type:</string>
+    <string name="main_car">Main Car:</string>
+    <string name="route">Route:</string>
+    <string name="select_car_hold_to_edit">Select Car (Hold to Edit):</string>
+    <string name="would_you_like_to_save_this_route">Would you like to save this route?</string>
+    <string name="continue_to_dashboard">Continue to dashboard</string>
+    <string name="start_a_new_journey">Start a New Journey</string>
+    <string name="carbon_overview">Carbon Overview</string>
+    <string name="all_journeys">ALL JOURNEYS</string>
 
 
 </resources>

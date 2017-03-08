@@ -20,6 +20,8 @@ public class CarbonTrackerModel {
     private static int count = 0;
     private Car currentCar;
     private Route currentRoute;
+    private Journey currentJouney;
+    private boolean confirmTrip = true;
 
     private CarbonTrackerModel() {
 
@@ -72,5 +74,21 @@ public class CarbonTrackerModel {
 
     public void setCurrentRoute(Route currentRoute) {
         this.currentRoute = currentRoute;
+    }
+
+    public Journey getCurrentJouney() {
+        return currentJouney;
+    }
+
+    public void setCurrentJouney(Journey currentJouney) {
+        this.currentJouney = currentJouney;
+    }
+
+    public boolean isConfirmTrip() {
+        return confirmTrip;
+    }
+
+    public void setConfirmTrip(boolean confirmTrip) {
+        this.confirmTrip = confirmTrip;
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -42,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    CarbonTrackerModel model;
 
-    private ArrayList<Journey> journey = model.getJourneyManager().getJourneyCollection();
+    private ArrayList<Journey> journey ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -55,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        journey = model.getJourneyManager().getJourneyCollection();
 
         // set FAB
         setFAB();
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         // intro animation
         animateDashboard();
+
+        registerClickCallBack();
     }
 
     // animate Dashboard
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         // get pie info
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < journey.size(); i++) {
-            entries.add(new PieEntry((float) journey.get(i).getCo2(), i));
+            entries.add(new PieEntry(Float.parseFloat(String.format("%.2f",journey.get(i).getCo2())), i));
         }
 
         final int[] CHART_COLOURS = { Color.rgb(38, 166, 91), Color.rgb(63, 195, 128) , Color.rgb(0, 177, 106), Color.rgb(30, 130, 76), Color.rgb(27, 188, 155) };
@@ -125,6 +132,23 @@ public class MainActivity extends AppCompatActivity {
 
         list.setFocusable(false);
         setListViewHeightBasedOnChildren(list);
+    }
+
+    private void registerClickCallBack() {
+        final ListView list = (ListView) findViewById(R.id.journeys);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+
+                model.setCurrentJouney(journey.get(position));
+                model.setConfirmTrip(false);
+                Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 
     private class MyListAdapter extends ArrayAdapter<Journey> {
