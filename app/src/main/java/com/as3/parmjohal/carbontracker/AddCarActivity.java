@@ -32,9 +32,6 @@ public class AddCarActivity extends AppCompatActivity {
     private boolean carIsClicked = false;
     private EditText editName;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +48,6 @@ public class AddCarActivity extends AppCompatActivity {
         setupMakeSpinner();
 
          editName = (EditText) findViewById(R.id.editName);
-
-
-
-
-
-
 
     }
 
@@ -155,7 +146,6 @@ public class AddCarActivity extends AppCompatActivity {
 
         carList = model.getVehicleData().getPossibleCars(make,carModel,year);
 
-
         ArrayAdapter<Car> adapter = new AddCarActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.carList);
         list.setAdapter(adapter);
@@ -235,8 +225,6 @@ public class AddCarActivity extends AppCompatActivity {
                else if(!carIsClicked) {
                     Toast.makeText(AddCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
                     return false;
-
-
                 }
 
                 else{

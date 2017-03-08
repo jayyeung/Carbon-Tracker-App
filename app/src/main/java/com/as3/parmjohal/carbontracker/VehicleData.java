@@ -29,9 +29,6 @@ public class VehicleData {
     public VehicleData(Context context) throws IOException {
         initalizeCars(context);
 
-        getModels("Toyota");
-        getCarYears("Toyota", "Truck 2WD");
-        getPossibleCars("Toyota", "Truck 2WD", 1985);
     }
 
     private void initalizeCars(Context context) {
