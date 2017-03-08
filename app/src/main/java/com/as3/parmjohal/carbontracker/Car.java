@@ -137,6 +137,7 @@ public class Car {
 
         Car car = (Car) o;
 
+
         if (year != car.year) return false;
         if (Double.compare(car.engineDisplacment, engineDisplacment) != 0) return false;
         if (make != null ? !make.equals(car.make) : car.make != null) return false;

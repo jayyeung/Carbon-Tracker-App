@@ -73,9 +73,9 @@ public class SelectRouteActivity extends AppCompatActivity {
               TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
               routeName.setText(thisRoute.getRouteName());
               TextView highway= (TextView) itemView.findViewById(R.id.distanceH);
-              highway.setText("" + thisRoute.getHwyDistance());//fill
+              highway.setText(thisRoute.getHwyDistance()+" km on Highway");//fill
               TextView city= (TextView) itemView.findViewById(R.id.distanceC);
-              city.setText(""+ thisRoute.getCityDistance());//fill
+              city.setText(thisRoute.getCityDistance()+" km in the City");//fill
 
             return itemView;
 

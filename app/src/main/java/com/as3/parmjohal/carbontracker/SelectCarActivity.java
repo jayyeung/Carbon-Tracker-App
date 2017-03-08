@@ -42,7 +42,8 @@ public class SelectCarActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+
+
 
         carList = model.getCarManager().getCarCollection();
 
@@ -78,7 +79,7 @@ public class SelectCarActivity extends AppCompatActivity {
             description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
 
             TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
-            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
+            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +thisCar.getEngineDisplacment()+"L");//fill
 
             return itemView;
         }

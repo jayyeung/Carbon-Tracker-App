@@ -48,7 +48,7 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Continue to dashboard"
+        android:text="@string/continue_to_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
@@ -64,7 +64,7 @@
 
     <Button
         android:id="@+id/new_journey_btn"
-        android:text="Start a New Journey"
+        android:text="@string/start_a_new_journey"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:background="@drawable/ghost_button"

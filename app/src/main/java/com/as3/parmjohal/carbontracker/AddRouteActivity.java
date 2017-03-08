@@ -58,6 +58,11 @@ public class AddRouteActivity extends AppCompatActivity {
                 route = routeName.getText().toString();
                 String stringHighway = distanceHighway.getText().toString();
                 String stringCity = distanceCity.getText().toString();
+                highway = Integer.parseInt(stringHighway);
+                city = Integer.parseInt(stringCity);
+
+                addRoute= new Route(city,highway,route);
+
 
 
                 //Error Checker
@@ -69,11 +74,11 @@ public class AddRouteActivity extends AppCompatActivity {
                         Toast.makeText(AddRouteActivity.this, "Distance must contain only numbers", Toast.LENGTH_SHORT).show();
                         return false;
                     }
+                else if (checkDuplicate(addRoute)){
+                    Toast.makeText(AddRouteActivity.this, "This Route Already Exists!", Toast.LENGTH_SHORT).show();
+                }
                     else {
-                    highway = Integer.parseInt(stringHighway);
-                    city = Integer.parseInt(stringCity);
 
-                        addRoute= new Route(city,highway,route);
                         showDialog();
                         return true;
                     }
@@ -117,6 +122,15 @@ public class AddRouteActivity extends AppCompatActivity {
         });
         b.setView(V);
         b.show();
+    }
+
+    private boolean checkDuplicate(Route route) {
+        for (int i = 0; i < model.getRouteManager().getRouteCollection().size(); i++) {
+            if (route.equals(model.getRouteManager().getRouteCollection().get(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean containsOnlyNumbers(String str) {

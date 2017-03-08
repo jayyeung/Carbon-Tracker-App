@@ -29,7 +29,7 @@ public class AddCarActivity extends AppCompatActivity {
     private Integer year;
     private ArrayList<Car> carList = new ArrayList<>();
     private String carNameString;
-    private Car carClicked;
+    private Car carClicked = new Car();
     private boolean carIsClicked = false;
     private EditText editName;
 
@@ -167,14 +167,14 @@ public class AddCarActivity extends AppCompatActivity {
             }
 
 
-            //Change according to getting the strings of Car
+
             Car thisCar = carList.get(position);
 
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
-            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());//fill
+            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description= (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
+            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
             registerClickCallBack();
 
             return itemView;
@@ -227,6 +227,10 @@ public class AddCarActivity extends AppCompatActivity {
                     Toast.makeText(AddCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
                     return false;
                 }
+                if(checkDuplicate(carClicked)){
+                   Toast.makeText(AddCarActivity.this, "This Car Already Exists", Toast.LENGTH_SHORT).show();
+                   return false;
+                }
 
                 else{
                     carClicked.setName(carNameString);
@@ -248,6 +252,18 @@ public class AddCarActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    private boolean checkDuplicate(Car carClicked) {
+        for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i))) {
+                return true;
+            }
+        }
+
+
+        return false;
 
     }
 
