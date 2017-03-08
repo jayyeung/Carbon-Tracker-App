@@ -59,7 +59,7 @@ public class EditRouteActivity extends AppCompatActivity {
                     Toast.makeText(EditRouteActivity.this, "Please complete info", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    if (containsOnlyNumbers(city) == false || containsOnlyNumbers(city) == false) {
+                    if (containsOnlyNumbers(city) == false || containsOnlyNumbers(highway) == false) {
                         Toast.makeText(EditRouteActivity.this, "Distancemust contain only numbers", Toast.LENGTH_SHORT).show();
 
 
