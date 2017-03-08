@@ -3,67 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="16sp"
+    android:paddingRight="16sp"
     android:elevation="5dp"
     android:layout_height="89.764dp">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/journey_1"
-        android:scaleType="centerCrop"
-        android:id="@+id/imageView" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@color/colorHeading"
-        android:id="@+id/background_overlay"
-        android:alpha="0.6"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="21sp"
-        android:paddingRight="21sp"
         android:paddingTop="21sp"
         android:paddingBottom="21sp"
         android:layout_weight="0.36"
-        android:layout_marginStart="10dp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true">
 
         <TextView
-                android:text="302g CO2"
+                android:text="Car Trip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/title"
                 android:layout_weight="1"
                 android:layout_marginBottom="2sp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:elevation="4dp"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/fadedBackground"
             android:textStyle="normal|bold" />
 
         <TextView
-                android:text="Car Trip • On 01/23/17"
+                android:text="On 01/23/17"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView2"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                android:textColor="@android:color/background_light" />
+            android:textSize="16sp"
+                android:textColor="@color/colorSubtitle" />
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:srcCompat="@drawable/arrow"
-        android:id="@+id/imageView2"
-        android:layout_marginEnd="32dp"
+    <TextView
+        android:text="302g CO2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/result_value"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal|bold"
+        android:textSize="18sp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true" />
 
