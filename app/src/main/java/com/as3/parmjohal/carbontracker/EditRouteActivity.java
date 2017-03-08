@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
@@ -74,8 +75,8 @@ public class EditRouteActivity extends AppCompatActivity {
 
                         model.getRouteManager().update(model.getCurrentRoute(),addRoute);
 
-                        Intent intent = SelectRouteActivity.makeIntent(EditRouteActivity.this);
-                        startActivity(intent);
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
                         finish();
                         return true;
                     }

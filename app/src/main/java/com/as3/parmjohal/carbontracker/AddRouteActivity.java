@@ -96,8 +96,8 @@ public class AddRouteActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 model.setCurrentRoute(addRoute);
-                Intent intent = ConfirmTripActivity.makeIntent(AddRouteActivity.this);
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
                 finish();
 
             }
@@ -108,11 +108,8 @@ public class AddRouteActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 model.setCurrentRoute(addRoute);
                 model.getRouteManager().add(addRoute);
-                Intent intent2= SelectRouteActivity.makeIntent(AddRouteActivity.this);
-                startActivity(intent2);
-
-                Intent intent = ConfirmTripActivity.makeIntent(AddRouteActivity.this);
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
                 finish();
 
 

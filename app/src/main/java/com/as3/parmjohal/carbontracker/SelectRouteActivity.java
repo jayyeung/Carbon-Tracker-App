@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,9 @@ public class SelectRouteActivity extends AppCompatActivity {
     CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
     ArrayList<Route> routeList = new ArrayList<Route>();
 
+    public static final int REQUEST_CODE_ADD= 1024;
+    public static final int REQUEST_CODE_EDIT= 1025;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,7 @@ public class SelectRouteActivity extends AppCompatActivity {
 
         setTitle("Select Route");
 
-        routeList = model.getRouteManager().getRouteCollection();
+
 
         populateListView();
         registerClickCallBack();
@@ -41,6 +45,7 @@ public class SelectRouteActivity extends AppCompatActivity {
 
 
     private void populateListView() {
+        routeList = model.getRouteManager().getRouteCollection();
 
         ArrayAdapter<Route> adapter = new SelectRouteActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.routeListView);
@@ -125,8 +130,7 @@ public class SelectRouteActivity extends AppCompatActivity {
 
             model.setCurrentRoute(clickedRoute);
             Intent intent2 = EditRouteActivity.makeIntent(SelectRouteActivity.this);
-            startActivity(intent2);
-            finish();
+            startActivityForResult(intent2,REQUEST_CODE_EDIT);
         }
         return super.onContextItemSelected(item);
     }
@@ -145,8 +149,7 @@ public class SelectRouteActivity extends AppCompatActivity {
                 return true;
             case R.id.action_add:
                 Intent intent = AddRouteActivity.makeIntent(SelectRouteActivity.this);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent,REQUEST_CODE_ADD);
                 return true;
 
 
@@ -155,6 +158,27 @@ public class SelectRouteActivity extends AppCompatActivity {
         }
 
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_ADD):
+                if (resultCode == Activity.RESULT_OK) {
+                    Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
+                    startActivity(intent);
+                    populateListView();
+                    break;
+
+
+                }
+            case (REQUEST_CODE_EDIT):
+                if(resultCode == Activity.RESULT_OK){
+                    populateListView();
+                    break;
+
+                }
+        }
+
+    }
+
 
 
 

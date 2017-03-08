@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -235,11 +236,9 @@ public class AddCarActivity extends AppCompatActivity {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
 
-                    } Intent intent2= SelectCarActivity.makeIntent(AddCarActivity.this);
-                    startActivity(intent2);
-                    Intent intent = SelectRouteActivity.makeIntent(AddCarActivity.this);
-                    startActivity(intent);
-
+                    }
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                     return true;
                 }
