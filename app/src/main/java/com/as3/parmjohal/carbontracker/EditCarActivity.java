@@ -211,7 +211,7 @@ public class EditCarActivity extends AppCompatActivity {
                     viewClicked.setBackgroundColor(Color.GRAY);
 
                     carIsClicked = true;
-                    pos = position;
+
 
 
 
@@ -252,6 +252,7 @@ public class EditCarActivity extends AppCompatActivity {
                     carClicked.setName(carNameString);
                     model.getCurrentCar().setName(carNameString);
                     model.getCarManager().update(model.getCurrentCar(),carClicked);
+                    model.setCurrentPos(-1);
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
@@ -271,8 +272,9 @@ public class EditCarActivity extends AppCompatActivity {
 
     }
     private boolean checkDuplicate(Car carClicked) {
+
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && pos != i) {
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && model.getCurrentPos() != i) {
                 return true;
             }
         }

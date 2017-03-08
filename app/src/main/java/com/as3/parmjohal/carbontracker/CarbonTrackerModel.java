@@ -20,6 +20,7 @@ public class CarbonTrackerModel {
     private static int count = 0;
     private Car currentCar;
     private Route currentRoute;
+    public int currentPos;
     private Journey currentJouney;
     private boolean confirmTrip = true;
 
@@ -67,6 +68,10 @@ public class CarbonTrackerModel {
     public void setCurrentCar(Car currentCar) {
         this.currentCar = currentCar;
     }
+
+    public int getCurrentPos(){return currentPos;}
+
+    public void setCurrentPos(int currentPos){this.currentPos = currentPos;}
 
     public Route getCurrentRoute() {
         return currentRoute;
