@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +99,20 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
+        if (item.getTitle() == "Transportation") {
+            startNewJourney();
+        }
+        return true;
+    }
+
+    // start new journey
+    public static Intent makeIntent(Context context) {
+        Intent intent = new Intent(context, SplashActivity.class);
+        return intent;
+    }
+
+    private void startNewJourney() {
+        Intent intent = SelectCarActivity.makeIntent(SplashActivity.this);
+        startActivity(intent);
     }
 }

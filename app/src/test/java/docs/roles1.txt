@@ -1,0 +1,4 @@
+Scrum Master: Parmvir Johal (parmj)
+Product Owner: Shane salarda (ssalarda)
+Team Member: Fred Wu (xuetianw)
+Repo Manager: Jason Yeung (jyeung)

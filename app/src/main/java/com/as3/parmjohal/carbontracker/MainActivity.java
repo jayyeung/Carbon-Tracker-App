@@ -22,6 +22,12 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> carList = new ArrayList<String>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set carbon model
+        CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();
@@ -190,5 +199,16 @@ public class MainActivity extends AppCompatActivity {
             fab_transport.setClickable(true);
             isFabOpen = true;
         }
+    }
+
+    // start new journey
+    public static Intent makeIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
+
+    private void startNewJourney() {
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
     }
 }

@@ -3,4 +3,16 @@
 
     <!-- dashboard -->
     <string name="dashboard_welcome_message">Dashboard</string>
+
+    <!-- route -->
+    <string name="route_name">Route Name</string>
+    <string name="distance_on_highway">Distance on Highway</string>
+    <string name="distance_in_city">Distance in City</string>
+
+    <!-- car -->
+    <string name="car_name">Car Name</string>
+    <string name="car_make">Car Make</string>
+    <string name="year">Year</string>
+
+
 </resources>
