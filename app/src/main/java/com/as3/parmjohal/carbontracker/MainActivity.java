@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    CarbonTrackerModel model;
 
-    private ArrayList<Journey> journey = model.getJourneyManager().getJourneyCollection();
+    private ArrayList<Journey> journey ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        journey = model.getJourneyManager().getJourneyCollection();
 
         // set FAB
         setFAB();

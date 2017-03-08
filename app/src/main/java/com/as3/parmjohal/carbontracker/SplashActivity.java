@@ -29,9 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         to_dash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dashboard = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(dashboard);
-                finish();
+                openDashBoard();
             }
         });
 
@@ -114,5 +112,11 @@ public class SplashActivity extends AppCompatActivity {
     private void startNewJourney() {
         Intent intent = SelectCarActivity.makeIntent(SplashActivity.this);
         startActivity(intent);
+    }
+
+    private void openDashBoard()
+    {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
