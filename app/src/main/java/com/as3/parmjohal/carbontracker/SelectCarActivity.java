@@ -57,7 +57,6 @@ public class SelectCarActivity extends AppCompatActivity {
             super(SelectCarActivity.this, R.layout.car_list_view, carList);
         }
 
-
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
 
@@ -70,13 +69,14 @@ public class SelectCarActivity extends AppCompatActivity {
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getName());
+
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
             description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
+
             TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
             description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel");//fill
 
             return itemView;
-
         }
 
     }

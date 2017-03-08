@@ -2,6 +2,10 @@ package com.as3.parmjohal.carbontracker;
 
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -45,14 +49,15 @@ public class Journey {
     {
         return "" + car.getYear()+", " + car.getMake()+ " " + car.getModel();
     }
-    
+
     public String getRouteInfo()
     {
         return route.getRouteName() + " City: " + route.getCityDistance() + " HWY: " + route.getHwyDistance();
     }
     public String getDateInfo()
     {
-        return "Month: "+date.getMonth()+ " Day: "+date.getDay() + " Year: " + date.getYear() ;
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(date) ;
     }
 
     public double getCo2() {

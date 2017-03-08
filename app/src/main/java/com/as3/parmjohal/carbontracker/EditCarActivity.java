@@ -194,12 +194,9 @@ public class EditCarActivity extends AppCompatActivity {
 
         }
     }
-
         private void registerClickCallBack() {
             ListView clicklist = (ListView) findViewById(R.id.carList);
             clicklist.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
 
             clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -212,8 +209,6 @@ public class EditCarActivity extends AppCompatActivity {
                     viewClicked.setBackgroundColor(Color.GRAY);
 
                     carIsClicked = true;
-
-
 
                 }
             });
@@ -242,12 +237,11 @@ public class EditCarActivity extends AppCompatActivity {
                 else if(!carIsClicked) {
                     Toast.makeText(EditCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
                     return false;
-
-
                 }
 
                 else{
                     carClicked.setName(carNameString);
+                    model.getCurrentCar().setName(carNameString);
                     model.getCarManager().update(model.getCurrentCar(),carClicked);
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
