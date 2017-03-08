@@ -28,6 +28,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,16 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
-
-    ArrayList<String> carList = new ArrayList<String>();
     CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+
+    private ArrayList<Journey> journey = model.getJourneyManager().getJourneyCollection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // set carbon model
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();
@@ -62,12 +63,6 @@ public class MainActivity extends AppCompatActivity {
         setGraph();
 
         // show Journeys
-        carList.add("Test");
-        carList.add("Test");
-        carList.add("Test");
-        carList.add("Test");
-        carList.add("Test");
-
         setJourneys();
 
         // intro animation
@@ -90,18 +85,15 @@ public class MainActivity extends AppCompatActivity {
 
     //set Graph
     public void setGraph() {
-        float rainfall[] = {8.8f,8.8f,8.8f};
-        int months[] = {1,2,3};
-
         // get pie info
         List<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < rainfall.length; i++) {
-            entries.add(new PieEntry(rainfall[i], months[i]));
+        for (int i = 0; i < journey.size(); i++) {
+            entries.add(new PieEntry((float) journey.get(i).getCo2(), i));
         }
 
         final int[] CHART_COLOURS = { Color.rgb(38, 166, 91), Color.rgb(63, 195, 128) , Color.rgb(0, 177, 106), Color.rgb(30, 130, 76), Color.rgb(27, 188, 155) };
 
-        PieDataSet dataSet = new PieDataSet(entries, "Rainfall for Van");
+        PieDataSet dataSet = new PieDataSet(entries, "Journey CO₂");
         dataSet.setColors(CHART_COLOURS);
         dataSet.setValueTextColor(R.color.white);
         dataSet.setValueTextSize(16f);
@@ -127,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     // set Journeys
     public void setJourneys() {
-        ArrayAdapter<String> adapter = new MyListAdapter();
+        ArrayAdapter<Journey> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.journeys);
         list.setAdapter(adapter);
 
@@ -135,15 +127,29 @@ public class MainActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(list);
     }
 
-    private class MyListAdapter extends ArrayAdapter<String> {
+    private class MyListAdapter extends ArrayAdapter<Journey> {
         public MyListAdapter() {
-            super(MainActivity.this, R.layout.dashboard_item, carList);
+            super(MainActivity.this, R.layout.dashboard_item, journey);
         }
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
             }
+
+            Journey cur_journey = journey.get(position);
+
+            // TITLE
+            TextView title = (TextView) itemView.findViewById(R.id.title);
+            title.setText("Car Trip " + (position+1));
+
+            // META
+            TextView meta = (TextView) itemView.findViewById(R.id.meta);
+            meta.setText("Driven on " + cur_journey.getDateInfo());
+
+            // RESULTS
+            TextView results = (TextView) itemView.findViewById(R.id.result_value);
+            results.setText(cur_journey.getCo2() + "kg CO₂");
 
             return itemView;
         }
@@ -188,6 +194,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                animateFAB();
+            }
+        });
+
+        fab_transport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewJourney();
+                isFabOpen = true;
                 animateFAB();
             }
         });
