@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(cur_journey.getCo2() + "kg CO₂");
+            results.setText(String.format("%.2f", cur_journey.getCo2()) + "kg CO₂");
 
             return itemView;
         }
