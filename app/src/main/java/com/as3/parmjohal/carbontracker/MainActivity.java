@@ -15,15 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //make	model	year	trany	displ
-        //Toyota,Truck 2WD,1985,Manual 5-spd,4
-
         CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
-
         startNewJourney();
-
-
-
     }
 
     public static Intent makeIntent(Context context) {

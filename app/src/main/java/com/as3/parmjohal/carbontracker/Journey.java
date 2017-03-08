@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker;
 
 import android.util.Log;
 
+import java.util.Date;
+
 /**
  * Created by ParmJohal on 2017-03-03.
  */
@@ -12,10 +14,11 @@ public class Journey {
     private Car car = null;
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
+    private Date date = new Date();
 
     public Journey(Car car , Route route ) {
         this.car = car;
-        this.route =route;
+        this.route = route;
         calculateCO2();
     }
 
@@ -42,11 +45,14 @@ public class Journey {
     {
         return "" + car.getYear()+", " + car.getMake()+ " " + car.getModel();
     }
-
-
+    
     public String getRouteInfo()
     {
         return route.getRouteName() + " City: " + route.getCityDistance() + " HWY: " + route.getHwyDistance();
+    }
+    public String getDateInfo()
+    {
+        return "Month: "+date.getMonth()+ " Day: "+date.getDay() + " Year: " + date.getYear() ;
     }
 
     public double getCo2() {

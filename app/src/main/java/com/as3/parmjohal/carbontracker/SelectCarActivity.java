@@ -22,7 +22,7 @@ public class SelectCarActivity extends AppCompatActivity {
     CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
 
-    ArrayList<Car> carList = new ArrayList<>();
+    ArrayList<Car> carList;
     private int position;
 
     @Override
@@ -60,14 +60,13 @@ public class SelectCarActivity extends AppCompatActivity {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
+
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.car_list_view, parent, false);
             }
 
-
             //Change according to getting the strings of Car
             Car thisCar = carList.get(position);
-
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getName());

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
@@ -29,6 +30,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2Units, "kg of CO2");
         setupTextView(R.id.display_mainCar, journey.getCarInfo());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
+        Toast.makeText(this,journey.getDateInfo(), Toast.LENGTH_SHORT).show();
     }
 
 
