@@ -1,6 +1,7 @@
 package com.as3.parmjohal.carbontracker;
 
 import android.graphics.Color;
+import android.media.Image;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +36,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab_transport;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private ImageView fab_overlay;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
 
     ArrayList<String> carList = new ArrayList<String>();
@@ -77,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView background_img = (ImageView) findViewById(R.id.background);
         PieChart chart = (PieChart) findViewById(R.id.chart);
 
-        Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         Animation fade_in2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
 
         fade_in.setDuration(2000);
@@ -171,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
     // set Floating Action Button
     public void setFAB() {
+        fab_overlay = (ImageView) findViewById(R.id.fab_overlay);
+
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_transport = (FloatingActionButton) findViewById(R.id.fab_transport);
 
@@ -178,6 +181,9 @@ public class MainActivity extends AppCompatActivity {
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+
+        fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        fade_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,14 +194,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void animateFAB(){
+        fade_in.setDuration(300);
+        fade_out.setDuration(300);
+
         if(isFabOpen){
             fab.startAnimation(rotate_backward);
+            fab_overlay.startAnimation(fade_out);
             fab_transport.startAnimation(fab_close);
             fab_transport.setClickable(false);
             isFabOpen = false;
 
         } else {
             fab.startAnimation(rotate_forward);
+            fab_overlay.startAnimation(fade_in);
             fab_transport.startAnimation(fab_open);
             fab_transport.setClickable(true);
             isFabOpen = true;
