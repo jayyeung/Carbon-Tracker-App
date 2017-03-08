@@ -151,6 +151,8 @@
                     android:overScrollFooter="@android:color/transparent"
                     android:footerDividersEnabled="false"
                     android:scrollbars="none"
+                    android:stackFromBottom="true"
+                    android:transcriptMode="normal"
                     android:focusable="false"
                     android:layout_height="fill_parent" />
 
