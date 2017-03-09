@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_no_margin"
-    tools:context="com.as3.parmjohal.carbontracker.SplashActivity">
+    tools:context="com.as3.parmjohal.carbontracker.UI.SplashActivity">
 
     <ImageView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.Model;
 
 /**
  * Created by ParmJohal on 2017-03-03.

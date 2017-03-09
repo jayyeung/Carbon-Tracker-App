@@ -1,4 +1,4 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.Model;
 
 import java.util.ArrayList;
 

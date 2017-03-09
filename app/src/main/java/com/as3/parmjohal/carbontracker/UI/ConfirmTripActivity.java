@@ -1,4 +1,4 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.UI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.Car;
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.Model.Route;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 

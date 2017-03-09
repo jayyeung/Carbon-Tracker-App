@@ -11,7 +11,7 @@
 
         <!-- splash screen -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".UI.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,17 +23,17 @@
 
         <!-- dashboard -->
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:screenOrientation="portrait" />
 
         <!-- journey -->
-        <activity android:name=".SelectCarActivity" />
-        <activity android:name=".AddCarActivity" />
-        <activity android:name=".SelectRouteActivity" />
-        <activity android:name=".EditCarActivity" />
-        <activity android:name=".AddRouteActivity" />
-        <activity android:name=".ConfirmTripActivity" />
-        <activity android:name=".EditRouteActivity" />
+        <activity android:name=".UI.SelectCarActivity" />
+        <activity android:name=".UI.AddCarActivity" />
+        <activity android:name=".UI.SelectRouteActivity" />
+        <activity android:name=".UI.EditCarActivity" />
+        <activity android:name=".UI.AddRouteActivity" />
+        <activity android:name=".UI.ConfirmTripActivity" />
+        <activity android:name=".UI.EditRouteActivity" />
     </application>
 
 </manifest>

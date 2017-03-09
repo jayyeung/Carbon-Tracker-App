@@ -1,15 +1,18 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.UI;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.Model.Route;
 
 public class EditRouteActivity extends AppCompatActivity {
     private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);

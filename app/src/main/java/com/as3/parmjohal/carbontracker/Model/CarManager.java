@@ -1,4 +1,4 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.Model;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,9 +16,14 @@ public class CarManager {
 
     private ArrayList<Car> carCollection = new ArrayList<>();
     private ArrayList<Car> allCars;
+    private ArrayList<Journey> journeys;
+    private JourneyManager journeyManager;
+    private Context context;
 
     public CarManager(Context context) {
         VehicleData vehicleData = null;
+        this.context = context;
+
         try {
             vehicleData = new VehicleData(context);
         } catch (IOException e) {
@@ -71,8 +76,6 @@ public class CarManager {
         car.setYear(newCar.getYear());
         car.setTranyType(newCar.getTranyType());
         car.setEngineDisplacment(newCar.getEngineDisplacment());
-        //carCollection.set(index, car);
-
         Log.i("After ", car.toString());
     }
 
@@ -93,4 +96,5 @@ public class CarManager {
     public ArrayList<Car> getCarCollection() {
         return ( ArrayList<Car>) carCollection.clone();
     }
+
 }

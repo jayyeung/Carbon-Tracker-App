@@ -1,14 +1,15 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.Model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
+
+import com.as3.parmjohal.carbontracker.Model.Car;
+import com.as3.parmjohal.carbontracker.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.DoubleBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
