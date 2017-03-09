@@ -20,7 +20,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_trip);
 
-        setTitle("Confirm Trip");
+        if(model.isConfirmTrip()) {
+            setTitle("Confirm Trip");
+        }
+        else {
+            setTitle("Journey Data");
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -51,9 +56,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 //Add code to add journey to collection here
 
                 if(model.isConfirmTrip()) {
+                    Log.i("Journey: ", "ADDED");
                     addJourney();
                 }
                 else {
+                    Log.i("Journey: ", "NOT ADDED");
                     model.setConfirmTrip(true);
                 }
 
@@ -80,11 +87,13 @@ public class ConfirmTripActivity extends AppCompatActivity {
     private void getJourneyData()
     {
         if(model.isConfirmTrip()) {
+            Log.i("Journey: ", "New Journey");
             Car currentCar = model.getCurrentCar();
             Route currentRoute = model.getCurrentRoute();
             journey = new Journey(currentCar, currentRoute);
         }
         else {
+            Log.i("Journey: ", "Clicked Journey");
             journey = model.getCurrentJouney();
         }
     }

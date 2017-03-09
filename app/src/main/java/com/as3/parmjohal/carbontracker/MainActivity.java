@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 model.setCurrentJouney(journey.get(position));
                 model.setConfirmTrip(false);
+                Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                 Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                 startActivity(intent);
 
