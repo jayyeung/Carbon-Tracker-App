@@ -1,8 +1,7 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.UI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -13,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import static android.R.attr.onClick;
+import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
 

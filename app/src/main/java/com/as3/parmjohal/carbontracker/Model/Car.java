@@ -1,4 +1,4 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.Model;
 
 /**
  * Created by ParmJohal on 2017-03-01.
@@ -130,6 +130,7 @@ public class Car {
                 '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,4 +146,6 @@ public class Car {
         return tranyType != null ? tranyType.equals(car.tranyType) : car.tranyType == null;
 
     }
+
+
 }

@@ -1,7 +1,6 @@
-package com.as3.parmjohal.carbontracker;
+package com.as3.parmjohal.carbontracker.UI;
 
 import android.graphics.Color;
-import android.media.Image;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.github.mikephil.charting.charts.Chart;
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -26,15 +27,9 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 model.setCurrentJouney(journey.get(position));
                 model.setConfirmTrip(false);
+                Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                 Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                 startActivity(intent);
 
