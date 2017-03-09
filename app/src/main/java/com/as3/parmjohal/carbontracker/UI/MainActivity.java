@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
         fab_transport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                model.setConfirmTrip(true);
                 startNewJourney();
                 isFabOpen = true;
                 animateFAB();
