@@ -25,8 +25,13 @@ public class JourneyManager {
         int index = journeyCollection.indexOf(currentjourney);
         journeyCollection.set(index, newJourney);
     }
+    public void recalculateCarbon(){
+        for(int i=0;i<journeyCollection.size();i++){
+            journeyCollection.get(i).calculateCO2();
+        }
+    }
 
     public ArrayList<Journey> getJourneyCollection() {
-        return (ArrayList<Journey>) journeyCollection.clone();
+        return (ArrayList<Journey>) journeyCollection;
     }
 }

@@ -37,15 +37,34 @@ public class CarManager {
        if(getCarFromCSVFile(car) != null)
        {
 
-           Car addCar = getCarFromCSVFile(car);
+           Car carData = getCarFromCSVFile(car);
+           Car addCar = new Car();
+           addCar.setCarData(carData);
            addCar.setName(name);
-           carCollection.add(getCarFromCSVFile(car));
+           carCollection.add(addCar);
            return addCar;
 
        }
        else {
            return null;
        }
+    }
+    public Car edit(Car car) //same as add in looking for car from CSV file, but don't add to collection
+    {
+        String name = car.getName();
+        if(getCarFromCSVFile(car) != null)
+        {
+
+            Car carData = getCarFromCSVFile(car);
+            Car addCar = new Car();
+            addCar.setCarData(carData);
+            addCar.setName(name);
+            return addCar;
+
+        }
+        else {
+            return null;
+        }
     }
 
     private Car getCarFromCSVFile(Car car)

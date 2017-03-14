@@ -140,7 +140,6 @@ public class SelectCarActivity extends AppCompatActivity {
         {
 
             model.setCurrentCar(clickedCar);
-            model.setCurrentPos(info.position);
             Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
             startActivityForResult(intent2,REQUEST_CODE_EDIT);
 

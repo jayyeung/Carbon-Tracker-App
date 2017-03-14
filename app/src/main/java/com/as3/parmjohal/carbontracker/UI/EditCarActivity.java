@@ -253,10 +253,11 @@ public class EditCarActivity extends AppCompatActivity {
                 }
 
                 else{
-                    carClicked.setName(carNameString);
+
                     model.getCurrentCar().setName(carNameString);
-                    model.getCarManager().update(model.getCurrentCar(),carClicked);
-                    model.setCurrentPos(-1);
+                    Car editCar = model.getCarManager().edit(carClicked);
+                    model.getCurrentCar().setCarData(editCar);
+                    model.getJourneyManager().recalculateCarbon();
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
@@ -278,7 +279,8 @@ public class EditCarActivity extends AppCompatActivity {
     private boolean checkDuplicate(Car carClicked) {
 
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && model.getCurrentPos() != i) {
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && model.getCurrentPos() != i
+                    && carNameString.equals(model.getCarManager().getCarCollection().get(i).getName())) {
                 return true;
             }
         }

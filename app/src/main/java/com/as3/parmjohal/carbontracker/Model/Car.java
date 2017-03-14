@@ -115,6 +115,18 @@ public class Car {
         this.cityFuel = cityFuel;
     }
 
+    public void setCarData(Car car){
+        this.setMake(car.getMake());
+        this.setModel(car.getModel());
+        this.setYear(car.getYear());
+        this.setTranyType(car.getTranyType());
+        this.setNumCylinders(car.getNumCylinders());
+        this.setEngineDisplacment(car.getEngineDisplacment());
+        this.setFuelType(car.getFuelType());
+        this.setCityFuel(car.getCityFuel());
+        this.setHighwayFuel(car.getHighwayFuel());
+    }
+
     @Override
     public String toString() {
         return "Car{" +
