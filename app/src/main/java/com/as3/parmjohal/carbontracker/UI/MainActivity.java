@@ -251,6 +251,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        model.getJourneyManager().recalculateCarbon();
+
         // set FAB
         setFAB();
 

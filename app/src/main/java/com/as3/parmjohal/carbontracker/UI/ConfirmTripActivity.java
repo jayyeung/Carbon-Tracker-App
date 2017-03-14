@@ -38,15 +38,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
         }
         else {
             setTitle("Journey Data");
-            Button editButton = (Button) findViewById(R.id.editCarButton);
-            editButton.setVisibility(View.VISIBLE);
-            editButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    editCar();
+            setEditButtons();
 
-                }
-            });
 
         }
 
@@ -139,7 +132,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void editRoute(){
         model.setEditJourney(true);
-        Intent intent = SelectCarActivity.makeIntent(ConfirmTripActivity.this);
+        Intent intent = SelectRouteActivity.makeIntent(ConfirmTripActivity.this);
         startActivityForResult(intent,REQUEST_CODE_ROUTE);
     }
 
@@ -147,6 +140,36 @@ public class ConfirmTripActivity extends AppCompatActivity {
     {
         TextView textView = (TextView) findViewById(id);
         textView.setText(displayString);
+    }
+
+    private void setEditButtons(){
+        Button editCarButton = (Button) findViewById(R.id.editCarButton);
+        editCarButton.setVisibility(View.VISIBLE);
+        editCarButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                editCar();
+
+            }
+        });
+        Button editRouteButton = (Button) findViewById(R.id.editRoute);
+        editRouteButton.setVisibility(View.VISIBLE);
+        editRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editRoute();
+            }
+        });
+        Button deleteButton = (Button) findViewById(R.id.delete);
+        deleteButton.setVisibility(View.VISIBLE);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.getJourneyManager().remove(journey);
+                model.setConfirmTrip(true);
+                finish();
+            }
+        });
     }
 
     public static Intent makeIntent(Context context) {
@@ -169,6 +192,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_ROUTE):
                 if(resultCode == Activity.RESULT_OK){
+                    journey.setRoute(model.getCurrentRoute());
+                    journey.calculateCO2();
+                    model.setCurrentRoute(null);
+                    model.setEditJourney(false);
+                    populateTextViews();
 
                     break;
 

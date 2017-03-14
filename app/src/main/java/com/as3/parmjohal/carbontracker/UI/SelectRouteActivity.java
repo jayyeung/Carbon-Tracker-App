@@ -93,11 +93,16 @@ public class SelectRouteActivity extends AppCompatActivity {
         clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-
                 model.setCurrentRoute(routeList.get(position));
-                Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
-                startActivity(intent);
+                if (model.isEditJourney()){
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+                else {
+                    Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
+                    startActivity(intent);
+                }
 
 
             }
@@ -166,10 +171,19 @@ public class SelectRouteActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_CODE_ADD):
                 if (resultCode == Activity.RESULT_OK) {
-                    Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
-                    startActivity(intent);
-                    populateListView();
-                    break;
+                    if(model.isEditJourney()){
+                        populateListView();
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                        break;
+                    }
+                    else {
+                        Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
+                        startActivity(intent);
+                        populateListView();
+                        break;
+                    }
 
 
                 }
