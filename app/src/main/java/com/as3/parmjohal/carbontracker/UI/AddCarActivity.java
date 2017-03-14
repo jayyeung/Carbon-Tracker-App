@@ -178,8 +178,11 @@ public class AddCarActivity extends AppCompatActivity {
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description= (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
+            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description.setVisibility(View.GONE);
             registerClickCallBack();
+
 
             return itemView;
 

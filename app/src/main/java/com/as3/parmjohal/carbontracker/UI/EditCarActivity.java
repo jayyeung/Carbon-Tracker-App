@@ -142,6 +142,7 @@ public class EditCarActivity extends AppCompatActivity {
             if (model.getCurrentCar().getYear() == (yearCategories.get(i)))
                 yearSelection.setSelection(i);
                 year = yearCategories.get(i);
+                year = yearCategories.get(i);
         }
         yearSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -190,9 +191,11 @@ public class EditCarActivity extends AppCompatActivity {
 
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
-            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());//fill
+            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");//fill
+            TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
+            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description.setVisibility(View.GONE);
             registerClickCallBack();
 
 
