@@ -16,13 +16,16 @@ public class Journey {
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
+
+
     public Journey(Car car , Route route ) {
         this.car = car;
         this.route = route;
+
         calculateCO2();
     }
 
-    private void calculateCO2() {
+    public void calculateCO2() {
         if (car.getFuelType().equals("Diesel")) {
             CO2_COVERTOR = 10.16;
         }
@@ -61,6 +64,25 @@ public class Journey {
     public double getCo2() {
         return co2;
     }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Car getCar() {
+
+        return car;
+    }
+
+
 
     @Override
     public String toString() {
