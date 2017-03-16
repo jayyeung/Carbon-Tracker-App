@@ -35,6 +35,13 @@ public class SelectRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_route);
+        if(model.isEditJourney()){
+            setTitle("Edit Journey's Route");
+        }
+        else {
+            setTitle("Select Route");
+        }
+
 
         setTitle("Select Route");
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/edit"
+        android:title="edit"
+        app:showAsAction="ifRoom|withText" >
+        <menu>
+            <item
+            android:id = "@+id/editCar_id"
+            android:title="Edit Transportation" />
+            <item
+            android:id = "@+id/editRoute_id"
+            android:title="Edit Route" />
+            <item android:title="Edit Date"
+            android:id="@+id/edit_date_id" />
+             <item android:title="Delete Journey"
+            android:id="@+id/delete_id" />
+      </menu>
+    </item>
+
+    </menu>

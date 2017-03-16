@@ -28,7 +28,6 @@ public class SelectCarActivity extends AppCompatActivity {
     CarbonTrackerModel model;
 
     ArrayList<Car> carList;
-    private int position;
     public static final int REQUEST_CODE_ADD= 1024;
     public static final int REQUEST_CODE_EDIT= 1025;
 

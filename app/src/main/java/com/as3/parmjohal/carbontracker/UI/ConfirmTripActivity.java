@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +42,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
         }
         else {
             setTitle("Journey Data");
-            setEditButtons();
-
 
         }
 
@@ -67,7 +69,10 @@ public class ConfirmTripActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_activity_confirm_decline, menu);
             return true;
         }
-      return false;
+        else{
+            getMenuInflater().inflate(R.menu.menu_activity_journey, menu);
+            return true;
+        }
 
     }
 
@@ -75,19 +80,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                return true;
+                break;
             case R.id.action_confirm:
 
                 //Add code to add journey to collection here
-
-                if(model.isConfirmTrip()) {
-                    Log.i("Journey: ", "ADDED");
-                    addJourney();
-                }
-                else {
-                    Log.i("Journey: ", "NOT ADDED");
-                    model.setConfirmTrip(true);
-                }
+                Log.i("Journey: ", "ADDED");
+                addJourney();
 
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//reset activity stack
@@ -96,12 +94,28 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 finish();
                 startActivity(intent);//go to dashboard
 
-                return true;
+                break;
+            case R.id.editCar_id:
+                editCar();
+                break;
+            case R.id.editRoute_id:
+                editRoute();
+                break;
+            case R.id.edit_date_id:
+                break;
+            case R.id.delete_id:
+                model.getJourneyManager().remove(journey);
+                model.setConfirmTrip(true);
+                finish();
+                break;
+
+
 
 
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+        return true;
 
     }
 
@@ -142,35 +156,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
         textView.setText(displayString);
     }
 
-    private void setEditButtons(){
-        Button editCarButton = (Button) findViewById(R.id.editCarButton);
-        editCarButton.setVisibility(View.VISIBLE);
-        editCarButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                editCar();
-
-            }
-        });
-        Button editRouteButton = (Button) findViewById(R.id.editRoute);
-        editRouteButton.setVisibility(View.VISIBLE);
-        editRouteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editRoute();
-            }
-        });
-        Button deleteButton = (Button) findViewById(R.id.delete);
-        deleteButton.setVisibility(View.VISIBLE);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                model.getJourneyManager().remove(journey);
-                model.setConfirmTrip(true);
-                finish();
-            }
-        });
-    }
 
     public static Intent makeIntent(Context context) {
         Intent intent = new Intent(context, ConfirmTripActivity.class);
