@@ -109,5 +109,5 @@ public class CarbonTrackerModel {
 
     public boolean isEditJourney(){return  editJourney;}
 
-    public void setEditJourney(boolean editJourney){this.editJourney =editJourney;}
+    public void setEditJourney(boolean editJourney){this.editJourney = editJourney;}
 }

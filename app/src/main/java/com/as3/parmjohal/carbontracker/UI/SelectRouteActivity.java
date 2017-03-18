@@ -36,18 +36,13 @@ public class SelectRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_route);
-        if(model.isEditJourney()){
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+
+        if (model.isEditJourney()) {
             setTitle("Edit Journey's Route");
-        }
-        else {
+        } else {
             setTitle("Select Route");
         }
-
-
-        model = CarbonTrackerModel.getCarbonTrackerModel(this);
-        setTitle("Select Route");
-
-
 
         populateListView();
         registerClickCallBack();

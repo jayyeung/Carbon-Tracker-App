@@ -16,22 +16,21 @@ public class SharedPreference {
 
     public static void saveCurrentModel(Context context)
     {
-        SharedPreferences mPrefs = context.getSharedPreferences("saved game",0);
+        SharedPreferences mPrefs = context.getSharedPreferences("saved model",0);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
 
         Gson gson = new Gson();
-
         String json = gson.toJson(CarbonTrackerModel.getCarbonTrackerModel(context));
 
-        prefsEditor.putString("CarbonTrackerModel", json);
+        prefsEditor.putString("CarbonTrackerModel1", json);
         prefsEditor.commit();
     }
 
     public static CarbonTrackerModel getCurrentModel(Context context)
     {
-        SharedPreferences mPrefs = context.getSharedPreferences("saved game",0);
+        SharedPreferences mPrefs = context.getSharedPreferences("saved model",0);
         Gson gson = new Gson();
-        String json = mPrefs.getString("CarbonTrackerModel", " ");
+        String json = mPrefs.getString("CarbonTrackerModel1", " ");
         CarbonTrackerModel obj = gson.fromJson(json, CarbonTrackerModel.class);
 
         return obj;

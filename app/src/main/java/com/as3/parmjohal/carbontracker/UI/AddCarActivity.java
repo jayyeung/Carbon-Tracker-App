@@ -79,7 +79,6 @@ public class AddCarActivity extends AppCompatActivity {
         makeSelection.setAdapter(dataAdapter);
         makeSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 make =  makeSelection.getSelectedItem().toString();
@@ -266,8 +265,6 @@ public class AddCarActivity extends AppCompatActivity {
                     finish();
                     return true;
                 }
-
-
 
             default:
                 return super.onOptionsItemSelected(item);

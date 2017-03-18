@@ -1,7 +1,10 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -11,7 +14,7 @@ import java.util.Date;
 public class Journey {
 
     private Route route = null;
-    private Car car = null;
+    private Transportation transportation = null;
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
@@ -24,7 +27,7 @@ public class Journey {
     }
 
 
-    private void calculateCO2() {
+    public void calculateCO2() {
         Log.i("CO2", transportation.toString());
         if (transportation.getFuelType().equals("Diesel")) {
             CO2_COVERTOR = 10.16;
@@ -77,21 +80,17 @@ public class Journey {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        this.transportation = car;
     }
 
     public void setDate(int year, int month,int day){
         Calendar cal = Calendar.getInstance();
         cal.set(year,month,day);
         date = cal.getTime();
-
-
-
     }
 
     public Car getCar() {
-
-        return car;
+        return (Car) transportation;
     }
 
 

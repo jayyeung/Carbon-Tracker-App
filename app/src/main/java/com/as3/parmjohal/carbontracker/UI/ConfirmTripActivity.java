@@ -26,7 +26,7 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    CarbonTrackerModel model;
     private Journey journey;
 
     public static final int REQUEST_CODE_CAR= 2017;
@@ -37,8 +37,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_trip);
-
-        Log.i("CO2 ", "Confirm Trip");
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
