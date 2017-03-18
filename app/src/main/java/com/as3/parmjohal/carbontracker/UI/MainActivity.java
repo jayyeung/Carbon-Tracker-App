@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +22,7 @@ import android.widget.ListView;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -32,9 +32,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab, fab_transport;
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
+
+    private enum Chart_options { DAILY, MONTHLY, YEARLY };
 
     CarbonTrackerModel model;
     private ArrayList<Journey> journey;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.reverse(journey);
 
         // set Graph
-        setGraph();
+        setGraph(Chart_options.DAILY);
 
         // set FAB
         setFAB();
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //set Graph
-    public void setGraph() {
+    public void setGraph(Chart_options option) {
         // clear container of any current graph that is displaying
         LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViews();
@@ -109,48 +109,68 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
+
         ////////////////
         // DAILY GRAPH
         ////////////////
 
-        // get pie info
-        List<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < journey.size(); i++) {
-            entries.add(new PieEntry(Float.parseFloat(String.format("%.2f",journey.get(i).getCo2())), i));
+        if (option == option.DAILY) {
+
+            // get pie info
+            List<PieEntry> entries = new ArrayList<>();
+            for (int i = 0; i < journey.size(); i++) {
+                entries.add(new PieEntry(Float.parseFloat(String.format("%.2f", journey.get(i).getCo2())), i));
+            }
+
+            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91), Color.rgb(63, 195, 128), Color.rgb(0, 177, 106), Color.rgb(30, 130, 76), Color.rgb(27, 188, 155)};
+
+            PieDataSet dataSet = new PieDataSet(entries, "Journey CO₂");
+            dataSet.setColors(CHART_COLOURS);
+            dataSet.setValueTextColor(Color.WHITE);
+            dataSet.setValueTextSize(16f);
+
+            PieData data = new PieData(dataSet);
+
+            // set onto chart
+            PieChart chart = new PieChart(getBaseContext());
+            chart_container.addView(chart, params);
+
+            chart.setUsePercentValues(true);
+            chart.setTouchEnabled(false);
+            chart.setHoleRadius(50f);
+            chart.setTransparentCircleRadius(20f);
+            chart.setHoleColor(Color.TRANSPARENT);
+            chart.setDescription(null);
+
+            Legend legend = chart.getLegend();
+            legend.setTextColor(R.color.colorAccent);
+            legend.setTextSize(16f);
+            legend.setWordWrapEnabled(true);
+
+            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+            slide_in.setDuration(1800);
+            chart.startAnimation(slide_in);
+            chart.animateY(1500);
+
+            chart.setData(data);
+            chart.invalidate();
         }
 
-        final int[] CHART_COLOURS = { Color.rgb(38, 166, 91), Color.rgb(63, 195, 128) , Color.rgb(0, 177, 106), Color.rgb(30, 130, 76), Color.rgb(27, 188, 155) };
+        ////////////////
+        // MONTHLY GRAPH
+        ////////////////
 
-        PieDataSet dataSet = new PieDataSet(entries, "Journey CO₂");
-        dataSet.setColors(CHART_COLOURS);
-        dataSet.setValueTextColor(Color.WHITE);
-        dataSet.setValueTextSize(16f);
+        else if (option == option.MONTHLY) {
 
-        PieData data = new PieData(dataSet);
+        }
 
-        // set onto chart
-        PieChart chart = new PieChart(getBaseContext());
-        chart_container.addView(chart, params);
+        ////////////////
+        // YEARLY GRAPH
+        ////////////////
 
-        chart.setUsePercentValues(true);
-        chart.setTouchEnabled(false);
-        chart.setHoleRadius(50f);
-        chart.setTransparentCircleRadius(20f);
-        chart.setHoleColor(Color.TRANSPARENT);
-        chart.setDescription(null);
+        else if (option == option.YEARLY) {
 
-        Legend legend = chart.getLegend();
-        legend.setTextColor(R.color.colorAccent);
-        legend.setTextSize(16f);
-        legend.setWordWrapEnabled(true);
-
-        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
-        slide_in.setDuration(1800);
-        chart.startAnimation(slide_in);
-        chart.animateY(1500);
-
-        chart.setData(data);
-        chart.invalidate();
+        }
     }
 
     // set Journeys
@@ -241,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(MainActivity.this, v);
                     MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.track_popup_actions, popup.getMenu());
+                    inflater.inflate(R.menu.journey_popup_actions, popup.getMenu());
                     popup.show();
                 }
             });
