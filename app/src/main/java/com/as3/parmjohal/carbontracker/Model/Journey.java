@@ -2,6 +2,7 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -75,6 +76,15 @@ public class Journey {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public void setDate(int year, int month,int day){
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month,day);
+        date = cal.getTime();
+
+
+
     }
 
     public Car getCar() {

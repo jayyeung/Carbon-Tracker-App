@@ -30,6 +30,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_CAR= 2017;
     public static final int REQUEST_CODE_ROUTE= 2018;
+    public static final int REQUEST_CODE_DATE= 2019;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 editRoute();
                 break;
             case R.id.edit_date_id:
+                editDate();
                 break;
             case R.id.delete_id:
                 model.getJourneyManager().remove(journey);
@@ -150,6 +152,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
         startActivityForResult(intent,REQUEST_CODE_ROUTE);
     }
 
+    private void editDate()
+    {
+
+        startActivityForResult(new Intent(ConfirmTripActivity.this,CalenderActivity.class),REQUEST_CODE_DATE);
+    }
+
     private void setupTextView(int id, String displayString)
     {
         TextView textView = (TextView) findViewById(id);
@@ -169,7 +177,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     journey.calculateCO2();
                     model.setCurrentCar(null);
                     model.setEditJourney(false);
-                    populateTextViews();
+                    restart();
 
                     break;
 
@@ -181,13 +189,28 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     journey.calculateCO2();
                     model.setCurrentRoute(null);
                     model.setEditJourney(false);
-                    populateTextViews();
+                    restart();
 
                     break;
 
                 }
+            case (REQUEST_CODE_DATE):
+                if (resultCode == Activity.RESULT_OK) {
+                    restart();
+
+                    break;
+
+
+                }
         }
 
+
+    }
+    private void restart()
+    {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
 

@@ -34,6 +34,10 @@
         <activity android:name=".UI.AddRouteActivity" />
         <activity android:name=".UI.ConfirmTripActivity" />
         <activity android:name=".UI.EditRouteActivity" />
+
+        <!-- pop-up-windows -->
+        <activity android:name=".UI.CalenderActivity"
+            android:theme="@style/AppTheme.PopBackground" />
     </application>
 
 </manifest>
