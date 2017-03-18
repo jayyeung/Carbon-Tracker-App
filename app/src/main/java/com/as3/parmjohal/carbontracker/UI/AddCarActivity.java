@@ -178,8 +178,11 @@ public class AddCarActivity extends AppCompatActivity {
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description= (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
+            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description.setVisibility(View.GONE);
             registerClickCallBack();
+
 
             return itemView;
 
@@ -222,6 +225,8 @@ public class AddCarActivity extends AppCompatActivity {
                 return true;
             case R.id.action_confirm:
                 carNameString = editName.getText().toString();
+                Log.i("test", ""+carNameString);
+
 
                 if (carNameString.isEmpty()){
                     Toast.makeText(AddCarActivity.this, "Please Name Your Car", Toast.LENGTH_SHORT).show();
@@ -231,15 +236,15 @@ public class AddCarActivity extends AppCompatActivity {
                     Toast.makeText(AddCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                if(checkDuplicate(carClicked)){
+               if(checkDuplicate(carClicked)){
                    Toast.makeText(AddCarActivity.this, "This Car Already Exists", Toast.LENGTH_SHORT).show();
                    return false;
                 }
 
                 else{
                     carClicked.setName(carNameString);
-                    model.getCarManager().add(carClicked);
-                    model.setCurrentCar(carClicked);
+
+                    model.setCurrentCar( model.getCarManager().add(carClicked));
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
@@ -261,7 +266,8 @@ public class AddCarActivity extends AppCompatActivity {
 
     private boolean checkDuplicate(Car carClicked) {
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            if (carClicked.equals(model.getCarManager().getCarCollection().get(i))) {
+            Log.i("test2", ""+model.getCarManager().getCarCollection().get(i).getName());
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && carNameString.equals(model.getCarManager().getCarCollection().get(i).getName())) {
                 return true;
             }
         }

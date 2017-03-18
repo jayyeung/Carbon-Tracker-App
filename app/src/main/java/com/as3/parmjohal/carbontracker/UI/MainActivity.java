@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,6 +245,29 @@ public class MainActivity extends AppCompatActivity {
             fab_transport.setClickable(true);
             isFabOpen = true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        model.getJourneyManager().recalculateCarbon();
+
+        // set FAB
+        setFAB();
+
+        // set Graph
+        setGraph();
+
+        // show Journeys
+        setJourneys();
+
+        // intro animation
+        animateDashboard();
+
+        registerClickCallBack();
+
+
     }
 
     // start new journey

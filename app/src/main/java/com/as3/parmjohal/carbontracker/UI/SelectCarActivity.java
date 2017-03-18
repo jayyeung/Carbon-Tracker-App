@@ -28,7 +28,6 @@ public class SelectCarActivity extends AppCompatActivity {
     CarbonTrackerModel model;
 
     ArrayList<Car> carList;
-    private int position;
     public static final int REQUEST_CODE_ADD= 1024;
     public static final int REQUEST_CODE_EDIT= 1025;
 
@@ -39,7 +38,12 @@ public class SelectCarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_car);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
-        setTitle("Select Transportation");
+        if(model.isEditJourney()){
+            setTitle("Edit Journey's Car");
+        }
+        else {
+            setTitle("Select Transportation");
+        }
 
         populateListView();
         registerClickCallBack();
@@ -94,8 +98,15 @@ public class SelectCarActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 model.setCurrentCar(carList.get(position));
-                Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
-                startActivity(intent);
+                if (model.isEditJourney()){
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+                else {
+                    Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -128,7 +139,6 @@ public class SelectCarActivity extends AppCompatActivity {
         {
 
             model.setCurrentCar(clickedCar);
-            model.setCurrentPos(info.position);
             Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
             startActivityForResult(intent2,REQUEST_CODE_EDIT);
 
@@ -140,10 +150,19 @@ public class SelectCarActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_CODE_ADD):
                 if (resultCode == Activity.RESULT_OK) {
-                    Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
-                    startActivity(intent);
-                    populateListView();
-                    break;
+                    if(model.isEditJourney()){
+                        populateListView();
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                        break;
+                    }
+                    else {
+                        Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                        startActivity(intent);
+                        populateListView();
+                        break;
+                    }
 
 
                 }

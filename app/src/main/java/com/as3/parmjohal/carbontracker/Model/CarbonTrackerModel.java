@@ -23,6 +23,7 @@ public class CarbonTrackerModel {
     public int currentPos;
     private Journey currentJouney;
     private boolean confirmTrip = true;
+    private boolean editJourney = false;
 
     private CarbonTrackerModel() {
 
@@ -96,4 +97,8 @@ public class CarbonTrackerModel {
     public void setConfirmTrip(boolean confirmTrip) {
         this.confirmTrip = confirmTrip;
     }
+
+    public boolean isEditJourney(){return  editJourney;}
+
+    public void setEditJourney(boolean editJourney){this.editJourney =editJourney;}
 }
