@@ -136,6 +136,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
         else {
             Log.i("Journey: ", "Clicked Journey");
             journey = model.getCurrentJouney();
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
         }
     }
 

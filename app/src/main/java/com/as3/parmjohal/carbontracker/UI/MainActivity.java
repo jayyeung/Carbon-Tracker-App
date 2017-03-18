@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     CarbonTrackerModel model;
     private ArrayList<Journey> journey;
+    public static final int REQUEST_CODE_JOURNEY= 2020;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                 }
             });
 
@@ -353,6 +356,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void startNewJourney() {
         Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_JOURNEY):
+                if (resultCode == Activity.RESULT_OK) {
+                        restart();
+                        break;
+                    }
+                default:
+                    break;
+
+        }
+
+    }
+
+
+    private void restart()
+    {
+        Intent intent = getIntent();
+        finish();
         startActivity(intent);
     }
 }
