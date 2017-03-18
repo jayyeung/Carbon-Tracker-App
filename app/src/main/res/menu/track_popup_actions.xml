@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/item1" android:title="Edit Car"/>
+    <item android:id="@+id/item2" android:title="Edit Route"/>
+    <item android:id="@+id/item3" android:title="Delete"/>
+
+</menu>

@@ -88,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Select Menu");
+        menu.setHeaderTitle("Select Track Type");
         menu.add(0, v.getId(), 0, "Transportation");
         menu.add(0, v.getId(), 0, "Food");
         menu.add(0, v.getId(), 0, "Electricity");

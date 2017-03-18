@@ -5,12 +5,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -28,23 +31,25 @@ import com.github.mikephil.charting.data.PieEntry;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
+    private LinearLayout fabs;
     private FloatingActionButton fab, fab_transport;
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
     CarbonTrackerModel model;
-
-    private ArrayList<Journey> journey ;
+    private ArrayList<Journey> journey;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,15 +57,19 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
+        setTitle("Dashboard");
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         journey = model.getJourneyManager().getJourneyCollection();
 
-        // set FAB
-        setFAB();
+        // we reverse all track types so the latest track is on top
+        Collections.reverse(journey);
 
         // set Graph
         setGraph();
+
+        // set FAB
+        setFAB();
 
         // show Journeys
         setJourneys();
@@ -71,22 +80,30 @@ public class MainActivity extends AppCompatActivity {
         registerClickCallBack();
     }
 
+
     // animate Dashboard
     public void animateDashboard() {
         ImageView background_img = (ImageView) findViewById(R.id.background);
-        PieChart chart = (PieChart) findViewById(R.id.chart);
 
-        Animation fade_in2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-
-        fade_in.setDuration(2000);
+        Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        fade_in.setDuration(2300);
         background_img.startAnimation(fade_in);
-
-        fade_in2.setDuration(1800);
-        chart.startAnimation(fade_in2);
     }
 
     //set Graph
     public void setGraph() {
+        // clear container of any current graph that is displaying
+        LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
+        chart_container.removeAllViews();
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+
+        ////////////////
+        // DAILY GRAPH
+        ////////////////
+
         // get pie info
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < journey.size(); i++) {
@@ -97,15 +114,20 @@ public class MainActivity extends AppCompatActivity {
 
         PieDataSet dataSet = new PieDataSet(entries, "Journey CO₂");
         dataSet.setColors(CHART_COLOURS);
-        dataSet.setValueTextColor(R.color.white);
+        dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(16f);
 
         PieData data = new PieData(dataSet);
 
         // set onto chart
-        PieChart chart = (PieChart) findViewById(R.id.chart);
+        PieChart chart = new PieChart(getBaseContext());
+        chart_container.addView(chart, params);
+
+        chart.setUsePercentValues(true);
         chart.setTouchEnabled(false);
-        chart.setDrawHoleEnabled(false);
+        chart.setHoleRadius(50f);
+        chart.setTransparentCircleRadius(20f);
+        chart.setHoleColor(Color.TRANSPARENT);
         chart.setDescription(null);
 
         Legend legend = chart.getLegend();
@@ -113,9 +135,12 @@ public class MainActivity extends AppCompatActivity {
         legend.setTextSize(16f);
         legend.setWordWrapEnabled(true);
 
+        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+        slide_in.setDuration(1800);
+        chart.startAnimation(slide_in);
+        chart.animateY(1500);
 
         chart.setData(data);
-        chart.animateXY(1100,1100);
         chart.invalidate();
     }
 
@@ -130,8 +155,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class MyListAdapter extends ArrayAdapter<Journey> {
+        private String latest_day = "";
+        private int datepos = 0;
+        private int totalCo2 = 0;
+
         public MyListAdapter() {
             super(MainActivity.this, R.layout.dashboard_item, journey);
+
+            // get totalCO2 to use later
+            for (int i = 0; i < journey.size(); i++) {
+                totalCo2 += journey.get(i).getCo2();
+            }
         }
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
@@ -141,17 +175,53 @@ public class MainActivity extends AppCompatActivity {
 
             Journey cur_journey = journey.get(position);
 
-            // TITLE
-            TextView title = (TextView) itemView.findViewById(R.id.title);
-            title.setText("Car Trip " + (position+1));
+            // DATE
+            // split the given date in the form "Day Month Year" into an array
+            String[] date = cur_journey.getDateInfo().split("\\s+");
+
+            TextView track_day = (TextView) itemView.findViewById(R.id.track_day);
+            track_day.setText(date[0]);
+
+            TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
+            track_month_year.setText(date[1] + " " + date[2]);
+
+            if (!latest_day.equals(date[0])) {
+                latest_day = date[0];
+                datepos = position;
+            } else if (position != datepos) {
+                track_day.setAlpha(0.0f);
+                track_month_year.setAlpha(0.0f);
+            }
 
             // META
             TextView meta = (TextView) itemView.findViewById(R.id.meta);
-            meta.setText("Driven on " + cur_journey.getDateInfo());
+            meta.setText(cur_journey.getRouteInfo());
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
             results.setText(String.format("%.2f", cur_journey.getCo2()) + "kg CO₂");
+
+            // change colour black to orange to red depending on usage
+            float Co2_usage = (float) cur_journey.getCo2() / totalCo2;
+
+            float[] HSV = new float[3];
+            HSV[0] = (1-Co2_usage)*90;
+            HSV[1] = 1;
+            HSV[2] = 0.5f;
+
+            results.setTextColor(Color.HSVToColor(HSV));
+
+            // on Overflow click
+            ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
+            overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.track_popup_actions, popup.getMenu());
+                    popup.show();
+                }
+            });
 
             return itemView;
         }
@@ -174,31 +244,32 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
+        if (listAdapter == null) {
+            //pre-condition
             return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
         }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     // set Floating Action Button
     public void setFAB() {
         fab_overlay = (ImageView) findViewById(R.id.fab_overlay);
 
+        fabs = (LinearLayout) findViewById(R.id.fab_buttons);
+
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
-        fab_transport = (FloatingActionButton) findViewById(R.id.fab_transport);
+        fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -233,15 +304,15 @@ public class MainActivity extends AppCompatActivity {
         if(isFabOpen){
             fab.startAnimation(rotate_backward);
             fab_overlay.startAnimation(fade_out);
-            fab_transport.startAnimation(fab_close);
-            fab_transport.setClickable(false);
+            fabs.startAnimation(fab_close);
+            fabs.setClickable(false);
             isFabOpen = false;
 
         } else {
             fab.startAnimation(rotate_forward);
             fab_overlay.startAnimation(fade_in);
-            fab_transport.startAnimation(fab_open);
-            fab_transport.setClickable(true);
+            fabs.startAnimation(fab_open);
+            fabs.setClickable(true);
             isFabOpen = true;
         }
     }
@@ -257,3 +328,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+

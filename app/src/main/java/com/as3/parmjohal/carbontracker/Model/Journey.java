@@ -3,6 +3,7 @@ package com.as3.parmjohal.carbontracker.Model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by ParmJohal on 2017-03-03.
@@ -41,7 +42,6 @@ public class Journey {
 
     }
 
-
     public String getCarInfo()
     {
         return "" + car.getYear()+", " + car.getMake()+ " " + car.getModel();
@@ -54,7 +54,7 @@ public class Journey {
 
     public String getDateInfo()
     {
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        DateFormat df = new SimpleDateFormat("d MMM yyyy");
         return df.format(date) ;
     }
 

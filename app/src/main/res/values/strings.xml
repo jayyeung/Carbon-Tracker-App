@@ -1,19 +1,37 @@
 <resources>
     <string name="app_name">Carbon Tracker</string>
 
+    <!-- splash -->
+    <string name="continue_to_dashboard">Continue to dashboard</string>
+    <string name="start_a_new_journey">Start a New Journey</string>
+
     <!-- dashboard -->
     <string name="dashboard_welcome_message">Dashboard</string>
+    <string name="carbon_overview">Carbon Overview</string>
+    <string name="all_journeys">Your Latest Journeys</string>
+    <string name="all_utilities">Your Latest Utilities</string>
+    <string name="fab_label_utility">New Utility</string>
+    <string name="fab_label_journey">New Journey</string>
 
-    <!-- route -->
+    <string name="chart_type">Daily Carbon Usage</string>
+    <string name="chart_radio_monthly">Monthly</string>
+    <string name="chart_radio_daily">Daily</string>
+    <string name="chart_radio_yearly">Yearly</string>
+
+    <string name="tip_title">Journey Tip</string>
+    <string name="tip_message">Tip Message Goes Here</string>
+
+
+    <!-- journeys -->
     <string name="route_name">Route Name</string>
     <string name="distance_on_highway">Distance on Highway (km)</string>
     <string name="distance_in_city">Distance in City (km)</string>
 
-    <!-- car -->
     <string name="car_name">Car Name</string>
     <string name="car_make">Car Make</string>
     <string name="year">Year</string>
     <string name="select_route_hold_to_edit_or_delete">Select Route (hold to edit or delete):</string>
+    <string name="would_you_like_to_save_this_route">Would you like to save this route?</string>
     <string name="car_s_name">Car\'s Name</string>
     <string name="make">Make</string>
     <string name="model">Model</string>
@@ -21,11 +39,5 @@
     <string name="main_car">Main Car:</string>
     <string name="route">Route:</string>
     <string name="select_car_hold_to_edit">Select Car (Hold to Edit):</string>
-    <string name="would_you_like_to_save_this_route">Would you like to save this route?</string>
-    <string name="continue_to_dashboard">Continue to dashboard</string>
-    <string name="start_a_new_journey">Start a New Journey</string>
-    <string name="carbon_overview">Carbon Overview</string>
-    <string name="all_journeys">ALL JOURNEYS</string>
-
 
 </resources>
