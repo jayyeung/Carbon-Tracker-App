@@ -74,10 +74,12 @@ public class EditRouteActivity extends AppCompatActivity {
                         //add route to collection
                         int intHighway = Integer.parseInt(highway);
                         int  intCity = Integer.parseInt(city);
-                        Route addRoute= new Route(intCity,intHighway,route);
 
-                        model.getRouteManager().update(model.getCurrentRoute(),addRoute);
+                        model.getCurrentRoute().setRouteName(route);
+                        model.getCurrentRoute().setHwyDistance(intHighway);
+                        model.getCurrentRoute().setCityDistance(intCity);
 
+                        model.setCurrentRoute(null);
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
                         finish();

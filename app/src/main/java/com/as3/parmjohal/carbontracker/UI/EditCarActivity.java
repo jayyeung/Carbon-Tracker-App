@@ -142,6 +142,7 @@ public class EditCarActivity extends AppCompatActivity {
             if (model.getCurrentCar().getYear() == (yearCategories.get(i)))
                 yearSelection.setSelection(i);
                 year = yearCategories.get(i);
+                year = yearCategories.get(i);
         }
         yearSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -190,9 +191,11 @@ public class EditCarActivity extends AppCompatActivity {
 
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
-            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());//fill
+            carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
-            description.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");//fill
+            TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
+            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description.setVisibility(View.GONE);
             registerClickCallBack();
 
 
@@ -253,10 +256,11 @@ public class EditCarActivity extends AppCompatActivity {
                 }
 
                 else{
-                    carClicked.setName(carNameString);
+
                     model.getCurrentCar().setName(carNameString);
-                    model.getCarManager().update(model.getCurrentCar(),carClicked);
-                    model.setCurrentPos(-1);
+                    Car editCar = model.getCarManager().edit(carClicked);
+                    model.getCurrentCar().setCarData(editCar);
+                    model.getJourneyManager().recalculateCarbon();
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
@@ -278,7 +282,8 @@ public class EditCarActivity extends AppCompatActivity {
     private boolean checkDuplicate(Car carClicked) {
 
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && model.getCurrentPos() != i) {
+            if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && model.getCurrentPos() != i
+                    && carNameString.equals(model.getCarManager().getCarCollection().get(i).getName())) {
                 return true;
             }
         }
