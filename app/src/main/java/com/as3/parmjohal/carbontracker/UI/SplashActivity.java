@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -23,6 +25,9 @@ public class SplashActivity extends AppCompatActivity {
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
+
+        Skytrain skytrain = new Skytrain("Scott Road", "King George");
+        Log.i("Skytrain ", " " + skytrain.getDistance());
 
         // continue to dashboard
         to_dash.setOnClickListener(new View.OnClickListener() {

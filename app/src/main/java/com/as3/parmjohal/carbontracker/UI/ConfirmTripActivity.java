@@ -22,6 +22,7 @@ import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
@@ -37,6 +38,10 @@ public class ConfirmTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_trip);
 
+        Log.i("CO2 ", "Confirm Trip");
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+
         if(model.isConfirmTrip()) {
             setTitle("Confirm Trip");
 
@@ -51,19 +56,19 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
         getJourneyData();
 
-        populateTextViews();
-    }
-
-    private void populateTextViews(){
-        Log.i("TAG", ""+ journey.toString());
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        setupTextView(R.id.display_mainCar, journey.getCarInfo());
+        setupTextView(R.id.display_mainCar, journey.getTransportationInfo());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         if(model.isConfirmTrip()) {
@@ -131,6 +136,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
             Log.i("Journey: ", "New Journey");
             Car currentCar = model.getCurrentCar();
             Route currentRoute = model.getCurrentRoute();
+
+            Log.i("CO2", currentCar.toString());
+
             journey = new Journey(currentCar, currentRoute);
         }
         else {

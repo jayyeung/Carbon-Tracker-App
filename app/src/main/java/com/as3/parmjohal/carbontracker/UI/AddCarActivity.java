@@ -23,11 +23,12 @@ import android.widget.Toast;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 
 public class AddCarActivity extends AppCompatActivity {
-    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private CarbonTrackerModel model ;
     private String make;
     private String carModel;
     private Integer year;
@@ -41,6 +42,8 @@ public class AddCarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_car);
+        SharedPreference.saveCurrentModel(this);
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         setTitle("Add Transportation");
 
@@ -54,6 +57,13 @@ public class AddCarActivity extends AppCompatActivity {
 
          editName = (EditText) findViewById(R.id.editName);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("CO2 ", "Destroy");
+        SharedPreference.saveCurrentModel(this);
     }
 
     private void setupMakeSpinner() {
@@ -242,6 +252,7 @@ public class AddCarActivity extends AppCompatActivity {
                 }
 
                 else{
+                    Log.i("CO2", "Car Clicked: " + carClicked.toString());
                     carClicked.setName(carNameString);
 
                     model.setCurrentCar( model.getCarManager().add(carClicked));

@@ -1,6 +1,9 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.io.IOException;
 
@@ -31,13 +34,18 @@ public class CarbonTrackerModel {
 
     public static CarbonTrackerModel getCarbonTrackerModel(Context context)
     {
-        if(count== 0) {
+        if(count == 0) {
             carManager = new CarManager(context);
             try {
                 vehicleData = new VehicleData(context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(SharedPreference.getCurrentModel(context) != null && count == 0)
+        {
+            carbonTrackerModel = SharedPreference.getCurrentModel(context);
         }
         count++;
         return carbonTrackerModel;
@@ -67,6 +75,7 @@ public class CarbonTrackerModel {
     }
 
     public void setCurrentCar(Car currentCar) {
+
         this.currentCar = currentCar;
     }
 
