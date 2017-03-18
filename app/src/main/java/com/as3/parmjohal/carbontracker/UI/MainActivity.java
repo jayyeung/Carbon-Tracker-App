@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         journey = model.getJourneyManager().getJourneyCollection();
 
+        // sort all track types by date
+        Collections.sort(journey, new Comparator<Journey>() {
+            public int compare(Journey o1, Journey o2) {
+                if (o1.getDateInfo() == null || o2.getDateInfo() == null) return 0;
+                return o1.getDateInfo().compareTo(o2.getDateInfo());
+            }
+        });
+
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
 
@@ -77,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         // intro animation
         animateDashboard();
-
-        registerClickCallBack();
     }
 
 
@@ -212,6 +220,20 @@ public class MainActivity extends AppCompatActivity {
 
             results.setTextColor(Color.HSVToColor(HSV));
 
+            // on track/item click
+            CardView track = (CardView) itemView.findViewById(R.id.track);
+            track.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    model.setCurrentJouney(journey.get(position));
+                    model.setConfirmTrip(false);
+
+                    Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
+                    Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                    startActivity(intent);
+                }
+            });
+
             // on Overflow click
             ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
             overflow.setOnClickListener(new View.OnClickListener() {
@@ -226,21 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
             return itemView;
         }
-    }
-
-    private void registerClickCallBack() {
-        final ListView list = (ListView) findViewById(R.id.journeys);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                model.setCurrentJouney(journey.get(position));
-                model.setConfirmTrip(false);
-                Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
-                Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                startActivity(intent);
-
-            }
-        });
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -316,29 +323,6 @@ public class MainActivity extends AppCompatActivity {
             fabs.setClickable(true);
             isFabOpen = true;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        model.getJourneyManager().recalculateCarbon();
-
-        // set FAB
-        setFAB();
-
-        // set Graph
-        setGraph();
-
-        // show Journeys
-        setJourneys();
-
-        // intro animation
-        animateDashboard();
-
-        registerClickCallBack();
-
-
     }
 
     // start new journey

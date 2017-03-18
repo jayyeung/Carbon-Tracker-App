@@ -18,8 +18,6 @@ public class Journey {
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
-
-
     public Journey(Car car , Route route ) {
         this.car = car;
         this.route = route;
@@ -82,9 +80,6 @@ public class Journey {
         Calendar cal = Calendar.getInstance();
         cal.set(year,month,day);
         date = cal.getTime();
-
-
-
     }
 
     public Car getCar() {

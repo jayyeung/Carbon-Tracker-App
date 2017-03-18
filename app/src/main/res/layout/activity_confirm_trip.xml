@@ -25,28 +25,29 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="302"
+        android:id="@+id/display_CO2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/display_CO2"
-        android:textSize="72sp"
-        android:paddingTop="24sp"
         android:paddingLeft="16sp"
         android:paddingRight="16sp"
+        android:paddingTop="24sp"
+        android:text="420"
         android:textAlignment="textStart"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="72sp"
         android:textStyle="normal|bold" />
 
     <TextView
-        android:text="kg of CO₂"
+        android:id="@+id/display_CO2Units"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/display_CO2Units"
-        android:textSize="24sp"
+        android:layout_marginTop="-8dp"
         android:paddingLeft="16sp"
         android:paddingRight="16sp"
+        android:text="kg of CO₂"
         android:textAlignment="textStart"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
         android:textStyle="normal|bold" />
 
     <TextView
@@ -94,9 +95,10 @@
             android:paddingTop="0sp"
             android:paddingBottom="21sp"
             android:layout_weight="0.36"
-            android:layout_centerVertical="true"
+            android:id="@+id/linearLayout"
+            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -133,35 +135,37 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/title"
+        android:elevation="5dp"
         android:orientation="vertical"
         android:paddingLeft="16sp"
-        android:paddingRight="16sp"
-        android:elevation="5dp"
-        android:layout_height="77dp"
-        android:layout_alignTop="@+id/title"
-        android:layout_alignParentStart="true">
+        android:paddingRight="16sp">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="0sp"
-            android:paddingBottom="21sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
             android:layout_weight="0.36"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true">
+            android:orientation="vertical"
+            android:paddingBottom="21sp"
+            android:paddingTop="0sp">
 
             <TextView
+                android:id="@+id/display_Route"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/display_Route"
-                android:layout_weight="1"
                 android:layout_marginBottom="2sp"
-                android:textSize="16sp"
+                android:layout_weight="1"
                 android:elevation="4dp"
+                android:text="car_title"
                 android:textColor="@color/fadedBackground"
-                android:textStyle="normal|bold"
-                android:text="route_title" />
+                android:textSize="16sp"
+                android:textStyle="normal|bold" />
 
         </LinearLayout>
 
