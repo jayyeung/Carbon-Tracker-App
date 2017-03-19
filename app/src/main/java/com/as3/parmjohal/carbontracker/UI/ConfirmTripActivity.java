@@ -43,7 +43,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
         }
         else {
             setTitle("Journey Data");
-
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -136,6 +135,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
         else {
             Log.i("Journey: ", "Clicked Journey");
             journey = model.getCurrentJouney();
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
         }
     }
 
@@ -212,6 +213,4 @@ public class ConfirmTripActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-
-
 }

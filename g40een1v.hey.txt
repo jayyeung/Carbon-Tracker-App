@@ -1,0 +1,8 @@
+﻿Merge branch '10-redesign-ui-to-new-specifications' of https://csil-git1.cs.surrey.sfu.ca/276-17-1-Denim/carbon-tracker into 10-redesign-ui-to-new-specifications
+
+# Please enter a commit message to explain why this merge is necessary,
+# especially if it merges an updated upstream into a topic branch.
+#
+# Lines starting with '#' will be ignored, and an empty message aborts
+# the commit.
+

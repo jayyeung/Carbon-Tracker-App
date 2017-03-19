@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -22,9 +23,12 @@ import android.widget.ListView;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
-import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     CarbonTrackerModel model;
     private ArrayList<Journey> journey;
+    public static final int REQUEST_CODE_JOURNEY= 2020;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
     public void setOverview() {
         RadioGroup chart_radio = (RadioGroup) findViewById(R.id.chart_options);
 
+        final TextView chart_status = (TextView) findViewById(R.id.chart_status);
+        final TextView chart_type = (TextView) findViewById(R.id.chart_type);
+
         chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -112,26 +121,34 @@ public class MainActivity extends AppCompatActivity {
                 // checkedId is the RadioButton selected
                 switch(checkedId) {
                     case R.id.day_radio:
+                        chart_status.setText("Today");
+                        chart_type.setText("Daily Carbon Usage");
                         setGraph(Chart_options.DAILY);
+                        break;
                     case R.id.month_radio:
-                        setGraph(Chart_options.DAILY);
+                        chart_status.setText("Last 28 days");
+                        chart_type.setText("Monthly Carbon Usage");
+                        setGraph(Chart_options.MONTHLY);
+                        break;
                     case R.id.year_radio:
-                        setGraph(Chart_options.DAILY);
+                        chart_status.setText("Last 365 days");
+                        chart_type.setText("Annual Carbon Usage");
+                        setGraph(Chart_options.YEARLY);
+                        break;
                 }
             }
         });
 
         // set default chart at start by selecting a radio button
-        RadioButton default_chart = (RadioButton) findViewById(R.id.year_radio);
+        RadioButton default_chart = (RadioButton) findViewById(R.id.day_radio);
         default_chart.setChecked(true);
     }
 
     public void setGraph(Chart_options option) {
-        // clear container of any current graph that is displaying
         LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
-        if (chart_container.getChildCount() > 0) { chart_container.removeAllViews(); }
+        chart_container.removeAllViewsInLayout();
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -142,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         if (option == option.DAILY) {
 
             // get pie info
-            List<PieEntry> entries = new ArrayList<>();
+            ArrayList<PieEntry> entries = new ArrayList<>();
             for (int i = 0; i < journey.size(); i++) {
                 entries.add(new PieEntry(Float.parseFloat(String.format("%.2f", journey.get(i).getCo2())), i));
             }
@@ -157,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             PieData data = new PieData(dataSet);
 
             // set onto chart
-            PieChart chart = new PieChart(getBaseContext());
+            PieChart chart = new PieChart(this);
             chart_container.addView(chart, params);
 
             chart.setUsePercentValues(true);
@@ -186,7 +203,48 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.MONTHLY) {
+            ArrayList<Entry> entries = new ArrayList<>();
+            entries.add(new Entry(0, 4f));
+            entries.add(new Entry(1, 8f));
+            entries.add(new Entry(2, 6f));
+            entries.add(new Entry(3, 2f));
+            entries.add(new Entry(4, 18f));
+            entries.add(new Entry(5, 9f));
 
+            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91)};
+
+            LineDataSet dataSet = new LineDataSet(entries, "# of Calls");
+            dataSet.setColors(CHART_COLOURS);
+            dataSet.setDrawCircleHole(false);
+            dataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            dataSet.setValueTextColor(Color.WHITE);
+            dataSet.setValueTextSize(16f);
+            dataSet.setCircleRadius(8f);
+            dataSet.setLineWidth(5f);
+
+            LineData data = new LineData(dataSet);
+
+            LineChart chart = new LineChart(this);
+            chart_container.addView(chart, params);
+
+            chart.setTouchEnabled(false);
+            chart.setDescription(null);
+            chart.getAxisRight().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+
+            Legend legend = chart.getLegend();
+            legend.setTextColor(R.color.colorAccent);
+            legend.setTextSize(16f);
+            legend.setWordWrapEnabled(true);
+
+            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+            slide_in.setDuration(1800);
+            chart.startAnimation(slide_in);
+
+            chart.setData(data);
+            chart.animateY(1500);
+            chart.invalidate();
         }
 
         ////////////////
@@ -194,7 +252,48 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.YEARLY) {
+            ArrayList<Entry> entries = new ArrayList<>();
+            entries.add(new Entry(0, 4f));
+            entries.add(new Entry(1, 8f));
+            entries.add(new Entry(2, 6f));
+            entries.add(new Entry(3, 2f));
+            entries.add(new Entry(4, 18f));
+            entries.add(new Entry(5, 9f));
 
+            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91)};
+
+            LineDataSet dataSet = new LineDataSet(entries, "# of Calls");
+            dataSet.setColors(CHART_COLOURS);
+            dataSet.setDrawCircleHole(false);
+            dataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            dataSet.setValueTextColor(Color.WHITE);
+            dataSet.setValueTextSize(16f);
+            dataSet.setCircleRadius(8f);
+            dataSet.setLineWidth(5f);
+
+            LineData data = new LineData(dataSet);
+
+            LineChart chart = new LineChart(this);
+            chart_container.addView(chart, params);
+
+            chart.setTouchEnabled(false);
+            chart.setDescription(null);
+            chart.getAxisRight().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+
+            Legend legend = chart.getLegend();
+            legend.setTextColor(R.color.colorAccent);
+            legend.setTextSize(16f);
+            legend.setWordWrapEnabled(true);
+
+            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+            slide_in.setDuration(1800);
+            chart.startAnimation(slide_in);
+
+            chart.setData(data);
+            chart.animateY(1500);
+            chart.invalidate();
         }
     }
 
@@ -275,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                 }
             });
 
@@ -378,6 +477,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void startNewJourney() {
         Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_JOURNEY):
+                if (resultCode == Activity.RESULT_OK) {
+                        restart();
+                        break;
+                    }
+                default:
+                    break;
+
+        }
+
+    }
+
+
+    private void restart()
+    {
+        Intent intent = getIntent();
+        finish();
         startActivity(intent);
     }
 }
