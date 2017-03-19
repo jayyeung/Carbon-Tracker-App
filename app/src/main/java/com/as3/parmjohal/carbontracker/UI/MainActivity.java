@@ -32,6 +32,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
 
-        // set Graph
-        setGraph(Chart_options.DAILY);
+        // set Overview
+        setOverview();
 
         // set FAB
         setFAB();
@@ -99,16 +101,39 @@ public class MainActivity extends AppCompatActivity {
         background_img.startAnimation(fade_in);
     }
 
-    //set Graph
+    // Set Overview
+    public void setOverview() {
+        RadioGroup chart_radio = (RadioGroup) findViewById(R.id.chart_options);
+
+        chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                switch(checkedId) {
+                    case R.id.day_radio:
+                        setGraph(Chart_options.DAILY);
+                    case R.id.month_radio:
+                        setGraph(Chart_options.DAILY);
+                    case R.id.year_radio:
+                        setGraph(Chart_options.DAILY);
+                }
+            }
+        });
+
+        // set default chart at start by selecting a radio button
+        RadioButton default_chart = (RadioButton) findViewById(R.id.year_radio);
+        default_chart.setChecked(true);
+    }
+
     public void setGraph(Chart_options option) {
         // clear container of any current graph that is displaying
         LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
-        chart_container.removeAllViews();
+        if (chart_container.getChildCount() > 0) { chart_container.removeAllViews(); }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-
 
         ////////////////
         // DAILY GRAPH
