@@ -36,7 +36,6 @@ public class CarManager {
         String name = car.getName();
        if(getCarFromCSVFile(car) != null)
        {
-
            Car carData = getCarFromCSVFile(car);
            Car addCar = new Car();
            addCar.setCarData(carData);

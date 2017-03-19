@@ -20,11 +20,12 @@ import android.widget.Toast;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 
 public class SelectRouteActivity extends AppCompatActivity {
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    CarbonTrackerModel model;
     ArrayList<Route> routeList = new ArrayList<Route>();
 
     public static final int REQUEST_CODE_ADD= 1024;
@@ -35,23 +36,25 @@ public class SelectRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_route);
-        if(model.isEditJourney()){
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+
+        if (model.isEditJourney()) {
             setTitle("Edit Journey's Route");
-        }
-        else {
+        } else {
             setTitle("Select Route");
         }
-
-
-        setTitle("Select Route");
-
-
 
         populateListView();
         registerClickCallBack();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
     }
 
 
@@ -79,7 +82,6 @@ public class SelectRouteActivity extends AppCompatActivity {
             }
             Route thisRoute= routeList.get(position);
 
-            //Change according to getting the strings of Route
 
               TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
               routeName.setText(thisRoute.getRouteName());
@@ -100,6 +102,8 @@ public class SelectRouteActivity extends AppCompatActivity {
         clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+
+
                 model.setCurrentRoute(routeList.get(position));
                 if (model.isEditJourney()){
                     Intent intent = new Intent();
