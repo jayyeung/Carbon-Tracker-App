@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        model.setEditJourney(false);
+        model.setConfirmTrip(true);
         journey = model.getJourneyManager().getJourneyCollection();
 
         // set FAB

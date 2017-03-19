@@ -82,7 +82,6 @@ public class SelectRouteActivity extends AppCompatActivity {
             }
             Route thisRoute= routeList.get(position);
 
-            //Change according to getting the strings of Route
 
               TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
               routeName.setText(thisRoute.getRouteName());

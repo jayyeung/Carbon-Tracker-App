@@ -13,15 +13,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Skytrain;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
+    CarbonTrackerModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        model.setEditJourney(false);
+        model.setConfirmTrip(true);
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
