@@ -36,8 +36,6 @@ public class EditRouteActivity extends AppCompatActivity {
         routeName.setText(model.getCurrentRoute().getRouteName());
         distanceCity.setText(""+model.getCurrentRoute().getCityDistance());
         distanceHighway.setText(""+model.getCurrentRoute().getHwyDistance());
-
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

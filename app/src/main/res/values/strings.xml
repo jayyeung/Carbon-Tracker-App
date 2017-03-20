@@ -30,7 +30,7 @@
     <string name="car_name">Car Name</string>
     <string name="car_make">Car Make</string>
     <string name="year">Year</string>
-    <string name="select_route_hold_to_edit_or_delete">Select Route (hold to edit or delete):</string>
+    <string name="select_route_hold_to_edit_or_delete">Select Route:</string>
     <string name="would_you_like_to_save_this_route">Would you like to save this route?</string>
     <string name="car_s_name">Car\'s Name</string>
     <string name="make">Make</string>

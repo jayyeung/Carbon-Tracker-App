@@ -27,17 +27,17 @@
             android:screenOrientation="portrait" />
 
         <!-- journey -->
-        <activity android:name=".UI.SelectCarActivity" />
-        <activity android:name=".UI.AddCarActivity" />
-        <activity android:name=".UI.SelectRouteActivity" />
-        <activity android:name=".UI.EditCarActivity" />
-        <activity android:name=".UI.AddRouteActivity" />
-        <activity android:name=".UI.ConfirmTripActivity" />
-        <activity android:name=".UI.EditRouteActivity" />
+        <activity android:name=".UI.SelectCarActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.AddCarActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.SelectRouteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.EditCarActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.AddRouteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.ConfirmTripActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.EditRouteActivity" android:screenOrientation="portrait"/>
 
         <!-- pop-up-windows -->
         <activity android:name=".UI.CalenderActivity"
-            android:theme="@style/AppTheme.PopBackground" />
+            android:theme="@style/AppTheme.PopBackground" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -4,33 +4,35 @@
     android:id="@+id/activity_select_car"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.as3.parmjohal.carbontracker.UI.SelectCarActivity"
-   >
+    tools:context="com.as3.parmjohal.carbontracker.UI.SelectCarActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:text="@string/select_route_hold_to_edit_or_delete"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/instructionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/instructionText" />
+            android:layout_marginBottom="20dp"
+            android:text="@string/select_route_hold_to_edit_or_delete"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
 
         <ListView
+            android:id="@+id/routeListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
+            android:clipToPadding="false"
             android:divider="@android:color/transparent"
-            android:dividerHeight="8.0sp"
-            android:id="@+id/routeListView" />
+            android:dividerHeight="16.0sp" />
     </LinearLayout>
 
 </RelativeLayout>

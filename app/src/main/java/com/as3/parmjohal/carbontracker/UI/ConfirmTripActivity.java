@@ -58,7 +58,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        setupTextView(R.id.display_mainCar, journey.getCarInfo());
+
+        setupTextView(R.id.display_CarName, journey.getCar().getName());
+        setupTextView(R.id.display_MainCar, journey.getCarInfo());
+
+        setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
     }
