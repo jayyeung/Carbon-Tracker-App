@@ -290,7 +290,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView13"
+                            android:id="@+id/tip_title_journey"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/tip_title"
@@ -298,7 +298,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/tip_message_journey"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -313,6 +313,7 @@
                         android:layout_height="45dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
+                        android:alpha="0.8"
                         app:srcCompat="@drawable/car" />
 
                 </RelativeLayout>
@@ -413,7 +414,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView13"
+                            android:id="@+id/tip_title_utility"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Utility Tip"
@@ -421,7 +422,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/tip_message_utility"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -436,6 +437,7 @@
                         android:layout_height="45dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
+                        android:alpha="0.8"
                         app:srcCompat="@drawable/lightbulb" />
 
                 </RelativeLayout>
