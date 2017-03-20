@@ -56,8 +56,13 @@ public class Journey {
 
     public String getDateInfo()
     {
-        DateFormat df = new SimpleDateFormat("d MMM yyyy");
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         return df.format(date) ;
+    }
+
+    public Date getDateInfoRaw()
+    {
+        return date;
     }
 
     public double getCo2() {

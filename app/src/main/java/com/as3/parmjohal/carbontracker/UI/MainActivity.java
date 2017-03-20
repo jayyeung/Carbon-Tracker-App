@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -39,7 +40,9 @@ import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(journey, new Comparator<Journey>() {
             public int compare(Journey o1, Journey o2) {
                 if (o1.getDateInfo() == null || o2.getDateInfo() == null) return 0;
-                return o1.getDateInfo().compareTo(o2.getDateInfo());
+                return o1.getDateInfoRaw().compareTo(o2.getDateInfoRaw());
             }
         });
 
@@ -387,6 +390,16 @@ public class MainActivity extends AppCompatActivity {
                     MenuInflater inflater = popup.getMenuInflater();
                     inflater.inflate(R.menu.journey_popup_actions, popup.getMenu());
                     popup.show();
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(getApplicationContext(),
+                                    item.getTitle(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+
                 }
             });
 
