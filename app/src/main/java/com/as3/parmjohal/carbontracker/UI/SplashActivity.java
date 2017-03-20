@@ -120,7 +120,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(SplashActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(SplashActivity.this);
         startActivity(intent);
     }
 
