@@ -49,12 +49,11 @@ public class Journey {
         }
         else if(checkSkyTrain || checkBus)
         {
-            co2 = route.getCityDistance() * transportation.getCityFuel();
+            co2 = route.getCityDistance() * 0.0087;
         }
         else {
             co2 = 0;
         }
-
     }
 
 

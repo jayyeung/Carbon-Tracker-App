@@ -2,8 +2,6 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-
 /**
  * Created by ParmJohal on 2017-03-17.
  */
@@ -21,20 +19,38 @@ public class Skytrain extends Transportation{
     private String endStation = " ";
     private final double SPEED = 45.00;
     private final double MIN_TO_HOURS = 0.0166667;
+    private String trainType =" ";
 
-    private String[] stops = {"King George","Surrey Central","Gateway","Scott Road","Columbia","New Westminster","22nd Street",
+    private String[] expoLine_stops = {"King George","Surrey Central","Gateway","Scott Road","Columbia","New Westminster","22nd Street",
     "Edmonds","Royal Oak","Metrotown", "Patterson","Joyce","29th Avenue","Nanaimo","Commercial-Broadway","Main","Stadium-Chinatown",
     "Granville","Burrard","Waterfront"
     };
-    private int[] minutes = {2,1,3,3,1,4,2,3,2,1,2,2,1,3,3,2,1,1,2};
+    private int[] expoLine_minutes = {2,1,3,3,1,4,2,3,2,1,2,2,1,3,3,2,1,1,2};
 
-    public Skytrain(String startStation, String endStation, String name) {
+    private String[] millenniumLine_stops = {"VCC/Clark", "Commercial-Broadway", "Renfrew", "Rupert","Gilmore"
+            ,"Brentwood Town Centre" ,"Holdom","Sperling","Lake City","Production Way","Lougheed Town Centre" };
+
+    private int[] millenniumLine_minutes = {1,3,1,3,1,2,2,2,3,2};
+
+    private String[] canadeLine_stops = {"YVR-Airport", "Sea Island","VCC/Templeton","Richmond-Brighouse","Landsdowne"
+            ,"Aberdeen","Bridgeport","Marine Drive","Langara-49th","Oakridge-41st","King Edward","Broadway-City Hall"
+            ,"Olympic Village","Yaletown-Roundhouse","Vancouver City Centre","Waterfront" };
+
+    private int[] canadaLine_minutes = {2,2,9,2,2,2,2,3,2,3,2,1,2,2};
+
+
+    public Skytrain(String startStation, String endStation, String name, String trainType) {
         super(0,0," ");
         this.name= name;
         this.startStation = startStation;
         this.endStation = endStation;
         setUpSuperClass();
-        route = new Route((int) getDistance(),0,"Skytrain Trip: " + name);
+
+        Log.i("Skytrain", "trainType: " + trainType);
+        this.trainType = trainType;
+
+        route = new Route(getDistance(),0,trainType + " Trip: " + name);
+
     }
 
     private void setUpSuperClass()
@@ -45,9 +61,29 @@ public class Skytrain extends Transportation{
 
     public double getHours()
     {
+        String[] stops = new String[0];
+        int[] minutes = new int[0];
+
+        if(trainType.equals("Expo Line")) {
+
+            stops = expoLine_stops;
+            minutes = expoLine_minutes;
+        }
+        else if(trainType.equals("Millennium Line")) {
+
+            stops = millenniumLine_stops;
+            minutes = millenniumLine_minutes;
+        }
+        else if(trainType.equals("Canada Line")) {
+
+            stops = canadeLine_stops;
+            minutes = canadaLine_minutes;
+        }
+            
         int stop1 = 0;
         int stop2 = 0;
-        for(int i = 0; i < stops.length;i++)
+
+        for(int i = 0; i < stops.length; i++)
         {
             if(stops[i].equals(startStation)) {
                 stop1 = i;
@@ -76,6 +112,8 @@ public class Skytrain extends Transportation{
                 totalMinutes += minutes[i];
             }
         }
+        
+        Log.i("Skytrain", " " + totalMinutes);
         return (totalMinutes * MIN_TO_HOURS) ;
     }
 

@@ -41,7 +41,7 @@ public class DayManager {
 //        }
 
     }
-    
+
     public void updateDay(Journey oldJourney, Journey newJourney)
     {
         String[] tokens = oldJourney.getDateInfo2().split("/");

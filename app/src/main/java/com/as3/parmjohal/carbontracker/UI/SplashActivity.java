@@ -17,6 +17,8 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -33,9 +35,13 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("Day", " Day Started");
-        DayManager dayManager = new DayManager();
-        dayManager.getPast365Days(21,03,17);
+        Log.i("Skytrain", "Start");
+        Skytrain skytrain = new Skytrain("VCC/Clark", "Commercial-Broadway", "Work", "Millennium Line");
+
+        Route route = skytrain.getRoute();
+        Journey journey = new Journey(skytrain,route);
+        Log.i("Skytrain", "CO2 " + journey.getCo2());
+
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
