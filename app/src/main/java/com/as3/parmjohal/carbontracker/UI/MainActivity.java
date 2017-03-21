@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         // show Journeys
         setJourneys();
 
+        // set tips
+        setTips();
+
         // intro animation
         animateDashboard();
     }
@@ -461,6 +464,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // set tips
+    public void setTips() {
+        CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
+        final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
+
+        journey_tip_module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                journey_message.setText("This message has changed");
+            }
+        });
+    };
 
     public void animateFAB(){
         fade_in.setDuration(300);
