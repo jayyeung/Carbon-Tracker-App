@@ -106,17 +106,52 @@ public class Journey {
         date = cal.getTime();
     }
 
-    public Car getCar() {
-        return (Car) transportation;
+    public Transportation getTransportation() {
+        return transportation;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Journey{" +
+//                "route=" + route +
+//                ", car=" + transportation +
+//                ", co2=" + co2 +
+//                ", CO2_COVERTOR=" + CO2_COVERTOR +
+//                '}';
+//    }
+
 
     @Override
     public String toString() {
         return "Journey{" +
-                "route=" + route +
-                ", car=" + transportation +
-                ", co2=" + co2 +
-                ", CO2_COVERTOR=" + CO2_COVERTOR +
+                "date=" + date +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Journey journey = (Journey) o;
+
+        if (route != null ? !route.equals(journey.route) : journey.route != null) return false;
+        if (transportation != null ? !transportation.equals(journey.transportation) : journey.transportation != null)
+            return false;
+        return date != null ? date.equals(journey.date) : journey.date == null;
+    }
+
+    public static Journey copy(Journey journey) {
+
+        String[] tokens = journey.getDateInfo2().split("/");
+        int day = Integer.parseInt(tokens[0]);
+        int month = Integer.parseInt(tokens[1]);
+        int year = Integer.parseInt(tokens[2]);
+
+        Journey journeyClone = new Journey(journey.getTransportation(),journey.getRoute());
+        journeyClone.setDate(year,month - 1,day);
+
+        return journeyClone;
+    }
+
 }

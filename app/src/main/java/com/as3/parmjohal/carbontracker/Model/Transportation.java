@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 /**
  * Created by ParmJohal on 2017-03-18.
  */
@@ -9,6 +11,7 @@ public class Transportation {
     private int highwayFuel1 = 0;
     private double cityFuel1 = 0;
     private String fuelType1 = " ";
+    private String info = " ";
 
     public Transportation(int highwayFuel, int cityFuel, String fuelType) {
         this.highwayFuel1 = highwayFuel;
@@ -40,9 +43,13 @@ public class Transportation {
         this.fuelType1 = fuelType;
     }
 
-    public String getInfo(){
-        return " ";
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
+    public String getInfo(){
+        Log.i("Info ", "In Transportation class: " + info);
+        return info;
     }
 
 }

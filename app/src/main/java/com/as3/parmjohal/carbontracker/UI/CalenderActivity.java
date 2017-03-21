@@ -54,7 +54,12 @@ public class CalenderActivity extends Activity {
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 if (clicked) {
+
+                    Journey oldJourney = Journey.copy(model.getCurrentJouney());
                     model.getCurrentJouney().setDate(setYear, setMonth, setDay);
+                    Journey newJourney = model.getCurrentJouney();
+                    model.getDayManager().updateDay(oldJourney,newJourney);
+
                     finish();
                 }
                 else{
