@@ -1,33 +1,31 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 /**
- * Created by ParmJohal on 2017-03-17.
+ * Created by ParmJohal on 2017-03-20.
  */
 
-public class Bus extends Transportation{
+public class Bike extends  Transportation{
 
     private String name = " ";
     private int distance = 0;
-    private Route busRoute;
+    private Route bikeRoute;
 
-    public Bus(String name, int distance) {
+    public Bike(String name, int distance) {
         super(0, 0, " ");
+
         this.name = name;
         this.distance = distance;
         setupSuperClass();
-        busRoute = new Route(distance,0,"Bus Trip: "+name);
-
+        bikeRoute = new Route(distance,0,"Bike Trip: "+name);
     }
 
     private void setupSuperClass() {
-        super.setFuelType("Bus");
-        super.setCityFuel(0.0087);
+        super.setFuelType("Bike");
+        super.setCityFuel(0);
         super.setHighwayFuel(0);
     }
     public Route getRoute()
     {
-        return busRoute;
+        return bikeRoute;
     }
-
-
 }

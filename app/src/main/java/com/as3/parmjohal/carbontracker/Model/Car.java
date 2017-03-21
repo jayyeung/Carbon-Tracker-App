@@ -112,7 +112,7 @@ public class Car extends Transportation{
         this.highwayFuel = highwayFuel;
     }
 
-    public int getCityFuel() {
+    public double getCityFuel() {
         return cityFuel;
     }
 
@@ -134,6 +134,8 @@ public class Car extends Transportation{
             this.setCityFuel(car.getCityFuel());
             this.setHighwayFuel(car.getHighwayFuel());
     }
+
+    @Override
     public String getInfo()
     {
         return "" + getYear()+", " + getMake()+ " " + getModel();

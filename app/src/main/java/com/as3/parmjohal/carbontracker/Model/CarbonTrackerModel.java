@@ -21,6 +21,10 @@ public class CarbonTrackerModel {
     private RouteManager routeManager = new RouteManager();
     private JourneyManager journeyManager = new JourneyManager();
 
+    private Manager<Skytrain> skytrainManager = new Manager<>();
+    private Manager<Walk> walkManager = new Manager<>();
+    private Manager<Bike> bikeManager = new Manager<>();
+
     public static ArrayList<Car> cars = new ArrayList<Car>();
 
     private static int count = 0;
@@ -52,6 +56,9 @@ public class CarbonTrackerModel {
         return carbonTrackerModel;
     }
 
+//*********************************************************************
+//          MANAGERS
+//*********************************************************************
 
     public CarManager getCarManager() {
         return carManager;
@@ -65,6 +72,21 @@ public class CarbonTrackerModel {
     public JourneyManager getJourneyManager() {
         return journeyManager;
     }
+
+    public Manager<Skytrain> getSkytrainManager() {
+        return skytrainManager;
+    }
+
+    public Manager<Walk> getWalkManager() {
+        return walkManager;
+    }
+
+    public Manager<Bike> getBikeManager() {
+        return bikeManager;
+    }
+
+//*********************************************************************
+
 
     public VehicleData getVehicleData()
     {

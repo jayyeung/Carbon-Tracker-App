@@ -7,7 +7,7 @@ package com.as3.parmjohal.carbontracker.Model;
 public class Transportation {
 
     private int highwayFuel1 = 0;
-    private int cityFuel1 = 0;
+    private double cityFuel1 = 0;
     private String fuelType1 = " ";
 
     public Transportation(int highwayFuel, int cityFuel, String fuelType) {
@@ -20,7 +20,7 @@ public class Transportation {
         return highwayFuel1;
     }
 
-    public int getCityFuel() {
+    public double getCityFuel() {
         return cityFuel1;
     }
 
@@ -32,7 +32,7 @@ public class Transportation {
         this.highwayFuel1 = highwayFuel;
     }
 
-    public void setCityFuel(int cityFuel) {
+    public void setCityFuel(double cityFuel) {
         this.cityFuel1 = cityFuel;
     }
 
