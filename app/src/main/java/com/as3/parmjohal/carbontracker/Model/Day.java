@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 /**
@@ -9,6 +10,8 @@ import java.util.InputMismatchException;
 public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
+    private ArrayList<Double> allCO2Values = new ArrayList<>();
+
     private String date;
     private int year = 0;
     private int month = 0;
@@ -45,6 +48,7 @@ public class Day {
         if(journey.getDateInfo().equals(date))
         {
             journeyManager.add(journey);
+            allCO2Values.add(journey.getCo2());
             return true;
         }
         else {
@@ -52,8 +56,12 @@ public class Day {
         }
     }
 
-    public JourneyManager getAllJourneys() {
-        return journeyManager;
+    public ArrayList<Journey> getAllJourneys() {
+        return journeyManager.getJourneyCollection();
+    }
+
+    public ArrayList<Double> getAllCO2Values() {
+        return allCO2Values;
     }
 
     @Override

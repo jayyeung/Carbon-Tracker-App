@@ -20,6 +20,7 @@ public class CarbonTrackerModel {
     private static VehicleData vehicleData;
     private RouteManager routeManager = new RouteManager();
     private JourneyManager journeyManager = new JourneyManager();
+    private DayManager dayManager = new DayManager();
 
     private Manager<Skytrain> skytrainManager = new Manager<>();
     private Manager<Walk> walkManager = new Manager<>();
@@ -84,8 +85,11 @@ public class CarbonTrackerModel {
     public Manager<Bike> getBikeManager() {
         return bikeManager;
     }
-
-//*********************************************************************
+    
+    public DayManager getDayManager() {
+        return dayManager;
+    }
+    //*********************************************************************
 
 
     public VehicleData getVehicleData()

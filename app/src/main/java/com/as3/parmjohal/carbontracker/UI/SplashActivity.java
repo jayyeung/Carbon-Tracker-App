@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
-import com.as3.parmjohal.carbontracker.Model.Skytrain;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -32,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Log.i("Day", " Day Started");
         DayManager dayManager = new DayManager();
-        dayManager.getPast28Days(10,01,17);
+        dayManager.getPast28Days_Journeys(10,01,17);
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
