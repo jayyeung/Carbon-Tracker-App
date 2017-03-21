@@ -19,6 +19,18 @@ public class DayManager {
 
 //        for(int i = 1; i < 30; i++)
 //        {
+//            Day day = new Day(i+"/03/17");
+//            days.add(day);
+//        }
+//
+//        for(int i = 1; i < 30; i++)
+//        {
+//            Day day = new Day(i+"/03/16");
+//            days.add(day);
+//        }
+//
+//        for(int i = 1; i < 30; i++)
+//        {
 //            Day day = new Day(i+"/01/17");
 //            days.add(day);
 //        }
@@ -27,7 +39,7 @@ public class DayManager {
 //            Day day = new Day(i+"/12/16");
 //            days.add(day);
 //        }
-        
+
     }
 
     public boolean add(Journey journey)
@@ -55,6 +67,7 @@ public class DayManager {
         return true;
     }
 
+    // dd/MM/yy
     public ArrayList<Journey> getDay_Journeys(int day, int month, int year)
     {
         for(int i=0; i < days.size(); i++)
@@ -69,21 +82,87 @@ public class DayManager {
     }
 
 
+    //returns an arraylist of size 12 with total CO2 for that mont
+    //arraylist.get(0) will be the total CO2 for the month of january in the past 365 days
+    // dd/MM/yy
+
+    public ArrayList<Double> getPast_12MonthsCO2(int day, int month, int year)
+    {
+        ArrayList<Double> totalCO2_perMonth = new ArrayList<>();
+        ArrayList<Day> past365Days = getPast365Days(day,month,year);
+
+        for(int i =0; i < 12;i++)
+        {
+            totalCO2_perMonth.add(0.0);
+        }
+
+        for(Day dayObject: past365Days)
+        {
+            int currentMonth = dayObject.getMonth() - 1;
+            totalCO2_perMonth.set(currentMonth, totalCO2_perMonth.get(currentMonth) + dayObject.getTotalCO2());
+        }
+        return totalCO2_perMonth;
+    }
+
+
+    //***** USE THE SAME CODE LAYOUT FOR PAST 365 DAYS UTILITIES ********
+    //Returns all Journeys within the past 365 Days
+    // dd/MM/yy
+    public ArrayList<Journey> getPast365Days_Journeys(int day, int month, int year)
+    {
+        ArrayList<Journey> journeys = new ArrayList<>();
+        ArrayList<Day> past365Days = getPast365Days(day,month,year);
+
+        for(int i = 0; i < past365Days.size(); i++)
+        {
+            Day currentDay = past365Days.get(i);
+            journeys.addAll(currentDay.getAllJourneys());
+        }
+        return journeys;
+    }
+
+    // dd/MM/yy
     public ArrayList<Day> getPast365Days(int day, int month, int year)
     {
         ArrayList<Day> pastDays = new ArrayList<>();
-        /*
-        if the year is the same, and the month is equal or smaller, and the day is smaller.
 
-        if the year is less than the year, the month is greater than or equal to the month, same with day
-         */
+        for(Day dayObject: days)
+        {
+            int currentDay = dayObject.getDay();
+            int currentMonth = dayObject.getMonth();
+            int currentYear = dayObject.getYear();
 
+            if(currentYear == year && currentMonth <= month)
+            {
+                if(currentMonth == month)
+                {
+                    if(currentDay < day)
+                        pastDays.add(dayObject);
+                }
+                else {
+                    pastDays.add(dayObject);
+                }
+            }
+            else if(currentYear < year && currentMonth >= month){
+
+                if(currentMonth == month)
+                {
+                    if(currentDay > day) {
+                        pastDays.add(dayObject);
+                    }
+                }
+                else {
+                    pastDays.add(dayObject);
+                }
+            }
+        }
         return pastDays;
     }
 
 
     //***** USE THE SAME CODE LAYOUT FOR PAST 28 DAYS UTILITIES ********
     //Returns all Journeys within the past 28 Days
+    // dd/MM/yy
 
     public ArrayList<Journey> getPast28Days_Journeys(int day, int month, int year)
     {
@@ -98,10 +177,9 @@ public class DayManager {
         return journeys;
     }
 
-    private ArrayList<Day> getPast28Days(int day, int month, int year)
+    // dd/MM/yy
+    public ArrayList<Day> getPast28Days(int day, int month, int year)
     {
-        // dd/MM/yy
-
         ArrayList<Day> days1 = new ArrayList<>();
 
         int smallestDay = day - 28;

@@ -13,6 +13,7 @@ public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
     private ArrayList<Double> allCO2Values = new ArrayList<>();
+    private double totalCO2 = 0;
 
     private String date;
     private int year = 0;
@@ -49,6 +50,7 @@ public class Day {
     {
         journeyManager.add(journey);
         allCO2Values.add(journey.getCo2());
+        totalCO2 += journey.getCo2();
         return true;
     }
 
@@ -58,6 +60,10 @@ public class Day {
 
     public ArrayList<Double> getAllCO2Values() {
         return allCO2Values;
+    }
+
+    public double getTotalCO2() {
+        return totalCO2;
     }
 
     @Override

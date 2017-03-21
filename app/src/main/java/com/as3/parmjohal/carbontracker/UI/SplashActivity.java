@@ -34,12 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         // dd/MM/yy
 
         Log.i("Day", " Day Started");
-        DayManager dayManager = model.getDayManager();
-        dayManager.getPast28Days_Journeys(21,03,17);
-        for(Journey journey: dayManager.getPast28Days_Journeys(21,03,17))
-        {
-            Log.i("Day", "Journey: " + journey.toString());
-        }
+        DayManager dayManager = new DayManager();
+        dayManager.getPast365Days(21,03,17);
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
