@@ -17,19 +17,20 @@ public class DayManager {
         // dd/MM/yy
         // Adding dummy Day objects for debugging
 
-        for(int i = 1; i < 30; i++)
-        {
-            Day day = new Day(i+"/01/17");
-            days.add(day);
-        }
-        for(int i = 1; i < 30; i++)
-        {
-            Day day = new Day(i+"/12/16");
-            days.add(day);
-        }
+//        for(int i = 1; i < 30; i++)
+//        {
+//            Day day = new Day(i+"/01/17");
+//            days.add(day);
+//        }
+//        for(int i = 1; i < 30; i++)
+//        {
+//            Day day = new Day(i+"/12/16");
+//            days.add(day);
+//        }
+        
     }
 
-    public boolean addToCollection(Journey journey)
+    public boolean add(Journey journey)
     {
         String journeyDate = journey.getDateInfo2();
 
@@ -47,11 +48,11 @@ public class DayManager {
                 return true;
             }
         }
-        Day day1 = new Day(day+"/"+month+"/"+"year");
+        Day day1 = new Day(day+"/"+month+"/"+year);
         day1.add(journey);
         days.add(day1);
 
-        return false;
+        return true;
     }
 
     public ArrayList<Journey> getDay_Journeys(int day, int month, int year)

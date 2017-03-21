@@ -42,10 +42,12 @@ public class CarbonTrackerModel {
 
     public static CarbonTrackerModel getCarbonTrackerModel(Context context)
     {
-        try {
-            vehicleData = new VehicleData(context);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(count == 0) {
+            try {
+                vehicleData = new VehicleData(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if(SharedPreference.getCurrentModel(context) != null && count == 0)
@@ -85,7 +87,7 @@ public class CarbonTrackerModel {
     public Manager<Bike> getBikeManager() {
         return bikeManager;
     }
-    
+
     public DayManager getDayManager() {
         return dayManager;
     }

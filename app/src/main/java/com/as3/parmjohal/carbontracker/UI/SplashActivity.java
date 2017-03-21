@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
+import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -29,9 +31,15 @@ public class SplashActivity extends AppCompatActivity {
         model.setEditJourney(false);
         model.setConfirmTrip(true);
 
+        // dd/MM/yy
+
         Log.i("Day", " Day Started");
-        DayManager dayManager = new DayManager();
-        dayManager.getPast28Days_Journeys(10,01,17);
+        DayManager dayManager = model.getDayManager();
+        dayManager.getPast28Days_Journeys(21,03,17);
+        for(Journey journey: dayManager.getPast28Days_Journeys(21,03,17))
+        {
+            Log.i("Day", "Journey: " + journey.toString());
+        }
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);

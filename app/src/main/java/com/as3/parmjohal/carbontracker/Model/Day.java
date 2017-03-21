@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -45,15 +47,9 @@ public class Day {
 
     public boolean add(Journey journey)
     {
-        if(journey.getDateInfo().equals(date))
-        {
-            journeyManager.add(journey);
-            allCO2Values.add(journey.getCo2());
-            return true;
-        }
-        else {
-            return false;
-        }
+        journeyManager.add(journey);
+        allCO2Values.add(journey.getCo2());
+        return true;
     }
 
     public ArrayList<Journey> getAllJourneys() {
