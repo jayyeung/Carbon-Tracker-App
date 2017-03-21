@@ -9,6 +9,7 @@ public class Transportation {
     private int highwayFuel1 = 0;
     private double cityFuel1 = 0;
     private String fuelType1 = " ";
+    private String name1 = " ";
 
     public Transportation(int highwayFuel, int cityFuel, String fuelType) {
         this.highwayFuel1 = highwayFuel;
@@ -38,6 +39,14 @@ public class Transportation {
 
     public void setFuelType(String fuelType) {
         this.fuelType1 = fuelType;
+    }
+
+    public String getName() {
+        return name1;
+    }
+
+    public void setName(String name) {
+        this.name1 = name;
     }
 
     public String getInfo(){

@@ -22,7 +22,6 @@ public class Journey {
     public Journey(Transportation transportation , Route route ) {
         this.transportation = transportation;
         this.route = route;
-
         calculateCO2();
     }
 
@@ -99,6 +98,11 @@ public class Journey {
         Calendar cal = Calendar.getInstance();
         cal.set(year,month,day);
         date = cal.getTime();
+    }
+
+    public String getTransportationName()
+    {
+        return transportation.getName();
     }
 
     public Car getCar() {
