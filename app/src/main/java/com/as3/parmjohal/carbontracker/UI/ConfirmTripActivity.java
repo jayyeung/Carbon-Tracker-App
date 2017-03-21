@@ -51,6 +51,10 @@ public class ConfirmTripActivity extends AppCompatActivity {
         getJourneyData();
 
         populateTextViews();
+
+        // if a menu option was selected at dashboard:
+        int menu_select_id = getIntent().getIntExtra("menu_select", 0);
+        if (menu_select_id != 0) { OptionSelect(menu_select_id); }
     }
 
     private void populateTextViews(){
@@ -81,7 +85,13 @@ public class ConfirmTripActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        OptionSelect(item.getItemId());
+        return true;
+
+    }
+
+    public void OptionSelect(int id) {
+        switch (id) {
             case android.R.id.home:
                 finish();
                 break;
@@ -113,15 +123,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 model.setConfirmTrip(true);
                 finish();
                 break;
-
-
-
-
             default:
                 break;
         }
-        return true;
-
     }
 
     private void addJourney() {

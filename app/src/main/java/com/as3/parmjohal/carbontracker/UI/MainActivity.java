@@ -391,14 +391,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(MainActivity.this, v);
                     MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.journey_popup_actions, popup.getMenu());
+                    inflater.inflate(R.menu.menu_activity_journey, popup.getMenu());
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(getApplicationContext(),
-                                    item.getTitle(), Toast.LENGTH_SHORT).show();
+                            Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                            intent.putExtra("menu_select", item.getItemId());
+                            startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                             return true;
                         }
                     });
@@ -521,7 +522,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     private void restart()
     {
