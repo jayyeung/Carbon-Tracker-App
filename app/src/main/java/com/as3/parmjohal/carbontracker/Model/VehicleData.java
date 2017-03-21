@@ -23,13 +23,16 @@ import java.util.Set;
 
 public class VehicleData {
 
-    private ArrayList<Car> allCars = new ArrayList<Car>();
+    private static ArrayList<Car> allCars = new ArrayList<Car>();
     private ArrayList<String> carMakers = new ArrayList<String>();
 
     //make	model	year	trany	cylinders	displ	fuelType	city08	highway08
     public VehicleData(Context context) throws IOException {
         initalizeCars(context);
 
+    }
+
+    public VehicleData() {
     }
 
     private void initalizeCars(Context context) {
@@ -91,7 +94,7 @@ public class VehicleData {
         return carModels;
     }
 
-    public ArrayList<Car> getAllCars() {
+    public static ArrayList<Car> getAllCars() {
         return (ArrayList<Car>) allCars.clone();
     }
 

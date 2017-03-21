@@ -27,7 +27,7 @@ import com.as3.parmjohal.carbontracker.R;
 import java.util.ArrayList;
 
 public class EditCarActivity extends AppCompatActivity {
-    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private CarbonTrackerModel model;
     private String make;
     private String carModel;
     private Integer year;
@@ -43,6 +43,7 @@ public class EditCarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_car);
 
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setTitle("Edit Transportation");
 
         //adjust layout position when keyboard is out

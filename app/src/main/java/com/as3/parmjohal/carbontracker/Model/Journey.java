@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,40 +15,52 @@ import java.util.Random;
 public class Journey {
 
     private Route route = null;
-    private Car car = null;
+    private Transportation transportation = null;
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
-    public Journey(Car car , Route route ) {
-        this.car = car;
+    public Journey(Transportation transportation , Route route ) {
+        this.transportation = transportation;
         this.route = route;
 
         calculateCO2();
     }
 
     public void calculateCO2() {
-        if (car.getFuelType().equals("Diesel")) {
-            CO2_COVERTOR = 10.16;
+
+        boolean checkElectricity = transportation.getFuelType().equals("Electricity");
+        boolean checkBus = transportation.getFuelType().equals("Bus");
+        boolean checkSkyTrain = transportation.getFuelType().equals("Skytrain");
+
+        if(!checkElectricity && !checkSkyTrain && !checkBus ) {
+
+            if (transportation.getFuelType().equals("Diesel")) {
+                CO2_COVERTOR = 10.16;
+            }
+
+            double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
+            double cityGallons = (double) route.getCityDistance() / (double) transportation.getCityFuel();
+            double hwyCO2 = CO2_COVERTOR * hwyGallons;
+            double cityCO2 = CO2_COVERTOR * cityGallons;
+
+            co2 = hwyCO2 + cityCO2;
+
         }
-        else if(car.getFuelType().equals("Electricity"))
+        else if(checkSkyTrain || checkBus)
         {
-            CO2_COVERTOR = 0;
+            co2 = route.getCityDistance() * transportation.getCityFuel();
         }
-
-
-        double hwyGallons = (double) route.getHwyDistance() / (double) car.getHighwayFuel() ;
-        double cityGallons = (double) route.getCityDistance() / (double) car.getCityFuel();
-        double hwyCO2 = CO2_COVERTOR * hwyGallons;
-        double cityCO2 = CO2_COVERTOR * cityGallons;
-
-        co2 = hwyCO2 + cityCO2;
+        else {
+            co2 = 0;
+        }
 
     }
 
-    public String getCarInfo()
+
+    public String getTransportationInfo()
     {
-        return "" + car.getYear()+", " + car.getMake()+ " " + car.getModel();
+        return transportation.getInfo();
     }
 
     public String getRouteInfo()
@@ -60,9 +74,14 @@ public class Journey {
         return df.format(date) ;
     }
 
-    public Date getDateInfoRaw()
-    {
+    public Date getDateInfoRaw() {
         return date;
+    }
+
+    public String getDateInfo2()
+    {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(date);
     }
 
     public double getCo2() {
@@ -78,7 +97,7 @@ public class Journey {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        this.transportation = car;
     }
 
     public void setDate(int year, int month,int day){
@@ -88,17 +107,14 @@ public class Journey {
     }
 
     public Car getCar() {
-
-        return car;
+        return (Car) transportation;
     }
-
-
 
     @Override
     public String toString() {
         return "Journey{" +
                 "route=" + route +
-                ", car=" + car +
+                ", car=" + transportation +
                 ", co2=" + co2 +
                 ", CO2_COVERTOR=" + CO2_COVERTOR +
                 '}';

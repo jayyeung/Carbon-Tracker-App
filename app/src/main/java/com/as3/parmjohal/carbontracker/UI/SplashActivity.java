@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +13,29 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Day;
+import com.as3.parmjohal.carbontracker.Model.DayManager;
+import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
+    CarbonTrackerModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        model.setEditJourney(false);
+        model.setConfirmTrip(true);
+
+        // dd/MM/yy
+
+        Log.i("Day", " Day Started");
+        DayManager dayManager = new DayManager();
+        dayManager.getPast365Days(21,03,17);
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);

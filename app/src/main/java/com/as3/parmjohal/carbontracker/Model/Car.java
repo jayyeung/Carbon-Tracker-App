@@ -4,7 +4,7 @@ package com.as3.parmjohal.carbontracker.Model;
  * Created by ParmJohal on 2017-03-01.
  */
 
-public class Car {
+public class Car extends Transportation{
 
     //make	model	year	trany	cylinders	displ	fuelType	city08	highway08
 
@@ -22,9 +22,12 @@ public class Car {
     private double engineDisplacment = 0;
 
     public Car() {
+        super(0,0," ");
     }
 
+    //    public Transportation(int highwayFuel, int cityFuel, String fuelType) {
     public Car(String name, String make, String model, int year, String tranyType, double engineDisplacment) {
+        super(0,0," ");
         this.make = make;
         this.model = model;
         this.year = year;
@@ -96,6 +99,7 @@ public class Car {
     }
 
     public void setFuelType(String fuelType) {
+        super.setFuelType(fuelType);
         this.fuelType = fuelType;
     }
 
@@ -104,27 +108,37 @@ public class Car {
     }
 
     public void setHighwayFuel(int highwayFuel) {
+        super.setHighwayFuel(highwayFuel);
         this.highwayFuel = highwayFuel;
     }
 
-    public int getCityFuel() {
+    public double getCityFuel() {
         return cityFuel;
     }
 
     public void setCityFuel(int cityFuel) {
+
+        super.setCityFuel(cityFuel);
         this.cityFuel = cityFuel;
     }
+
 
     public void setCarData(Car car){
         this.setMake(car.getMake());
         this.setModel(car.getModel());
-        this.setYear(car.getYear());
-        this.setTranyType(car.getTranyType());
-        this.setNumCylinders(car.getNumCylinders());
-        this.setEngineDisplacment(car.getEngineDisplacment());
-        this.setFuelType(car.getFuelType());
-        this.setCityFuel(car.getCityFuel());
-        this.setHighwayFuel(car.getHighwayFuel());
+            this.setYear(car.getYear());
+            this.setTranyType(car.getTranyType());
+            this.setNumCylinders(car.getNumCylinders());
+            this.setEngineDisplacment(car.getEngineDisplacment());
+            this.setFuelType(car.getFuelType());
+            this.setCityFuel(car.getCityFuel());
+            this.setHighwayFuel(car.getHighwayFuel());
+    }
+
+    @Override
+    public String getInfo()
+    {
+        return "" + getYear()+", " + getMake()+ " " + getModel();
     }
 
     @Override

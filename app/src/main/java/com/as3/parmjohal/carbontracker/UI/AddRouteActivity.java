@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +19,10 @@ import android.widget.Toast;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class AddRouteActivity extends AppCompatActivity {
-    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private CarbonTrackerModel model;
     private String route;
     private int highway;
     private int city;
@@ -30,14 +32,19 @@ public class AddRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
+        Log.i("CO2 ", "Add Route");
 
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setTitle("Add Route");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
     }
 
 

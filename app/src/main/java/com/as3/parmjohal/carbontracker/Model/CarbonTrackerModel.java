@@ -1,8 +1,12 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by ParmJohal on 2017-03-05.
@@ -12,10 +16,17 @@ public class CarbonTrackerModel {
 
     protected static CarbonTrackerModel carbonTrackerModel = new CarbonTrackerModel();
 
-    private static CarManager carManager ;
+    private CarManager carManager  = new CarManager();
     private static VehicleData vehicleData;
     private RouteManager routeManager = new RouteManager();
     private JourneyManager journeyManager = new JourneyManager();
+    private DayManager dayManager = new DayManager();
+
+    private Manager<Skytrain> skytrainManager = new Manager<>();
+    private Manager<Walk> walkManager = new Manager<>();
+    private Manager<Bike> bikeManager = new Manager<>();
+
+    public static ArrayList<Car> cars = new ArrayList<Car>();
 
     private static int count = 0;
     private Car currentCar;
@@ -31,18 +42,26 @@ public class CarbonTrackerModel {
 
     public static CarbonTrackerModel getCarbonTrackerModel(Context context)
     {
-        if(count== 0) {
-            carManager = new CarManager(context);
+        if(count == 0) {
             try {
                 vehicleData = new VehicleData(context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        if(SharedPreference.getCurrentModel(context) != null && count == 0)
+        {
+            carbonTrackerModel = SharedPreference.getCurrentModel(context);
+        }
+
         count++;
         return carbonTrackerModel;
     }
 
+//*********************************************************************
+//          MANAGERS
+//*********************************************************************
 
     public CarManager getCarManager() {
         return carManager;
@@ -57,6 +76,24 @@ public class CarbonTrackerModel {
         return journeyManager;
     }
 
+    public Manager<Skytrain> getSkytrainManager() {
+        return skytrainManager;
+    }
+
+    public Manager<Walk> getWalkManager() {
+        return walkManager;
+    }
+
+    public Manager<Bike> getBikeManager() {
+        return bikeManager;
+    }
+
+    public DayManager getDayManager() {
+        return dayManager;
+    }
+    //*********************************************************************
+
+
     public VehicleData getVehicleData()
     {
         return vehicleData;
@@ -67,6 +104,7 @@ public class CarbonTrackerModel {
     }
 
     public void setCurrentCar(Car currentCar) {
+
         this.currentCar = currentCar;
     }
 
@@ -100,5 +138,5 @@ public class CarbonTrackerModel {
 
     public boolean isEditJourney(){return  editJourney;}
 
-    public void setEditJourney(boolean editJourney){this.editJourney =editJourney;}
+    public void setEditJourney(boolean editJourney){this.editJourney = editJourney;}
 }

@@ -24,6 +24,7 @@ import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class SelectCarActivity extends AppCompatActivity {
 
     CarbonTrackerModel model;
 
-    ArrayList<Car> carList;
+    ArrayList<Car> carList = new ArrayList<Car>();
     public static final int REQUEST_CODE_ADD= 1024;
     public static final int REQUEST_CODE_EDIT= 1025;
 
@@ -207,6 +208,11 @@ public class SelectCarActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
     }
 
     private void restart()

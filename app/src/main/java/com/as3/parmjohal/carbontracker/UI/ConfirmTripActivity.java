@@ -6,26 +6,20 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
-    CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    CarbonTrackerModel model;
     private Journey journey;
 
     public static final int REQUEST_CODE_CAR= 2017;
@@ -36,6 +30,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_trip);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         if(model.isConfirmTrip()) {
             setTitle("Confirm Trip");
@@ -63,15 +59,18 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-
-        setupTextView(R.id.display_CarName, journey.getCar().getName());
-        setupTextView(R.id.display_MainCar, journey.getCarInfo());
-
+        //setupTextView(R.id.display_CarName, journey.getCar().getName());
+        setupTextView(R.id.display_MainCar, journey.getTransportationInfo());
         setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         if(model.isConfirmTrip()) {
@@ -132,6 +131,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void addJourney() {
         model.getJourneyManager().add(journey);
+        model.getDayManager().add(journey);
     }
 
     private void getJourneyData()
@@ -140,6 +140,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
             Log.i("Journey: ", "New Journey");
             Car currentCar = model.getCurrentCar();
             Route currentRoute = model.getCurrentRoute();
+
+            Log.i("CO2", currentCar.toString());
+
             journey = new Journey(currentCar, currentRoute);
         }
         else {
