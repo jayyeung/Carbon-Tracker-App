@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        model.setConfirmTrip(true);
+        model.setEditJourney(false);
+
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
 
@@ -516,6 +519,7 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_CODE_JOURNEY):
                 if (resultCode == Activity.RESULT_OK) {
+                        model.setConfirmTrip(true);
                         restart();
                         break;
                     }

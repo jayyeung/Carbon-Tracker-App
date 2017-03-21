@@ -94,6 +94,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
     public void OptionSelect(int id) {
         switch (id) {
             case android.R.id.home:
+
                 finish();
                 break;
             case R.id.action_confirm:
@@ -187,6 +188,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     journey.calculateCO2();
                     model.setCurrentCar(null);
                     model.setEditJourney(false);
+
                     restart();
 
                     break;
@@ -218,8 +220,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
     }
     private void restart()
     {
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        populateTextViews();
     }
 }
