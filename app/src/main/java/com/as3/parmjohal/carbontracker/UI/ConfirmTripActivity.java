@@ -55,6 +55,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
         // if a menu option was selected at dashboard:
         int menu_select_id = getIntent().getIntExtra("menu_select", 0);
         if (menu_select_id != 0) { OptionSelect(menu_select_id); }
+
     }
 
     private void populateTextViews(){

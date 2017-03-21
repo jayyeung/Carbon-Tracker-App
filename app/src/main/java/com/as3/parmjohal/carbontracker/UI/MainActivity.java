@@ -397,6 +397,9 @@ public class MainActivity extends AppCompatActivity {
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
+                            model.setCurrentJouney(journey.get(position));
+                            model.setConfirmTrip(false);
+
                             Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                             intent.putExtra("menu_select", item.getItemId());
                             startActivityForResult(intent,REQUEST_CODE_JOURNEY);
