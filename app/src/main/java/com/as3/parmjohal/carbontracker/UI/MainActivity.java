@@ -519,14 +519,14 @@ public class MainActivity extends AppCompatActivity {
         String tips7 = "you have used too much utility so that generated co2 out of it please save utility for next day;"; //function 9  needed
 
         CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
-        CardView  utility_tip_module = (CardView) findViewById(R.id.tip_module);
+        CardView  utility_tip_module = (CardView) findViewById(R.id.utility_tip_module);
         final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
         final TextView utility_message = (TextView) findViewById(R.id.tip_message_utility) ;
 
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                journey_message.setText("This message has changed");
+                journey_message.setText("journey_message has changed");
             }
         });
 
