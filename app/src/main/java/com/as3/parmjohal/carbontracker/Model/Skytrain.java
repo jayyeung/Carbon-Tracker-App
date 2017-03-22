@@ -118,8 +118,22 @@ public class Skytrain extends Transportation{
     }
 
     public String[] getStops(){
-        return stops;
+        if(trainType.equals("Expo Line")) {
+
+            return expoLine_stops;
+        }
+        else if(trainType.equals("Millennium Line")) {
+
+           return millenniumLine_stops;
+        }
+        else if(trainType.equals("Canada Line")) {
+
+            return canadeLine_stops;
+
+        }
+        else return null;
     }
+
 
     public Route getRoute()
     {

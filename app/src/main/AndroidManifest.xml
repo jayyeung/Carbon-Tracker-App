@@ -34,7 +34,10 @@
         <activity android:name=".UI.AddRouteActivity" android:screenOrientation="portrait"/>
         <activity android:name=".UI.ConfirmTripActivity" android:screenOrientation="portrait"/>
         <activity android:name=".UI.EditRouteActivity" android:screenOrientation="portrait"/>
-
+        <activity android:name=".UI.SelectTransActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.BusActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.WalkActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.TrainActivity" android:screenOrientation="portrait"/>
         <!-- pop-up-windows -->
         <activity android:name=".UI.CalenderActivity"
             android:theme="@style/AppTheme.PopBackground" android:screenOrientation="portrait"/>

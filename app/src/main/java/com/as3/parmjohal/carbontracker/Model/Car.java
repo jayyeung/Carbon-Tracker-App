@@ -44,7 +44,7 @@ public class Car extends Transportation{
     }
 
     public void setName(String name){
-        super.setName(name);
+        super.setInfo(name);
         this.name = name;
 
     }

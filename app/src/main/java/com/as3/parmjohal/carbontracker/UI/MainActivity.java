@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
