@@ -30,7 +30,7 @@ public class TrainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("SkyTrain Journey");
 
-        Skytrain newTrain = new Skytrain();
+        Skytrain newTrain = new Skytrain("","","");
         String[] stops = newTrain.getStops();
         for(int i=0;i<stops.length;i++){
             stopsList.add(stops[i]);
