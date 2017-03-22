@@ -262,7 +262,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/tip_module"
+                android:id="@+id/journey_tip_module"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
