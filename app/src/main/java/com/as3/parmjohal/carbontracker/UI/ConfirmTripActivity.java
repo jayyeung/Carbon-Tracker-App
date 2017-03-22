@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Transportation;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.SharedPreference;
@@ -25,6 +26,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_CAR= 2017;
     public static final int REQUEST_CODE_ROUTE= 2018;
     public static final int REQUEST_CODE_DATE= 2019;
+
+    boolean checkElectricity;
+    boolean checkBus;
+    boolean checkSkyTrain;
+    boolean checkWalk;
+    boolean checkBike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +46,36 @@ public class ConfirmTripActivity extends AppCompatActivity {
         }
         else {
             setTitle("Journey Data");
-
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getJourneyData();
+        boolean checkElectricity = journey.getTransportation().getFuelType().equals("Electricity");
+        boolean checkBus = journey.getTransportation().getFuelType().equals("Bus");
+        boolean checkSkyTrain = journey.getTransportation().getFuelType().equals("Skytrain");
+        boolean checkWalk = journey.getTransportation().getFuelType().equals("Walk");
+        boolean checkBike = journey.getTransportation().getFuelType().equals("Bike");
 
+
+        populateTextViews();
+
+
+        // if a menu option was selected at dashboard:
+        int menu_select_id = getIntent().getIntExtra("menu_select", 0);
+        if (menu_select_id != 0) { OptionSelect(menu_select_id); }
+
+    }
+
+    private void populateTextViews(){
+        Log.i("TAG", ""+ journey.toString());
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        setupTextView(R.id.display_mainCar, journey.getTransportationInfo());
+        //setupTextView(R.id.display_CarName, journey.getCar().getName());
+        setupTextView(R.id.display_MainCar, journey.getTransportation().getInfo());
+        setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
     }
@@ -74,8 +99,15 @@ public class ConfirmTripActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        OptionSelect(item.getItemId());
+        return true;
+
+    }
+
+    public void OptionSelect(int id) {
+        switch (id) {
             case android.R.id.home:
+
                 finish();
                 break;
             case R.id.action_confirm:
@@ -87,6 +119,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//reset activity stack
                 model.setCurrentCar(null);
+                model.setCurrentTransportation(null);
                 model.setCurrentRoute(null);
                 finish();
                 startActivity(intent);//go to dashboard
@@ -106,15 +139,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 model.setConfirmTrip(true);
                 finish();
                 break;
-
-
-
-
             default:
                 break;
         }
-        return true;
-
     }
 
     private void addJourney() {
@@ -126,23 +153,25 @@ public class ConfirmTripActivity extends AppCompatActivity {
     {
         if(model.isConfirmTrip()) {
             Log.i("Journey: ", "New Journey");
-            Car currentCar = model.getCurrentCar();
+            Transportation currentTransportation = model.getCurrentTransportation();
             Route currentRoute = model.getCurrentRoute();
 
-            Log.i("CO2", currentCar.toString());
+            Log.i("CO2", currentTransportation.toString());
 
-            journey = new Journey(currentCar, currentRoute);
+            journey = new Journey(currentTransportation, currentRoute);
         }
         else {
             Log.i("Journey: ", "Clicked Journey");
             journey = model.getCurrentJouney();
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
         }
     }
 
     private void editCar()
     {
         model.setEditJourney(true);
-        Intent intent = SelectCarActivity.makeIntent(ConfirmTripActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(ConfirmTripActivity.this);
         startActivityForResult(intent,REQUEST_CODE_CAR);
     }
 
@@ -154,7 +183,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void editDate()
     {
-
+        model.setEditJourney(true);
         startActivityForResult(new Intent(ConfirmTripActivity.this,CalenderActivity.class),REQUEST_CODE_DATE);
     }
 
@@ -164,7 +193,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
         textView.setText(displayString);
     }
 
-
     public static Intent makeIntent(Context context) {
         Intent intent = new Intent(context, ConfirmTripActivity.class);
         return intent;
@@ -173,10 +201,18 @@ public class ConfirmTripActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_CODE_CAR):
                 if (resultCode == Activity.RESULT_OK) {
-                    journey.setCar(model.getCurrentCar());
+                    Log.i("test",""+journey.getTransportationType());
+                    if(journey.getTransportationType().equals("Car")==false){
+                        Log.i("true",""+journey.getTransportationType());
+                    journey.setRoute(model.getCurrentRoute());
+                    }
+                    journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
+                    model.setCurrentTransportation(null);
                     model.setEditJourney(false);
+
                     restart();
 
                     break;
@@ -188,6 +224,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     journey.setRoute(model.getCurrentRoute());
                     journey.calculateCO2();
                     model.setCurrentRoute(null);
+                    model.setCurrentTransportation(null);
                     model.setEditJourney(false);
                     restart();
 
@@ -196,8 +233,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_DATE):
                 if (resultCode == Activity.RESULT_OK) {
+                    model.setEditJourney(false);
                     restart();
-
                     break;
 
 
@@ -208,10 +245,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
     }
     private void restart()
     {
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        populateTextViews();
     }
-
-
 }

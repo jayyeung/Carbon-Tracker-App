@@ -27,22 +27,49 @@
             android:screenOrientation="portrait" />
 
         <!-- journey -->
-        <activity android:name=".UI.SelectCarActivity" />
-        <activity android:name=".UI.AddCarActivity" />
-        <activity android:name=".UI.SelectRouteActivity" />
-        <activity android:name=".UI.EditCarActivity" />
-        <activity android:name=".UI.AddRouteActivity" />
-        <activity android:name=".UI.ConfirmTripActivity" />
-        <activity android:name=".UI.EditRouteActivity" />
-
-        <!-- pop-up-windows -->
+        <activity
+            android:name=".UI.SelectCarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.AddCarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.SelectRouteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.EditCarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.AddRouteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ConfirmTripActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.EditRouteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.SelectTransActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.BusActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.WalkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.TrainActivity"
+            android:screenOrientation="portrait" />
+        //Utilities
+        <activity
+            android:name=".UI.UtilitiesActivity"
+            android:screenOrientation="portrait" />
+        <!-- Utility -->
         <activity
             android:name=".UI.CalenderActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopBackground" />
-        <activity android:name=".UI.SelectTransActivity" />
-        <activity android:name=".UI.BusActivity" />
-        <activity android:name=".UI.TrainActivity" />
-        <activity android:name=".UI.WalkActivity"></activity>
+
     </application>
 
 </manifest>

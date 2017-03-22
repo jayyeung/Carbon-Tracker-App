@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 /**
  * Created by ParmJohal on 2017-03-01.
  */
@@ -22,12 +24,12 @@ public class Car extends Transportation{
     private double engineDisplacment = 0;
 
     public Car() {
-        super(0,0," ");
+        super(0,0," ", "car");
     }
 
     //    public Transportation(int highwayFuel, int cityFuel, String fuelType) {
     public Car(String name, String make, String model, int year, String tranyType, double engineDisplacment) {
-        super(0,0," ");
+        super(0,0," ","car");
         this.make = make;
         this.model = model;
         this.year = year;
@@ -42,6 +44,7 @@ public class Car extends Transportation{
     }
 
     public void setName(String name){
+        super.setInfo("" + getYear()+", " + getMake()+ " " + getModel());
         super.setName(name);
         this.name = name;
 
@@ -109,8 +112,11 @@ public class Car extends Transportation{
     }
 
     public void setHighwayFuel(int highwayFuel) {
+
         super.setHighwayFuel(highwayFuel);
+        super.setInfo("" + getYear()+", " + getMake()+ " " + getModel());
         this.highwayFuel = highwayFuel;
+
     }
 
     public double getCityFuel() {
@@ -139,6 +145,7 @@ public class Car extends Transportation{
     @Override
     public String getInfo()
     {
+        Log.i("Info ", "In Car class");
         return "" + getYear()+", " + getMake()+ " " + getModel();
     }
 

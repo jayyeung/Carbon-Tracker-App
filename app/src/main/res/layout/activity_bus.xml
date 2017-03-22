@@ -20,7 +20,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/busText"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -29,7 +29,7 @@
                 tools:layout_editor_absoluteY="4dp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editBus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -47,14 +47,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/distanceText"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Distance Travelled (km):" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/editDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
