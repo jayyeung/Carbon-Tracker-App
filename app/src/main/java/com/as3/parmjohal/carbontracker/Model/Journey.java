@@ -20,10 +20,9 @@ public class Journey {
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
-    public Journey(Transportation transportation , Route route ) {
+    public Journey(Transportation transportation , Route route) {
         this.transportation = transportation;
         this.route = route;
-
         calculateCO2();
     }
 
@@ -32,15 +31,17 @@ public class Journey {
         boolean checkElectricity = transportation.getFuelType().equals("Electricity");
         boolean checkBus = transportation.getFuelType().equals("Bus");
         boolean checkSkyTrain = transportation.getFuelType().equals("Skytrain");
+        boolean checkWalk = transportation.getFuelType().equals("Walk");
+        boolean checkBike = transportation.getFuelType().equals("Bike");
 
-        if(!checkElectricity && !checkSkyTrain && !checkBus ) {
+        if(!checkElectricity && !checkSkyTrain && !checkBus && !checkWalk) {
 
             if (transportation.getFuelType().equals("Diesel")) {
                 CO2_COVERTOR = 10.16;
             }
 
             double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
-            double cityGallons = (double) route.getCityDistance() / (double) transportation.getCityFuel();
+            double cityGallons = route.getCityDistance() / transportation.getCityFuel();
             double hwyCO2 = CO2_COVERTOR * hwyGallons;
             double cityCO2 = CO2_COVERTOR * cityGallons;
 
@@ -52,7 +53,7 @@ public class Journey {
             co2 = route.getCityDistance() * 0.0087;
         }
         else {
-            co2 = 0;
+            co2 = 0.0;
         }
     }
 
@@ -109,22 +110,19 @@ public class Journey {
         return transportation;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Journey{" +
-//                "route=" + route +
-//                ", car=" + transportation +
-//                ", co2=" + co2 +
-//                ", CO2_COVERTOR=" + CO2_COVERTOR +
-//                '}';
-//    }
-
-
     @Override
     public String toString() {
         return "Journey{" +
-                "date=" + date +
+                "route=" + route +
+                ", car=" + transportation +
+                ", co2=" + co2 +
+                ", CO2_COVERTOR=" + CO2_COVERTOR +
                 '}';
+    }
+
+    public String getTransportationType()
+    {
+        return transportation.getObjectType();
     }
 
     @Override

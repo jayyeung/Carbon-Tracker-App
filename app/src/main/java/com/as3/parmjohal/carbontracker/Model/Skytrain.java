@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class Skytrain extends Transportation{
 
-    private int highwayFuel =0;
+    private int highwayFuel = 0;
     private double cityFuel = 0;
     String fuelType = "Skytrain";
     String name = " ";
@@ -19,7 +19,7 @@ public class Skytrain extends Transportation{
     private String endStation = " ";
     private final double SPEED = 45.00;
     private final double MIN_TO_HOURS = 0.0166667;
-    private String trainType =" ";
+    private String trainType = " ";
 
     private String[] expoLine_stops = {"King George","Surrey Central","Gateway","Scott Road","Columbia","New Westminster","22nd Street",
     "Edmonds","Royal Oak","Metrotown", "Patterson","Joyce","29th Avenue","Nanaimo","Commercial-Broadway","Main","Stadium-Chinatown",
@@ -40,7 +40,7 @@ public class Skytrain extends Transportation{
 
 
     public Skytrain(String startStation, String endStation, String name, String trainType) {
-        super(0,0," ");
+        super(0,0," ", "skytrain");
         this.name= name;
         this.startStation = startStation;
         this.endStation = endStation;
@@ -112,7 +112,7 @@ public class Skytrain extends Transportation{
                 totalMinutes += minutes[i];
             }
         }
-        
+
         Log.i("Skytrain", " " + totalMinutes);
         return (totalMinutes * MIN_TO_HOURS) ;
     }

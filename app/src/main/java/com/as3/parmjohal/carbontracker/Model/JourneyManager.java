@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,10 +12,13 @@ import java.util.Date;
 
 public class JourneyManager {
     private ArrayList<Journey> journeyCollection = new ArrayList<>();
+    private int[] totalWalkDistance = {0};
 
     public void add(Journey journey)
     {
         journeyCollection.add(journey);
+        if(journey.getTransportationType().equals("walk"))
+            totalWalkDistance[0] = totalWalkDistance[0] + (int) journey.getRoute().getCityDistance();
     }
 
     public void remove(Journey journey)
@@ -37,5 +42,17 @@ public class JourneyManager {
 
         // else return all Journeys
         return journeys;
+    }
+
+    public int getTotalWalkDistance() {
+        return totalWalkDistance[0];
+    }
+
+    public void displayAll()
+    {
+        for(Journey journey: journeyCollection)
+        {
+            Log.i("Journey", journey.toString());
+        }
     }
 }

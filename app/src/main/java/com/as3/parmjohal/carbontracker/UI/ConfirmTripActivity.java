@@ -177,7 +177,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
         textView.setText(displayString);
     }
 
-
     public static Intent makeIntent(Context context) {
         Intent intent = new Intent(context, ConfirmTripActivity.class);
         return intent;
