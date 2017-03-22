@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -149,11 +151,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
+
                 switch(checkedId) {
                     case R.id.day_radio:
-                        chart_status.setText("Today");
-                        chart_type.setText("Daily Carbon Usage");
-                        setGraph(Chart_options.DAILY);
+                        RadioButton radio = (RadioButton) findViewById(R.id.day_radio);
+                        PopupMenu popup = new PopupMenu(MainActivity.this, radio);
+
+                        Menu menu = popup.getMenu();
+                        SubMenu year_menu = menu.addSubMenu("2017");
+
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem item) {
+                                chart_status.setText("Today");
+                                chart_type.setText("Daily Carbon Usage");
+                                setGraph(Chart_options.DAILY);
+                                return true;
+                            }
+                        });
+                        popup.show(); //showing popup menu
                         break;
                     case R.id.month_radio:
                         chart_status.setText("Last 28 days");
@@ -166,11 +181,12 @@ public class MainActivity extends AppCompatActivity {
                         setGraph(Chart_options.YEARLY);
                         break;
                 }
+
             }
         });
 
         // set default chart at start by selecting a radio button
-        RadioButton default_chart = (RadioButton) findViewById(R.id.day_radio);
+        RadioButton default_chart = (RadioButton) findViewById(R.id.year_radio);
         default_chart.setChecked(true);
     }
 
@@ -285,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
 
             for (Day day_obj : month_CO2) {
 
+                Log.i("MONTH SIZE", month_CO2.size()+"");
+
                 ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
                         day_obj.getDay(),
                         day_obj.getMonth(),
@@ -294,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 float journey_day_CO2 = 0;
                 for (int i=0; i<day_journeys.size(); i++) {
                     journey_day_CO2 += day_journeys.get(i).getCo2();
+                    Log.i("CO2", journey_day_CO2+"");
                 }
 
                 entries.add(new Entry(counter , journey_day_CO2));
@@ -310,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
-            
+
             LineData data = new LineData(lines);
 
             LineChart chart = new LineChart(this);
@@ -636,7 +655,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

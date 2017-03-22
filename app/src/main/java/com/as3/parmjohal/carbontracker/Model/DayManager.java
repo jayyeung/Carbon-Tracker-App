@@ -53,8 +53,8 @@ public class DayManager {
         {
             if(day == dayObject.getDay() && month == dayObject.getMonth() && year == dayObject.getYear())
             {
-                dayObject.remove(oldJourney);
                 add(newJourney);
+                dayObject.remove(oldJourney);
             }
         }
     }
