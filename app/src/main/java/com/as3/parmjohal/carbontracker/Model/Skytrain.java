@@ -79,7 +79,7 @@ public class Skytrain extends Transportation{
             stops = canadeLine_stops;
             minutes = canadaLine_minutes;
         }
-            
+
         int stop1 = 0;
         int stop2 = 0;
 
@@ -162,7 +162,7 @@ public class Skytrain extends Transportation{
 
     @Override
     public String getInfo() {
-        return "SkyTrain Trip from "+startStation+" to "+endStation+".";
+        return null;
     }
 
 }

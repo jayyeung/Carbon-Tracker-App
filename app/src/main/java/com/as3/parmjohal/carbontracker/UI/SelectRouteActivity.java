@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +27,8 @@ import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
+
+import static android.support.design.R.id.info;
 
 public class SelectRouteActivity extends AppCompatActivity {
     CarbonTrackerModel model;
@@ -44,8 +50,9 @@ public class SelectRouteActivity extends AppCompatActivity {
             setTitle("Select Route");
         }
 
+        setTitle("Select Route");
+
         populateListView();
-        registerClickCallBack();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -90,71 +97,67 @@ public class SelectRouteActivity extends AppCompatActivity {
               TextView city= (TextView) itemView.findViewById(R.id.distanceC);
               city.setText(thisRoute.getCityDistance()+" km in the City");//fill
 
+
+
+            // on track/item click
+            CardView track = (CardView) itemView.findViewById(R.id.track);
+            track.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    model.setCurrentRoute(routeList.get(position));
+                    if (model.isEditJourney()) {
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            // on overflow click
+            ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
+            overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(SelectRouteActivity.this, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.edit_delete_context, popup.getMenu());
+                    popup.show();
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            ListView clicklist = (ListView) findViewById(R.id.routeListView);
+                            Route clickedRoute = (Route) clicklist.getItemAtPosition(position);
+
+                            if(item.getItemId() == R.id.delete_id)
+                            {
+                                //do stuff if the delete button is clicked...
+                                Toast.makeText(SelectRouteActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
+                                model.getRouteManager().remove(clickedRoute);
+                                restart();
+                            }
+                            else if(item.getItemId() == R.id.edit_id)
+                            {
+                                //do stuff if the edit is clicked
+                                Toast.makeText(SelectRouteActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
+
+                                model.setCurrentRoute(clickedRoute);
+                                Intent intent2 = EditRouteActivity.makeIntent(SelectRouteActivity.this);
+                                startActivityForResult(intent2,REQUEST_CODE_EDIT);
+                            }
+                            return true;
+                        }
+                    });
+
+                }
+            });
+
             return itemView;
-
-
         }
     }
-
-
-    private void registerClickCallBack() {
-        ListView clicklist = (ListView) findViewById(R.id.routeListView);
-        clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-
-                model.setCurrentRoute(routeList.get(position));
-                if (model.isEditJourney()){
-                    Intent intent = new Intent();
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-                else {
-                    Intent intent = ConfirmTripActivity.makeIntent(SelectRouteActivity.this);
-                    startActivity(intent);
-                }
-
-
-            }
-        });
-
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_delete_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        ListView clicklist = (ListView) findViewById(R.id.routeListView);
-
-        Route clickedRoute = (Route) clicklist.getItemAtPosition(info.position);
-
-        if(item.getItemId() == R.id.delete_id)
-        {
-            //do stuff if the delete button is clicked...
-            Toast.makeText(SelectRouteActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
-            model.getRouteManager().remove(clickedRoute);
-            restart();
-        }
-        else if(item.getItemId() == R.id.edit_id)
-        {
-            //do stuff if the edit is clicked
-            Toast.makeText(SelectRouteActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
-
-            model.setCurrentRoute(clickedRoute);
-            Intent intent2 = EditRouteActivity.makeIntent(SelectRouteActivity.this);
-            startActivityForResult(intent2,REQUEST_CODE_EDIT);
-        }
-        return super.onContextItemSelected(item);
-    }
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_route_select, menu);
@@ -207,9 +210,6 @@ public class SelectRouteActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 
 
     public static Intent makeIntent(Context context) {

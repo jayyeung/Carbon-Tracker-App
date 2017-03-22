@@ -17,7 +17,12 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.JourneyManager;
+import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;
@@ -33,9 +38,19 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("Day", " Day Started");
-        DayManager dayManager = new DayManager();
-        dayManager.getPast365Days(21,03,17);
+        Log.i("walk", "Start");
+
+        Walk walk = new Walk("Park",5);
+        Route route = walk.getRoute();
+        Journey journey = new Journey(walk,route);
+
+        JourneyManager journeyManager = model.getJourneyManager();
+        //journeyManager.add(journey);
+        //SharedPreference.saveCurrentModel(this);
+        journeyManager.displayAll();
+        Log.i("walk", "Total Walk distance: " + journeyManager.getTotalWalkDistance());
+
+
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
@@ -104,7 +119,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Select Menu");
+        menu.setHeaderTitle("Select Track Type");
         menu.add(0, v.getId(), 0, "Transportation");
         menu.add(0, v.getId(), 0, "Food");
         menu.add(0, v.getId(), 0, "Electricity");

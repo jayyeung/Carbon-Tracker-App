@@ -54,6 +54,12 @@ public class Day {
         return true;
     }
 
+    public void remove(Journey journey){
+
+        totalCO2 -= journey.getCo2();
+        journeyManager.remove(journey);
+    }
+
     public ArrayList<Journey> getAllJourneys() {
         return journeyManager.getJourneyCollection();
     }

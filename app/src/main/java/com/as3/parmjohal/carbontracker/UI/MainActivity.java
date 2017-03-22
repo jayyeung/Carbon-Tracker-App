@@ -54,6 +54,9 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -224,6 +227,49 @@ public class MainActivity extends AppCompatActivity {
             chart.setTransparentCircleRadius(20f);
             chart.setHoleColor(Color.TRANSPARENT);
             chart.setDescription(null);
+        int day = Integer.parseInt(date[0]),
+                month = Integer.parseInt(date[1]),
+                year = Integer.parseInt(date[2]);
+
+        ////////////////
+        // DAILY GRAPH
+        ////////////////
+
+        if (option == option.DAILY) {
+            ArrayList<PieEntry> entries = new ArrayList<>();
+
+            // Journey
+            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
+            float total = 0;
+
+            if (day_journeys != null) {
+                for (int i = 0; i < day_journeys.size(); i++) {
+                    total += day_journeys.get(i).getCo2();
+                }
+                entries.add(new PieEntry(total, "Journey"));
+            }
+
+            // Utility
+            //entries.add(new PieEntry(total, "Utility"));
+
+
+            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
+
+            PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setColors( COLORS );
+            journeyDataSet.setValueTextColor(Color.WHITE);
+
+            // create chart
+            PieChart chart = new PieChart(this);
+            chart_container.addView(chart, params);
+
+            chart.setUsePercentValues(true);
+            chart.setTouchEnabled(false);
+            chart.setHoleRadius(50f);
+            chart.setTransparentCircleRadius(20f);
+            chart.setHoleColor(Color.TRANSPARENT);
+            chart.setDescription(null);
 
             Legend legend = chart.getLegend();
             legend.setXOffset(16);
@@ -302,6 +348,188 @@ public class MainActivity extends AppCompatActivity {
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
             chart.getXAxis().setEnabled(false);
+
+            Legend legend = chart.getLegend();
+            legend.setTextColor(R.color.colorAccent);
+            legend.setTextSize(16f);
+            legend.setWordWrapEnabled(true);
+
+            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+            slide_in.setDuration(1800);
+            chart.startAnimation(slide_in);
+
+            chart.setData(data);
+            chart.animateY(1500);
+            chart.invalidate();
+        }
+
+        ////////////////
+        // YEARLY GRAPH
+        ////////////////
+
+        else if (option == option.YEARLY) {
+            ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
+
+            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+
+            // Total
+            ArrayList<Entry> entries = new ArrayList<>();
+            int counter = 0;
+            for (Double month_obj : year_CO2) {
+                entries.add(new Entry(counter , month_obj.floatValue()));
+                counter++;
+            }
+
+            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            totalDataSet.setColors(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            totalDataSet.setDrawCircleHole(false);
+            totalDataSet.setValueTextColor(Color.WHITE);
+            totalDataSet.setValueTextSize(16f);
+            totalDataSet.setCircleRadius(8f);
+            totalDataSet.setLineWidth(5f);
+            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(totalDataSet);
+
+            // Journey
+            entries = new ArrayList<>();
+            counter = 0;
+            for (Journey journey_obj : month_journey_CO2) {
+                entries.add(new Entry(counter , (float) journey_obj.getCo2()));
+                counter++;
+            }
+
+            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
+            journeyDataSet.setDrawCircleHole(false);
+            journeyDataSet.setValueTextColor(Color.WHITE);
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setCircleRadius(8f);
+            journeyDataSet.setLineWidth(5f);
+            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(journeyDataSet);
+
+            LineData data = new LineData(lines);
+
+            LineChart chart = new LineChart(this);
+            chart_container.addView(chart, params);
+
+            chart.setScaleMinima(5f, 1f);
+            chart.setDescription(null);
+            chart.getAxisRight().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+
+            Legend legend = chart.getLegend();
+            legend.setTextColor(R.color.colorAccent);
+            legend.setTextSize(16f);
+            legend.setWordWrapEnabled(true);
+
+            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+            slide_in.setDuration(1800);
+            chart.startAnimation(slide_in);
+
+            chart.setData(data);
+            chart.animateY(1500);
+            chart.invalidate();
+        }
+    }
+
+        ////////////////
+        // MONTHLY GRAPH
+        ////////////////
+
+        else if (option == option.MONTHLY) {
+            final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+            Collections.reverse(month_CO2);
+
+            if (month_CO2.size() <= 0) { return; }
+
+            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+
+            // Total
+            ArrayList<Entry> entries = new ArrayList<>();
+            int counter = 0;
+            for (Day day_obj : month_CO2) {
+                entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
+                counter++;
+            }
+
+            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            totalDataSet.setColors(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            totalDataSet.setDrawCircleHole(false);
+            totalDataSet.setValueTextColor(Color.WHITE);
+            totalDataSet.setValueTextSize(16f);
+            totalDataSet.setCircleRadius(8f);
+            totalDataSet.setLineWidth(5f);
+            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(totalDataSet);
+
+            // Journey
+            entries = new ArrayList<>();
+            counter = 0;
+
+            for (Day day_obj : month_CO2) {
+
+                ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
+                        day_obj.getDay(),
+                        day_obj.getMonth(),
+                        day_obj.getYear()
+                );
+
+                float journey_day_CO2 = 0;
+                for (int i=0; i<day_journeys.size(); i++) {
+                    journey_day_CO2 += day_journeys.get(i).getCo2();
+                }
+
+                entries.add(new Entry(counter , journey_day_CO2));
+                counter++;
+            }
+
+            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
+            journeyDataSet.setDrawCircleHole(false);
+            journeyDataSet.setValueTextColor(Color.WHITE);
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setCircleRadius(8f);
+            journeyDataSet.setLineWidth(5f);
+            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(journeyDataSet);
+
+            LineData data = new LineData(lines);
+
+            LineChart chart = new LineChart(this);
+            chart_container.addView(chart, params);
+
+            chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
+            chart.setDescription(null);
+            chart.getAxisRight().setEnabled(false);
+            chart.getAxisLeft().setEnabled(false);
+
+            XAxis xval = chart.getXAxis();
+            xval.setGranularity(1f);
+            xval.setTextSize(16f);
+            xval.setTextColor(Color.WHITE);
+            xval.setDrawAxisLine(false);
+            xval.setDrawGridLines(false);
+            xval.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xval.setValueFormatter(new IAxisValueFormatter()
+            {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis)
+                {
+                   if ((int) value > month_CO2.size() || (int) value <= month_CO2.size()) { return ""; }
+
+                    Day day = month_CO2.get((int) value);
+                    String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
+                    return month + " " + day.getDay();
+                }
+            });
+
 
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
@@ -531,6 +759,7 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
         fab_utility = (FloatingActionButton) findViewById(R.id.fab_utility);
+        fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -565,6 +794,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // set tips
+    public void setTips() {
+        CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
+        final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
+
+        journey_tip_module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                journey_message.setText("This message has changed");
+            }
+        });
+    };
 
     // set tips
     public void setTips() {

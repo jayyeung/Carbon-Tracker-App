@@ -7,175 +7,558 @@
     android:layout_height="match_parent"
     tools:context="com.as3.parmjohal.carbontracker.UI.MainActivity">
 
-    <!-- sub FAB buttons -->
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal"
-        android:id="@+id/fab_main"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/add"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        android:id="@+id/fab_transport"
-        app:backgroundTint="@color/fabTransport"
-        app:srcCompat="@drawable/car"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/fab_main"
-        android:layout_alignStart="@+id/fab_main"
-        android:visibility="invisible"
-        android:layout_marginStart="7dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@color/fadedBackground"
-        android:id="@+id/fab_overlay"
-        android:alpha="0.8"
-        android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:elevation="1dp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:scrollbars="none">
+        android:visibility="visible">
 
         <LinearLayout
+            android:id="@+id/module_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:weightSum="1">
+            android:paddingBottom="36dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
 
-
-            <RelativeLayout
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/overview_module"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/dashboard_1"
-                    android:id="@+id/background"
-                    android:alpha="0.5"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="false"
-                    android:scaleType="centerCrop"/>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@color/colorPrimary"
-                    android:id="@+id/background_overlay"
-                    android:alpha="0.8"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/chart"
-                    android:layout_marginTop="20dp"
-                    android:layout_below="@+id/title"
-                    android:elevation="5dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_alignParentStart="true"></com.github.mikephil.charting.charts.PieChart>
+                android:layout_height="450dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/journeys">
 
                 <TextView
-                    android:text="@string/carbon_overview"
-                    android:layout_width="match_parent"
+                    android:id="@+id/chart_type"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:letterSpacing="0.2"
-                    android:textAllCaps="true"
-                    android:id="@+id/title"
-                    android:textSize="14sp"
-                    android:paddingTop="16dp"
-                    android:textStyle="normal|bold"
-                    android:textColor="@android:color/background_light"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:elevation="2dp"
+                    android:shadowColor="@color/colorShadow"
+                    android:shadowDx="0"
+                    android:shadowDy="15"
+                    android:shadowRadius="20"
+                    android:text="@string/chart_type"
+                    android:textColor="@color/cardview_light_background"
+                    android:textSize="24sp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chart_status" />
+
+                <TextView
+                    android:id="@+id/chart_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView2"
+                    android:layout_marginTop="24dp"
+                    android:elevation="1dp"
                     android:fontFamily="sans-serif"
-                    android:textAlignment="center"
+                    android:letterSpacing="0.2"
+                    android:paddingRight="16sp"
+                    android:text="Last 28 days"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorDarkFaded"
+                    android:textSize="14sp"
+                    android:textStyle="normal|bold"
+                    app:layout_constraintLeft_toLeftOf="@+id/chart_type"
+                    app:layout_constraintTop_toTopOf="@+id/background_overlay" />
+
+                <RadioGroup
+                    android:id="@+id/chart_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="12dp"
+                    android:elevation="1dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="@+id/chart_type"
+                    app:layout_constraintRight_toRightOf="@+id/chart_type"
+                    app:layout_constraintTop_toBottomOf="@+id/chart_type"
+                    android:layout_marginEnd="8dp">
+
+                    <RadioButton
+                        android:id="@+id/day_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_ghost_button"
+                        android:button="@android:color/transparent"
+                        android:letterSpacing="0.1"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="9dp"
+                        android:paddingTop="6dp"
+                        android:text="@string/chart_radio_daily"
+                        android:textAllCaps="true"
+                        android:textColor="@drawable/radio_ghost_button_text"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/month_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_ghost_button"
+                        android:button="@android:color/transparent"
+                        android:letterSpacing="0.1"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="9dp"
+                        android:paddingTop="6dp"
+                        android:text="@string/chart_radio_monthly"
+                        android:textAllCaps="true"
+                        android:textColor="@drawable/radio_ghost_button_text"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/year_radio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_ghost_button"
+                        android:button="@android:color/transparent"
+                        android:letterSpacing="0.1"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="9dp"
+                        android:paddingRight="9dp"
+                        android:paddingTop="6dp"
+                        android:text="@string/chart_radio_yearly"
+                        android:textAllCaps="true"
+                        android:textColor="@drawable/radio_ghost_button_text"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/chart_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/title"
+                    android:layout_marginTop="24dp"
+                    android:clipToPadding="false"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="@+id/background_overlay"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chart_options"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintBottom_toBottomOf="@+id/background_overlay"
+                    android:layout_marginBottom="52dp">
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/background"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
+                    android:alpha="0.8"
+                    android:cropToPadding="false"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/dashboard" />
 
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/background_overlay"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:alpha="0.3"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/colorPrimary" />
 
-            <LinearLayout
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/journey_module"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="24dp"
-                android:weightSum="1">
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/journeys">
 
-
-                <TextView
-                    android:text="@string/all_journeys"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/module_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignStart="@+id/scrollView2"
-                    android:layout_marginTop="32dp"
-                    android:paddingLeft="16sp"
-                    android:paddingRight="16sp"
-                    android:letterSpacing="0.2"
-                    android:textAllCaps="true"
-                    android:id="@+id/title"
-                    android:textSize="14sp"
-                    android:textStyle="normal|bold"
-                    android:textColor="@color/colorHeading"
-                    android:fontFamily="sans-serif" />
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="sans-serif"
+                        android:paddingTop="0dp"
+                        android:text="@string/all_journeys"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/colorJourney"
+                        android:textSize="18sp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
 
                 <ListView
-                    android:layout_width="match_parent"
                     android:id="@+id/journeys"
-                    android:layout_marginTop="8dp"
-                    android:divider="#c4c4c4"
-                    android:dividerHeight="1.0sp"
-                    android:overScrollFooter="@android:color/transparent"
-                    android:footerDividersEnabled="false"
-                    android:scrollbars="none"
-                    android:stackFromBottom="true"
-                    android:transcriptMode="normal"
-                    android:focusable="false"
-                    android:layout_height="fill_parent" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="129dp"
-                android:background="#c4c4c4"
-                android:id="@+id/end">
-
-                <ImageView
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/end"
-                    android:id="@+id/imageView"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="19dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="8.0sp"
+                    android:listSelector="@android:color/transparent"
+                    android:orientation="vertical"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/module_title">
 
-            </RelativeLayout>
+
+                </ListView>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/journey_tip_module"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/colorJourney"
+                app:cardCornerRadius="5dp"
+                app:contentPadding="24dp"
+                app:layout_constraintLeft_toLeftOf="@+id/journeys"
+                app:layout_constraintRight_toRightOf="@+id/journeys"
+                app:layout_constraintTop_toBottomOf="@+id/journeys">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="5"
+                    android:rowCount="2">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tip_title_journey"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tip_title"
+                            android:textColor="@color/cardview_light_background"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tip_message_journey"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/tip_message"
+                            android:textColor="#d0d0d0" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/tip_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:alpha="0.8"
+                        app:srcCompat="@drawable/car" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/utility_module"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/journeys">
+
+                <RelativeLayout
+                    android:id="@+id/module_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="sans-serif"
+                        android:paddingTop="0dp"
+                        android:text="@string/all_utilities"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/colorUtility"
+                        android:textSize="18sp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/utilities"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="19dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="8.0sp"
+                    android:listSelector="@android:color/transparent"
+                    android:orientation="vertical"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/module_title">
+
+
+                </ListView>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/utility_tip_module"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/colorUtility"
+                app:cardCornerRadius="5dp"
+                app:contentPadding="24dp"
+                app:layout_constraintLeft_toLeftOf="@+id/journeys"
+                app:layout_constraintRight_toRightOf="@+id/journeys"
+                app:layout_constraintTop_toBottomOf="@+id/journeys">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="5"
+                    android:rowCount="2">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tip_title_utility"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Utility Tip"
+                            android:textColor="@color/cardview_light_background"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tip_message_utility"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/tip_message"
+                            android:textColor="#d0d0d0" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/tip_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:alpha="0.8"
+                        app:srcCompat="@drawable/lightbulb" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
-
     </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/fab_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_main"
+        android:layout_alignEnd="@+id/fab_main"
+        android:clipToPadding="false"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:id="@+id/fab_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="11dp"
+                android:layout_weight="1"
+                android:text="@string/fab_label_utility"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/cardview_light_background"
+                android:textStyle="bold" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_utility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab_main"
+                android:layout_alignStart="@+id/fab_main"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:visibility="visible"
+                app:backgroundTint="@color/colorUtility"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/lightbulb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fab_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="11dp"
+                android:layout_weight="1"
+                android:text="@string/fab_label_journey"
+                android:textColor="@color/cardview_light_background"
+                android:textStyle="bold" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_journey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab_main"
+                android:layout_alignStart="@+id/fab_main"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:visibility="visible"
+                app:backgroundTint="@color/colorJourney"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/car" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="19dp"
+        android:clickable="true"
+        android:visibility="visible"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/add" />
+
+
+    <ImageView
+        android:id="@+id/fab_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:alpha="0.8"
+        android:clickable="false"
+        android:elevation="1dp"
+        android:visibility="gone"
+        app:srcCompat="@color/fadedBackground" />
 
 </RelativeLayout>

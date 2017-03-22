@@ -3,18 +3,26 @@
 
     <!-- base colours -->
     <color name="colorPrimary">#2ecc71</color>
-    <color name="colorPrimaryDark">#27ae60</color>
+    <color name="colorPrimaryDark">#36c171</color>
     <color name="colorAccent">#1abc9c</color>
 
+    <!-- journey colours -->
+    <color name="colorJourney">#3498db</color>
+    <color name="colorUtility">#e67e22</color>
+
     <!-- text colours -->
-    <color name="colorHeading">#b7b7b7</color>
+    <color name="colorHeading">#7b7b7b</color>
     <color name="colorSubtitle">#a0a0a0</color>
     <color name="colorBody">#a3a3a3</color>
 
     <!-- fab colours -->
     <color name="fadedBackground">#383838</color>
-    <color name="fabTransport">#3498db</color>
+
+    <!-- radio colours -->
+    <color name="colorRadio">#FF424242</color>
 
     <!-- generic -->
-    <color name="white">#ffffff</color>
+    <color name="white">#fff</color>
+    <color name="colorShadow">#1e000000</color>
+    <color name="colorDarkFaded">#95323232</color>
 </resources>
