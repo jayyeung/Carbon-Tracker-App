@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
-import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Day;
+import com.as3.parmjohal.carbontracker.Model.DayManager;
+import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -29,11 +31,14 @@ public class SplashActivity extends AppCompatActivity {
         model.setEditJourney(false);
         model.setConfirmTrip(true);
 
+        // dd/MM/yy
+
+        Log.i("Day", " Day Started");
+        DayManager dayManager = new DayManager();
+        dayManager.getPast365Days(21,03,17);
+
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
-
-        Skytrain skytrain = new Skytrain("Scott Road", "King George");
-        Log.i("Skytrain ", " " + skytrain.getDistance());
 
         // continue to dashboard
         to_dash.setOnClickListener(new View.OnClickListener() {

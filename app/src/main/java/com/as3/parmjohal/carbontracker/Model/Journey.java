@@ -22,31 +22,36 @@ public class Journey {
     public Journey(Transportation transportation , Route route ) {
         this.transportation = transportation;
         this.route = route;
-
         calculateCO2();
     }
 
-
     public void calculateCO2() {
-        Log.i("CO2", transportation.toString());
-        if (transportation.getFuelType().equals("Diesel")) {
-            CO2_COVERTOR = 10.16;
+
+        boolean checkElectricity = transportation.getFuelType().equals("Electricity");
+        boolean checkBus = transportation.getFuelType().equals("Bus");
+        boolean checkSkyTrain = transportation.getFuelType().equals("Skytrain");
+
+        if(!checkElectricity && !checkSkyTrain && !checkBus ) {
+
+            if (transportation.getFuelType().equals("Diesel")) {
+                CO2_COVERTOR = 10.16;
+            }
+
+            double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
+            double cityGallons = (double) route.getCityDistance() / (double) transportation.getCityFuel();
+            double hwyCO2 = CO2_COVERTOR * hwyGallons;
+            double cityCO2 = CO2_COVERTOR * cityGallons;
+
+            co2 = hwyCO2 + cityCO2;
+
         }
-        else if(transportation.getFuelType().equals("Electricity"))
+        else if(checkSkyTrain || checkBus)
         {
-            CO2_COVERTOR = 0;
+            co2 = route.getCityDistance() * transportation.getCityFuel();
         }
-        else if(transportation.getFuelType().equals("Bus"))
-        {
-
+        else {
+            co2 = 0;
         }
-
-        double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
-        double cityGallons = (double) route.getCityDistance() / (double) transportation.getCityFuel();
-        double hwyCO2 = CO2_COVERTOR * hwyGallons;
-        double cityCO2 = CO2_COVERTOR * cityGallons;
-
-        co2 = hwyCO2 + cityCO2;
 
     }
 
@@ -62,6 +67,12 @@ public class Journey {
     }
 
     public String getDateInfo()
+    {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(date) ;
+    }
+
+    public String getDateInfo2()
     {
         DateFormat df = new SimpleDateFormat("dd/MM/yy");
         return df.format(date) ;
@@ -87,6 +98,11 @@ public class Journey {
         Calendar cal = Calendar.getInstance();
         cal.set(year,month,day);
         date = cal.getTime();
+    }
+
+    public String getTransportationName()
+    {
+        return transportation.getName();
     }
 
     public Car getCar() {

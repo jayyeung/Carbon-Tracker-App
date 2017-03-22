@@ -20,6 +20,11 @@ public class CarbonTrackerModel {
     private static VehicleData vehicleData;
     private RouteManager routeManager = new RouteManager();
     private JourneyManager journeyManager = new JourneyManager();
+    private DayManager dayManager = new DayManager();
+
+    private Manager<Skytrain> skytrainManager = new Manager<>();
+    private Manager<Walk> walkManager = new Manager<>();
+    private Manager<Bike> bikeManager = new Manager<>();
 
     public static ArrayList<Car> cars = new ArrayList<Car>();
 
@@ -37,10 +42,12 @@ public class CarbonTrackerModel {
 
     public static CarbonTrackerModel getCarbonTrackerModel(Context context)
     {
-        try {
-            vehicleData = new VehicleData(context);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(count == 0) {
+            try {
+                vehicleData = new VehicleData(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if(SharedPreference.getCurrentModel(context) != null && count == 0)
@@ -52,6 +59,9 @@ public class CarbonTrackerModel {
         return carbonTrackerModel;
     }
 
+//*********************************************************************
+//          MANAGERS
+//*********************************************************************
 
     public CarManager getCarManager() {
         return carManager;
@@ -65,6 +75,24 @@ public class CarbonTrackerModel {
     public JourneyManager getJourneyManager() {
         return journeyManager;
     }
+
+    public Manager<Skytrain> getSkytrainManager() {
+        return skytrainManager;
+    }
+
+    public Manager<Walk> getWalkManager() {
+        return walkManager;
+    }
+
+    public Manager<Bike> getBikeManager() {
+        return bikeManager;
+    }
+
+    public DayManager getDayManager() {
+        return dayManager;
+    }
+    //*********************************************************************
+
 
     public VehicleData getVehicleData()
     {

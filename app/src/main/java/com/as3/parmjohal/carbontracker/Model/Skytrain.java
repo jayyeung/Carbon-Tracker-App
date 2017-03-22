@@ -11,8 +11,11 @@ import java.util.ArrayList;
 public class Skytrain extends Transportation{
 
     private int highwayFuel =0;
-    private int cityFuel = 0;
+    private double cityFuel = 0;
     String fuelType = "Skytrain";
+    String name = " ";
+
+    Route route;
 
     private String startStation = " ";
     private String endStation = " ";
@@ -25,19 +28,19 @@ public class Skytrain extends Transportation{
     };
     private int[] minutes = {2,1,3,3,1,4,2,3,2,1,2,2,1,3,3,2,1,1,2};
 
-    public Skytrain() {
+    public Skytrain(String startStation, String endStation, String name) {
         super(0,0," ");
-
-    }
-
-    public Skytrain(String startStation, String endStation) {
-        super(0,0," ");
+        this.name= name;
         this.startStation = startStation;
         this.endStation = endStation;
+        setUpSuperClass();
+        route = new Route((int) getDistance(),0,"Skytrain Trip: " + name);
     }
 
     private void setUpSuperClass()
     {
+        super.setCityFuel(0.0087);
+        super.setFuelType(fuelType);
     }
 
     public double getHours()
@@ -80,6 +83,11 @@ public class Skytrain extends Transportation{
         return stops;
     }
 
+    public Route getRoute()
+    {
+        return route;
+    }
+
     public double getDistance()
     {
         return  getHours() * SPEED;
@@ -91,7 +99,7 @@ public class Skytrain extends Transportation{
     }
 
     @Override
-    public int getCityFuel() {
+    public double getCityFuel() {
         return cityFuel;
     }
 
