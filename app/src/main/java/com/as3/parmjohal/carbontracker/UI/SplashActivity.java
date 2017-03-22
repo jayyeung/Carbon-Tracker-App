@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +13,44 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Day;
+import com.as3.parmjohal.carbontracker.Model.DayManager;
+import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.JourneyManager;
+import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class SplashActivity extends AppCompatActivity {
+    CarbonTrackerModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        model.setEditJourney(false);
+        model.setConfirmTrip(true);
+
+        // dd/MM/yy
+
+        Log.i("walk", "Start");
+
+        Walk walk = new Walk("Park",5);
+        Route route = walk.getRoute();
+        Journey journey = new Journey(walk,route);
+
+        JourneyManager journeyManager = model.getJourneyManager();
+        //journeyManager.add(journey);
+        //SharedPreference.saveCurrentModel(this);
+        journeyManager.displayAll();
+        Log.i("walk", "Total Walk distance: " + journeyManager.getTotalWalkDistance());
+
+
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
@@ -109,7 +140,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(SplashActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(SplashActivity.this);
         startActivity(intent);
     }
 

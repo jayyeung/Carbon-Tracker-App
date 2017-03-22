@@ -38,6 +38,6 @@
     <string name="select_car_type">Select Car Type:</string>
     <string name="main_car">Main Car:</string>
     <string name="route">Route:</string>
-    <string name="select_car_hold_to_edit">Select Car (Hold to Edit):</string>
+    <string name="select_car_hold_to_edit">Select Car:</string>
 
 </resources>

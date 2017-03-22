@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,40 +15,52 @@ import java.util.Random;
 public class Journey {
 
     private Route route = null;
-    private Car car = null;
+    private Transportation transportation = null;
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
-    public Journey(Car car , Route route ) {
-        this.car = car;
+    public Journey(Transportation transportation , Route route) {
+        this.transportation = transportation;
         this.route = route;
-
         calculateCO2();
     }
 
     public void calculateCO2() {
-        if (car.getFuelType().equals("Diesel")) {
-            CO2_COVERTOR = 10.16;
+
+        boolean checkElectricity = transportation.getFuelType().equals("Electricity");
+        boolean checkBus = transportation.getFuelType().equals("Bus");
+        boolean checkSkyTrain = transportation.getFuelType().equals("Skytrain");
+        boolean checkWalk = transportation.getFuelType().equals("Walk");
+        boolean checkBike = transportation.getFuelType().equals("Bike");
+
+        if(!checkElectricity && !checkSkyTrain && !checkBus && !checkWalk) {
+
+            if (transportation.getFuelType().equals("Diesel")) {
+                CO2_COVERTOR = 10.16;
+            }
+
+            double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
+            double cityGallons = route.getCityDistance() / transportation.getCityFuel();
+            double hwyCO2 = CO2_COVERTOR * hwyGallons;
+            double cityCO2 = CO2_COVERTOR * cityGallons;
+
+            co2 = hwyCO2 + cityCO2;
+
         }
-        else if(car.getFuelType().equals("Electricity"))
+        else if(checkSkyTrain || checkBus)
         {
-            CO2_COVERTOR = 0;
+            co2 = route.getCityDistance() * 0.0087;
         }
-
-
-        double hwyGallons = (double) route.getHwyDistance() / (double) car.getHighwayFuel() ;
-        double cityGallons = (double) route.getCityDistance() / (double) car.getCityFuel();
-        double hwyCO2 = CO2_COVERTOR * hwyGallons;
-        double cityCO2 = CO2_COVERTOR * cityGallons;
-
-        co2 = hwyCO2 + cityCO2;
-
+        else {
+            co2 = 0.0;
+        }
     }
 
-    public String getCarInfo()
+
+    public String getTransportationInfo()
     {
-        return "" + car.getYear()+", " + car.getMake()+ " " + car.getModel();
+        return transportation.getInfo();
     }
 
     public String getRouteInfo()
@@ -60,9 +74,14 @@ public class Journey {
         return df.format(date) ;
     }
 
-    public Date getDateInfoRaw()
-    {
+    public Date getDateInfoRaw() {
         return date;
+    }
+
+    public String getDateInfo2()
+    {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(date);
     }
 
     public double getCo2() {
@@ -78,7 +97,7 @@ public class Journey {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        this.transportation = car;
     }
 
     public void setDate(int year, int month,int day){
@@ -87,20 +106,49 @@ public class Journey {
         date = cal.getTime();
     }
 
-    public Car getCar() {
-
-        return car;
+    public Transportation getTransportation() {
+        return transportation;
     }
-
-
 
     @Override
     public String toString() {
         return "Journey{" +
                 "route=" + route +
-                ", car=" + car +
+                ", car=" + transportation +
                 ", co2=" + co2 +
                 ", CO2_COVERTOR=" + CO2_COVERTOR +
                 '}';
     }
+
+    public String getTransportationType()
+    {
+        return transportation.getObjectType();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Journey journey = (Journey) o;
+
+        if (route != null ? !route.equals(journey.route) : journey.route != null) return false;
+        if (transportation != null ? !transportation.equals(journey.transportation) : journey.transportation != null)
+            return false;
+        return date != null ? date.equals(journey.date) : journey.date == null;
+    }
+
+    public static Journey copy(Journey journey) {
+
+        String[] tokens = journey.getDateInfo2().split("/");
+        int day = Integer.parseInt(tokens[0]);
+        int month = Integer.parseInt(tokens[1]);
+        int year = Integer.parseInt(tokens[2]);
+
+        Journey journeyClone = new Journey(journey.getTransportation(),journey.getRoute());
+        journeyClone.setDate(year,month - 1,day);
+
+        return journeyClone;
+    }
+
 }

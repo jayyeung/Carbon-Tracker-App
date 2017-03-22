@@ -20,51 +20,32 @@ public class CarManager {
     private JourneyManager journeyManager;
     private Context context;
 
-    public CarManager(Context context) {
-        VehicleData vehicleData = null;
-        this.context = context;
+    public CarManager()
+    {
 
-        try {
-            vehicleData = new VehicleData(context);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        allCars = vehicleData.getAllCars();
     }
+
+//    public CarManager(Context context) {
+//        VehicleData vehicleData = null;
+//        this.context = context;
+//
+//        try {
+//            vehicleData = new VehicleData(context);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        allCars = vehicleData.getAllCars();
+//    }
+
     public Car add(Car car)
     {
-        String name = car.getName();
-       if(getCarFromCSVFile(car) != null)
-       {
-
-           Car carData = getCarFromCSVFile(car);
-           Car addCar = new Car();
-           addCar.setCarData(carData);
-           addCar.setName(name);
-           carCollection.add(addCar);
-           return addCar;
-
-       }
-       else {
-           return null;
-       }
+        carCollection.add(car);
+        return car;
     }
+
     public Car edit(Car car) //same as add in looking for car from CSV file, but don't add to collection
     {
-        String name = car.getName();
-        if(getCarFromCSVFile(car) != null)
-        {
-
-            Car carData = getCarFromCSVFile(car);
-            Car addCar = new Car();
-            addCar.setCarData(carData);
-            addCar.setName(name);
-            return addCar;
-
-        }
-        else {
-            return null;
-        }
+       return car;
     }
 
     private Car getCarFromCSVFile(Car car)

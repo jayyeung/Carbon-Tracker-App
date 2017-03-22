@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,13 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,7 @@ public class SelectCarActivity extends AppCompatActivity {
 
     CarbonTrackerModel model;
 
-    ArrayList<Car> carList;
+    ArrayList<Car> carList = new ArrayList<Car>();
     public static final int REQUEST_CODE_ADD= 1024;
     public static final int REQUEST_CODE_EDIT= 1025;
 
@@ -42,11 +47,10 @@ public class SelectCarActivity extends AppCompatActivity {
             setTitle("Edit Journey's Car");
         }
         else {
-            setTitle("Select Transportation");
+            setTitle("Select Car");
         }
 
         populateListView();
-        registerClickCallBack();
     }
 
     private void populateListView() {
@@ -65,14 +69,14 @@ public class SelectCarActivity extends AppCompatActivity {
      */
     private class MyListAdaptder extends ArrayAdapter<Car> {
         public MyListAdaptder() {
-            super(SelectCarActivity.this, R.layout.car_list_view, carList);
+            super(SelectCarActivity.this, R.layout.car_list_view_select, carList);
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
 
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.car_list_view, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.car_list_view_select, parent, false);
             }
 
 
@@ -87,63 +91,67 @@ public class SelectCarActivity extends AppCompatActivity {
             TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
             description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +thisCar.getEngineDisplacment()+"L");//fill
 
+
+            // on track/item click
+            CardView track = (CardView) itemView.findViewById(R.id.track);
+            track.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    model.setCurrentCar(carList.get(position));
+                    if (model.isEditJourney()){
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    }
+                    else {
+                        Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            // on overflow click
+            ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
+            overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(SelectCarActivity.this, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.edit_delete_context, popup.getMenu());
+                    popup.show();
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            ListView clicklist = (ListView) findViewById(R.id.carListView);
+                            Car clickedCar = (Car) clicklist.getItemAtPosition(position);
+
+                            if(item.getItemId() == R.id.delete_id)
+                            {
+                                //do stuff if the delete button is clicked...
+                                Toast.makeText(SelectCarActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
+                                model.getCarManager().remove(clickedCar);
+                                restart();
+                            }
+                            else if(item.getItemId() == R.id.edit_id)
+                            {
+
+                                model.setCurrentCar(clickedCar);
+                                Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
+                                startActivityForResult(intent2,REQUEST_CODE_EDIT);
+
+                            }
+                            return true;
+                        }
+                    });
+
+                }
+            });
+
+
             return itemView;
         }
 
-    }
-
-    private void registerClickCallBack() {
-        ListView clicklist = (ListView) findViewById(R.id.carListView);
-        clicklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                model.setCurrentCar(carList.get(position));
-                if (model.isEditJourney()){
-                    Intent intent = new Intent();
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-                else {
-                    Intent intent = SelectRouteActivity.makeIntent(SelectCarActivity.this);
-                    startActivity(intent);
-                }
-
-            }
-        });
-
-
-    }
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_delete_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        ListView clicklist = (ListView) findViewById(R.id.carListView);
-
-        Car clickedCar = (Car) clicklist.getItemAtPosition(info.position);
-
-        if(item.getItemId() == R.id.delete_id)
-        {
-            //do stuff if the delete button is clicked...
-            Toast.makeText(SelectCarActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
-            model.getCarManager().remove(clickedCar);
-            restart();
-        }
-        else if(item.getItemId() == R.id.edit_id)
-        {
-
-            model.setCurrentCar(clickedCar);
-            Intent intent2 = EditCarActivity.makeIntent(SelectCarActivity.this);
-            startActivityForResult(intent2,REQUEST_CODE_EDIT);
-
-        }
-        return super.onContextItemSelected(item);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -200,6 +208,11 @@ public class SelectCarActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreference.saveCurrentModel(this);
     }
 
     private void restart()

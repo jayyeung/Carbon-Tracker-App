@@ -22,9 +22,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Day;
+import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 import com.github.mikephil.charting.charts.LineChart;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -42,10 +45,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private enum Chart_options { DAILY, MONTHLY, YEARLY };
 
     CarbonTrackerModel model;
+    DayManager day_manager;
+
     private ArrayList<Journey> journey;
     public static final int REQUEST_CODE_JOURNEY= 2020;
 
@@ -73,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setIcon(R.mipmap.app_icon_white);
         setTitle("Dashboard");
 
+        SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
+        model.setEditJourney(false);
+        model.setConfirmTrip(true);
         journey = model.getJourneyManager().getJourneyCollection();
+        day_manager = model.getDayManager();
 
         // sort all track types by date
         Collections.sort(journey, new Comparator<Journey>() {
@@ -83,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 return o1.getDateInfoRaw().compareTo(o2.getDateInfoRaw());
             }
         });
+
+        model.setConfirmTrip(true);
+        model.setEditJourney(false);
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
@@ -158,6 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
+        // Get Current Date
+        DateFormat df = new SimpleDateFormat("dd MM yy");
+        String[] date = (df.format(new Date())).split("\\s+");
+
+        int day = Integer.parseInt(date[0]),
+            month = Integer.parseInt(date[1]),
+            year = Integer.parseInt(date[2]);
+
         ////////////////
         // DAILY GRAPH
         ////////////////
@@ -209,15 +232,17 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.MONTHLY) {
-            ArrayList<Entry> entries = new ArrayList<>();
-            entries.add(new Entry(0, 4f));
-            entries.add(new Entry(1, 8f));
-            entries.add(new Entry(2, 6f));
-            entries.add(new Entry(3, 2f));
-            entries.add(new Entry(4, 18f));
-            entries.add(new Entry(5, 9f));
 
-            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91)};
+            ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+            ArrayList<Entry> entries = new ArrayList<>();
+
+            int counter = 0;
+            for (Day day_obj : month_CO2) {
+                entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
+                counter++;
+            }
+
+            final int[] CHART_COLOURS = { Color.rgb(38, 166, 91) };
 
             LineDataSet dataSet = new LineDataSet(entries, "# of Calls");
             dataSet.setColors(CHART_COLOURS);
@@ -391,14 +416,18 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(MainActivity.this, v);
                     MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.journey_popup_actions, popup.getMenu());
+                    inflater.inflate(R.menu.menu_activity_journey, popup.getMenu());
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(getApplicationContext(),
-                                    item.getTitle(), Toast.LENGTH_SHORT).show();
+                            model.setCurrentJouney(journey.get(position));
+                            model.setConfirmTrip(false);
+
+                            Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                            intent.putExtra("menu_select", item.getItemId());
+                            startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                             return true;
                         }
                     });
@@ -536,13 +565,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case (REQUEST_CODE_JOURNEY):
                 if (resultCode == Activity.RESULT_OK) {
+                        model.setConfirmTrip(true);
                         restart();
                         break;
                     }
@@ -552,7 +582,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     private void restart()
     {

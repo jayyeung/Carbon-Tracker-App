@@ -15,7 +15,7 @@ import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 
 public class CalenderActivity extends Activity {
-    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private CarbonTrackerModel model ;
 
     CalendarView calender;
     private int setYear;
@@ -28,6 +28,7 @@ public class CalenderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender);
 
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -53,7 +54,12 @@ public class CalenderActivity extends Activity {
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 if (clicked) {
+
+                    Journey oldJourney = Journey.copy(model.getCurrentJouney());
                     model.getCurrentJouney().setDate(setYear, setMonth, setDay);
+                    Journey newJourney = model.getCurrentJouney();
+                    model.getDayManager().updateDay(oldJourney,newJourney);
+
                     finish();
                 }
                 else{
