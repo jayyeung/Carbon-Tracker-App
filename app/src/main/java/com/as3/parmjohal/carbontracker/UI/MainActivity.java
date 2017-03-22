@@ -29,13 +29,20 @@ import com.as3.parmjohal.carbontracker.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
@@ -178,31 +186,35 @@ public class MainActivity extends AppCompatActivity {
         String[] date = (df.format(new Date())).split("\\s+");
 
         int day = Integer.parseInt(date[0]),
-            month = Integer.parseInt(date[1]),
-            year = Integer.parseInt(date[2]);
+                month = Integer.parseInt(date[1]),
+                year = Integer.parseInt(date[2]);
 
         ////////////////
         // DAILY GRAPH
         ////////////////
 
         if (option == option.DAILY) {
-
-            // get pie info
             ArrayList<PieEntry> entries = new ArrayList<>();
-            for (int i = 0; i < journey.size(); i++) {
-                entries.add(new PieEntry(Float.parseFloat(String.format("%.2f", journey.get(i).getCo2())), i));
+
+            // Journey
+            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
+            float total = 0;
+            for (int i = 0; i < day_journeys.size(); i++) {
+                total += day_journeys.get(i).getCo2();
             }
+            entries.add(new PieEntry(total, "Journey"));
 
-            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91), Color.rgb(63, 195, 128), Color.rgb(0, 177, 106), Color.rgb(30, 130, 76), Color.rgb(27, 188, 155)};
+            // Utility
+            entries.add(new PieEntry(total, "Utility"));
 
-            PieDataSet dataSet = new PieDataSet(entries, "Journey CO₂");
-            dataSet.setColors(CHART_COLOURS);
-            dataSet.setValueTextColor(Color.WHITE);
-            dataSet.setValueTextSize(16f);
+            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
-            PieData data = new PieData(dataSet);
+            PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setColors( COLORS );
+            journeyDataSet.setValueTextColor(Color.WHITE);
 
-            // set onto chart
+            // create chart
             PieChart chart = new PieChart(this);
             chart_container.addView(chart, params);
 
@@ -214,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             chart.setDescription(null);
 
             Legend legend = chart.getLegend();
+            legend.setXOffset(16);
             legend.setTextColor(R.color.colorAccent);
             legend.setTextSize(16f);
             legend.setWordWrapEnabled(true);
@@ -223,6 +236,9 @@ public class MainActivity extends AppCompatActivity {
             chart.startAnimation(slide_in);
             chart.animateY(1500);
 
+            // set data
+            PieData data = new PieData(journeyDataSet);
+            data.setValueFormatter(new PercentFormatter());
             chart.setData(data);
             chart.invalidate();
         }
@@ -232,33 +248,56 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.MONTHLY) {
-
             ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            ArrayList<Entry> entries = new ArrayList<>();
+            ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
 
+
+            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+
+            // Total
+            ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
                 entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
                 counter++;
             }
 
-            final int[] CHART_COLOURS = { Color.rgb(38, 166, 91) };
+            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            totalDataSet.setColors(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            totalDataSet.setDrawCircleHole(false);
+            totalDataSet.setValueTextColor(Color.WHITE);
+            totalDataSet.setValueTextSize(16f);
+            totalDataSet.setCircleRadius(8f);
+            totalDataSet.setLineWidth(5f);
+            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(totalDataSet);
 
-            LineDataSet dataSet = new LineDataSet(entries, "# of Calls");
-            dataSet.setColors(CHART_COLOURS);
-            dataSet.setDrawCircleHole(false);
-            dataSet.setCircleColor( Color.rgb(38, 166, 91) );
-            dataSet.setValueTextColor(Color.WHITE);
-            dataSet.setValueTextSize(16f);
-            dataSet.setCircleRadius(8f);
-            dataSet.setLineWidth(5f);
+            // Journey
+            entries = new ArrayList<>();
+            counter = 0;
+            for (Journey journey_obj : month_journey_CO2) {
+                entries.add(new Entry(counter , (float) journey_obj.getCo2()));
+                counter++;
+            }
 
-            LineData data = new LineData(dataSet);
+            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
+            journeyDataSet.setDrawCircleHole(false);
+            journeyDataSet.setValueTextColor(Color.WHITE);
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setCircleRadius(8f);
+            journeyDataSet.setLineWidth(5f);
+            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(journeyDataSet);
+
+            LineData data = new LineData(lines);
 
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setTouchEnabled(false);
+            chart.setScaleMinima(5f, 1f);
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -283,31 +322,55 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.YEARLY) {
+            ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
+
+            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+
+            // Total
             ArrayList<Entry> entries = new ArrayList<>();
-            entries.add(new Entry(0, 4f));
-            entries.add(new Entry(1, 8f));
-            entries.add(new Entry(2, 6f));
-            entries.add(new Entry(3, 2f));
-            entries.add(new Entry(4, 18f));
-            entries.add(new Entry(5, 9f));
+            int counter = 0;
+            for (Double month_obj : year_CO2) {
+                entries.add(new Entry(counter , month_obj.floatValue()));
+                counter++;
+            }
 
-            final int[] CHART_COLOURS = {Color.rgb(38, 166, 91)};
+            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            totalDataSet.setColors(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
+            totalDataSet.setDrawCircleHole(false);
+            totalDataSet.setValueTextColor(Color.WHITE);
+            totalDataSet.setValueTextSize(16f);
+            totalDataSet.setCircleRadius(8f);
+            totalDataSet.setLineWidth(5f);
+            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(totalDataSet);
 
-            LineDataSet dataSet = new LineDataSet(entries, "# of Calls");
-            dataSet.setColors(CHART_COLOURS);
-            dataSet.setDrawCircleHole(false);
-            dataSet.setCircleColor( Color.rgb(38, 166, 91) );
-            dataSet.setValueTextColor(Color.WHITE);
-            dataSet.setValueTextSize(16f);
-            dataSet.setCircleRadius(8f);
-            dataSet.setLineWidth(5f);
+            // Journey
+            entries = new ArrayList<>();
+            counter = 0;
+            for (Journey journey_obj : month_journey_CO2) {
+                entries.add(new Entry(counter , (float) journey_obj.getCo2()));
+                counter++;
+            }
 
-            LineData data = new LineData(dataSet);
+            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
+            journeyDataSet.setDrawCircleHole(false);
+            journeyDataSet.setValueTextColor(Color.WHITE);
+            journeyDataSet.setValueTextSize(16f);
+            journeyDataSet.setCircleRadius(8f);
+            journeyDataSet.setLineWidth(5f);
+            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(journeyDataSet);
+
+            LineData data = new LineData(lines);
 
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setTouchEnabled(false);
+            chart.setScaleMinima(5f, 1f);
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -534,19 +597,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case (REQUEST_CODE_JOURNEY):
                 if (resultCode == Activity.RESULT_OK) {
-                        model.setConfirmTrip(true);
-                        restart();
-                        break;
-                    }
-                default:
+                    model.setConfirmTrip(true);
+                    restart();
                     break;
+                }
+            default:
+                break;
 
         }
 
