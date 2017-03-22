@@ -110,6 +110,10 @@ public class Journey {
         return transportation;
     }
 
+    public void setTransportation(Transportation trans){
+        this.transportation = trans;
+    }
+
     @Override
     public String toString() {
         return "Journey{" +
@@ -124,6 +128,7 @@ public class Journey {
     {
         return transportation.getObjectType();
     }
+
 
     @Override
     public boolean equals(Object o) {
