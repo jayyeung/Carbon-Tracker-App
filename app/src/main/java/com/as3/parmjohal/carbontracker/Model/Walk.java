@@ -11,7 +11,7 @@ public class Walk extends Transportation{
     private Route walkRoute;
 
     public Walk(String name, int distance) {
-        super(0, 0, " ");
+        super(0, 0, " ","walk");
 
         this.name = name;
         this.distance = distance;

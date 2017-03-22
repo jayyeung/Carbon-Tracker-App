@@ -11,7 +11,7 @@ public class Bike extends  Transportation{
     private Route bikeRoute;
 
     public Bike(String name, int distance) {
-        super(0, 0, " ");
+        super(0, 0, " ","bike");
 
         this.name = name;
         this.distance = distance;

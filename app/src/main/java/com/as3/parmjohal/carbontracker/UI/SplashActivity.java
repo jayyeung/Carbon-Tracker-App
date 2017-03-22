@@ -17,9 +17,12 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.JourneyManager;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
+import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;
@@ -35,12 +38,18 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("Skytrain", "Start");
-        Skytrain skytrain = new Skytrain("VCC/Clark", "Commercial-Broadway", "Work", "Millennium Line");
+        Log.i("walk", "Start");
 
-        Route route = skytrain.getRoute();
-        Journey journey = new Journey(skytrain,route);
-        Log.i("Skytrain", "CO2 " + journey.getCo2());
+        Walk walk = new Walk("Park",5);
+        Route route = walk.getRoute();
+        Journey journey = new Journey(walk,route);
+
+        JourneyManager journeyManager = model.getJourneyManager();
+        //journeyManager.add(journey);
+        //SharedPreference.saveCurrentModel(this);
+        journeyManager.displayAll();
+        Log.i("walk", "Total Walk distance: " + journeyManager.getTotalWalkDistance());
+
 
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),

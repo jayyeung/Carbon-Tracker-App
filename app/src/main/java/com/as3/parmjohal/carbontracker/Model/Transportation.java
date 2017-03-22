@@ -12,11 +12,13 @@ public class Transportation {
     private double cityFuel1 = 0;
     private String fuelType1 = " ";
     private String info = " ";
+    private String objectType = " ";
 
-    public Transportation(int highwayFuel, int cityFuel, String fuelType) {
+    public Transportation(int highwayFuel, int cityFuel, String fuelType, String objectType) {
         this.highwayFuel1 = highwayFuel;
         this.cityFuel1 = cityFuel;
         this.fuelType1 = fuelType;
+        this.objectType = objectType;
     }
 
     public int getHighwayFuel() {
@@ -45,6 +47,10 @@ public class Transportation {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getObjectType() {
+        return objectType;
     }
 
     public String getInfo(){

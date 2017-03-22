@@ -16,7 +16,7 @@ public class Bus extends Transportation{
     private Route busRoute;
 
     public Bus(String name, int distance) {
-        super(0, 0, " ");
+        super(0, 0, " ", "bus");
         this.name = name;
         this.distance = distance;
         setupSuperClass();

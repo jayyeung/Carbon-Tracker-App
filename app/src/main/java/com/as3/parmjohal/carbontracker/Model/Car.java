@@ -24,12 +24,12 @@ public class Car extends Transportation{
     private double engineDisplacment = 0;
 
     public Car() {
-        super(0,0," ");
+        super(0,0," ", "car");
     }
 
     //    public Transportation(int highwayFuel, int cityFuel, String fuelType) {
     public Car(String name, String make, String model, int year, String tranyType, double engineDisplacment) {
-        super(0,0," ");
+        super(0,0," ","car");
         this.make = make;
         this.model = model;
         this.year = year;
