@@ -44,7 +44,7 @@ public class SelectCarActivity extends AppCompatActivity {
             setTitle("Edit Journey's Car");
         }
         else {
-            setTitle("Select Transportation");
+            setTitle("Select Car");
         }
 
         populateListView();

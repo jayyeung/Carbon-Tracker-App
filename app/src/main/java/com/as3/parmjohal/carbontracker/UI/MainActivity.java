@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
 }

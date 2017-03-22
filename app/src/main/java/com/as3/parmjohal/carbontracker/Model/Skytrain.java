@@ -79,6 +79,10 @@ public class Skytrain extends Transportation{
         return (totalMinutes * MIN_TO_HOURS) ;
     }
 
+    public String[] getStops(){
+        return stops;
+    }
+
     public Route getRoute()
     {
         return route;

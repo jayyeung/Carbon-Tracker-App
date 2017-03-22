@@ -64,12 +64,12 @@
                 android:layout_weight="1" />
 
             <Spinner
-                android:layout_height="wrap_content"
                 android:id="@+id/makeSpinner"
-                android:layout_marginTop="20dp"
                 android:layout_width="220dp"
-                android:layout_below="@+id/editName"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_below="@+id/editName"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
