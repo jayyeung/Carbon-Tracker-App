@@ -42,6 +42,39 @@ public class DayManager {
 
     }
 
+    public void updateDay(Journey oldJourney, Journey newJourney)
+    {
+        String[] tokens = oldJourney.getDateInfo2().split("/");
+        int day = Integer.parseInt(tokens[0]);
+        int month = Integer.parseInt(tokens[1]);
+        int year = Integer.parseInt(tokens[2]);
+
+        for(Day dayObject: days)
+        {
+            if(day == dayObject.getDay() && month == dayObject.getMonth() && year == dayObject.getYear())
+            {
+                dayObject.remove(oldJourney);
+                add(newJourney);
+            }
+        }
+    }
+
+    public void removeJourney(Journey journey)
+    {
+        String[] tokens = journey.getDateInfo2().split("/");
+        int day = Integer.parseInt(tokens[0]);
+        int month = Integer.parseInt(tokens[1]);
+        int year = Integer.parseInt(tokens[2]);
+
+        for(Day dayObject: days)
+        {
+            if(day == dayObject.getDay() && month == dayObject.getMonth() && year == dayObject.getYear())
+            {
+                dayObject.remove(journey);
+            }
+        }
+    }
+
     public boolean add(Journey journey)
     {
         String journeyDate = journey.getDateInfo2();

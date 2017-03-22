@@ -6,17 +6,17 @@ package com.as3.parmjohal.carbontracker.Model;
 
 public class Route {
 
-    private int cityDistance = 0;
+    private double cityDistance = 0;
     private int hwyDistance = 0;
     private String routeName = "";
 
-    public Route(int cityDistance, int hwyDistance, String routeName) {
+    public Route(double cityDistance, int hwyDistance, String routeName) {
         this.cityDistance = cityDistance;
         this.hwyDistance = hwyDistance;
         this.routeName = routeName;
     }
 
-    public int getCityDistance() {
+    public double getCityDistance() {
         return cityDistance;
     }
 

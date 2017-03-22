@@ -1,13 +1,14 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ParmJohal on 2017-03-05.
  */
 
 public class JourneyManager {
-
     private ArrayList<Journey> journeyCollection = new ArrayList<>();
 
     public void add(Journey journey)
@@ -32,6 +33,9 @@ public class JourneyManager {
     }
 
     public ArrayList<Journey> getJourneyCollection() {
-        return (ArrayList<Journey>) journeyCollection;
+        ArrayList<Journey> journeys = journeyCollection;
+
+        // else return all Journeys
+        return journeys;
     }
 }

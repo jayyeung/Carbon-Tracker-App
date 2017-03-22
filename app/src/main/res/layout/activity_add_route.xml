@@ -5,61 +5,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingLeft="72dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="32dp"
     tools:context="com.as3.parmjohal.carbontracker.UI.AddCarActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:text="@string/route_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:id="@+id/carName" />
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:ems="10"
-            android:id="@+id/addRouteName" />
+            <TextView
+                android:id="@+id/carName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/route_name"
+                android:textColor="@color/colorPrimary" />
 
-        <TextView
-            android:text="@string/distance_on_highway"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/distanceHighway" />
+            <EditText
+                android:id="@+id/addRouteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Eg. SFU Surrey"
+                android:inputType="text"
+                android:textColorHint="@color/colorSubtitle"
+                android:textSize="30sp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:ems="10"
-            android:id="@+id/addHighwayDistance" />
+            <TextView
+                android:id="@+id/distanceHighway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/distance_on_highway"
+                android:textColor="@color/colorPrimary" />
 
-        <TextView
-            android:text="@string/distance_in_city"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/distanceCity" />
+            <EditText
+                android:id="@+id/addHighwayDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:hint="Eg. 25"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/colorSubtitle" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:ems="10"
-            android:id="@+id/addCityDistance" />
+            <TextView
+                android:id="@+id/distanceCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/distance_in_city"
+                android:textColor="@color/colorPrimary" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/addCityDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:hint="Eg. 25"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/colorSubtitle" />
+
+        </LinearLayout>
 
 </RelativeLayout>
