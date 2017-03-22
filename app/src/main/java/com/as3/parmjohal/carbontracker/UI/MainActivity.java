@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             // Utility
             //entries.add(new PieEntry(total, "Utility"));
 
+
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
             PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
@@ -281,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
             // Journey
             entries = new ArrayList<>();
             counter = 0;
+
             for (Day day_obj : month_CO2) {
 
                 ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
@@ -308,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
-
+            
             LineData data = new LineData(lines);
 
             LineChart chart = new LineChart(this);
@@ -634,7 +636,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
-        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
+        Intent intent = SelectCarActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
