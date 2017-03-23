@@ -42,10 +42,9 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        model.getDayManager().getPast28Days_JourneysCO2(01,04,17);
-        model.getDayManager().getPast365Days_JourneysCO2(01,04,17);
-        //model.getTipsManager().getTip(this);
-        //model.getTipsManager().displayAll();
+        Log.i("Utility", " START ");
+        model.getDayManager().getPast365Days_UtilityCO2(24,03,17);
+
 
         DayManager dayManager = new DayManager();
 

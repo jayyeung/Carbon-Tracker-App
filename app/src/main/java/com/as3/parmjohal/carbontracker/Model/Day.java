@@ -1,7 +1,10 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ParmJohal on 2017-03-20.
@@ -21,7 +24,7 @@ public class Day {
     private int year = 0;
     private int month = 0;
     private int day = 0;
-
+    private Date rawDate;
 
     public Day(String date) {
         this.date = date;
@@ -30,6 +33,13 @@ public class Day {
 
     private void setUpDate()
     {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+        try {
+            rawDate = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         // dd/MM/yy
         String[] tokens = date.split("/");
         day = Integer.parseInt(tokens[0]);
@@ -105,6 +115,10 @@ public class Day {
     public void setTotalUtility(double totalUtility) {
         totalCO2 += totalUtility;
         this.totalUtility = totalUtility;
+    }
+
+    public Date getRawDate() {
+        return rawDate;
     }
 
     public double getTotalUtility() {
