@@ -154,7 +154,6 @@ public class DayManager {
         return null;
     }
 
-
     //returns an arraylist of size 12 with total CO2 for that mont
     //arraylist.get(0) will be the total CO2 for the month of january in the past 365 days
     // dd/MM/yy

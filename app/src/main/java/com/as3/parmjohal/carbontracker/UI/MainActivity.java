@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd MM yy");
         String[] date = (df.format(new Date())).split("\\s+");
 
+        // if no input day, month, and year is given, default current day, month, year
         int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
             month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
             year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
@@ -243,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Utility
-            //entries.add(new PieEntry(total, "Utility"));
-
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
@@ -288,12 +287,15 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.MONTHLY) {
             final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
-
             Collections.reverse(month_CO2);
-            Collections.reverse(journey_CO2);
 
             if (month_CO2.size() <= 0) { return; }
+
+            ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
+            Collections.reverse(journey_CO2);
+
+            ArrayList<Double> utility_CO2 = day_manager.getPast28Days_UtilityCO2(day, month, year);
+            Collections.reverse(utility_CO2);
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
@@ -336,6 +338,26 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
 
+            // Utility
+            entries = new ArrayList<>();
+            counter = 0;
+
+            for (Double utility_day : utility_CO2) {
+                entries.add(new Entry(counter , utility_day.floatValue()));
+                counter++;
+            }
+
+            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
+            utilityDataSet.setColors( Color.rgb(230, 126, 34) );
+            utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
+            utilityDataSet.setDrawCircleHole(false);
+            utilityDataSet.setValueTextColor(Color.WHITE);
+            utilityDataSet.setValueTextSize(16f);
+            utilityDataSet.setCircleRadius(8f);
+            utilityDataSet.setLineWidth(5f);
+            utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(utilityDataSet);
+
             LineData data = new LineData(lines);
 
             LineChart chart = new LineChart(this);
@@ -368,7 +390,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
             legend.setTextSize(16f);
@@ -391,7 +412,12 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.YEARLY) {
             final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+
+            if (year_CO2.size() <= 0) { return; }
+
             ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year);
+
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year);
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
@@ -418,8 +444,6 @@ public class MainActivity extends AppCompatActivity {
             entries = new ArrayList<>();
             counter = 0;
             for (Double journey_obj : month_journey_CO2) {
-                Log.i("JOURENY", journey_obj+"");
-
                 entries.add(new Entry(counter , journey_obj.floatValue()));
                 counter++;
             }
@@ -434,6 +458,25 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
+
+            // Utility
+            entries = new ArrayList<>();
+            counter = 0;
+            for (Double utility_obj : month_utility_CO2) {
+                entries.add(new Entry(counter , utility_obj.floatValue()));
+                counter++;
+            }
+
+            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
+            utilityDataSet.setColors( Color.rgb(230, 126, 34) );
+            utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
+            utilityDataSet.setDrawCircleHole(false);
+            utilityDataSet.setValueTextColor(Color.WHITE);
+            utilityDataSet.setValueTextSize(16f);
+            utilityDataSet.setCircleRadius(8f);
+            utilityDataSet.setLineWidth(5f);
+            utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+            lines.add(utilityDataSet);
 
             LineData data = new LineData(lines);
 
