@@ -232,7 +232,26 @@ public class DayManager {
             Day currentDay = past28Days.get(i);
             journeys.addAll(currentDay.getAllJourneys());
         }
+
         return journeys;
+    }
+
+    public ArrayList<Double> getPast28Days_JourneysCO2(int day, int month, int year)
+    {
+        ArrayList<Double> totalJourneyCO2_perDay = new ArrayList<>();
+        ArrayList<Day> past28Days = getPast28Days(day,month,year);
+
+        for(Day day1: past28Days)
+        {
+            totalJourneyCO2_perDay.add(day1.getTotalCO2());
+        }
+
+        for(Double num: totalJourneyCO2_perDay)
+        {
+            Log.i("Past 28", " " + num);
+        }
+
+        return totalJourneyCO2_perDay;
     }
 
     // dd/MM/yy
