@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">"Tracker Carbon"</string>
+
+    <!-- splash -->
+    <string name="continue_to_dashboard">"Continuer au tableau de bord"</string>
+    <string name="start_a_new_journey">"Commencer un nouveau Journey"</string>
+
+    <!-- dashboard -->
+    <string name="dashboard_welcome_message">"Tableau de bord"</string>
+    <string name="carbon_overview">"Vue d'ensemble du carbone"</string>
+    <string name="all_journeys">"Vos derniers Journeys"</string>
+    <string name="all_utilities">"Vos derniers Utilities"</string>
+    <string name="fab_label_utility">"New Utility"</string>
+    <string name="fab_label_journey">"New Journey"</string>
+
+    <string name="chart_type">"Utilisation quotidienne de carbone"</string>
+    <string name="chart_radio_monthly">"Mensuel"</string>
+    <string name="chart_radio_daily">"quotidien, 646"</string>
+    <string name="chart_radio_yearly">"Annuelle"</string>
+
+    <string name="tip_title">"Journey Tip"</string>
+    <string name="tip_message">"Astuce message Goes Here"</string>
+
+
+    <!-- journeys -->
+    <string name="route_name">"Nom de la route"</string>
+    <string name="distance_on_highway">"Distance sur la route (km)"</string>
+    <string name="distance_in_city">"Distance de la ville (km)"</string>
+
+    <string name="car_name">"Nom de voitures"</string>
+    <string name="car_make">"Car Make"</string>
+    <string name="year">"Année"</string>
+    <string name="select_route_hold_to_edit_or_delete">"Sélectionnez Itinéraire:"</string>
+    <string name="would_you_like_to_save_this_route">"Voulez-vous enregistrer cet itinéraire?"</string>
+    <string name="car_s_name">"Nom de voiture"</string>
+    <string name="make">"Constructeur"</string>
+    <string name="model">"Modèle"</string>
+    <string name="select_car_type">"Sélectionner le type de véhicule:"</string>
+    <string name="main_car">"Car principal:"</string>
+    <string name="route">"Trajet"</string>
+    <string name="select_car_hold_to_edit">"Sélectionnez véhicule"</string>
+
+</resources>
