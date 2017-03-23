@@ -16,7 +16,12 @@ import com.as3.parmjohal.carbontracker.R;
 
 import java.util.Calendar;
 import java.util.Date;
-
+/**
+ * --CalenderActvity--
+ * Pops up the activity with a calender.
+ * user selects day and clicks the save button in order
+ * to proceed back to previous activity.
+ */
 public class CalenderActivity extends Activity {
     private CarbonTrackerModel model ;
 

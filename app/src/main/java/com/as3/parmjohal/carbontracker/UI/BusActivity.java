@@ -15,6 +15,13 @@ import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
+/**
+ * -- BusActivity--
+ * Creates new Bus Transportation and Route
+ * by entering bus name and distance.
+ * Proceeds to ConfirmTripActivity on completion
+ */
+
 public class BusActivity extends AppCompatActivity {
     private EditText editBus;
     private EditText editDistance;

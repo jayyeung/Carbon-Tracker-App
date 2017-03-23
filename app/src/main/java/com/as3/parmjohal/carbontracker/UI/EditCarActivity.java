@@ -26,6 +26,13 @@ import com.as3.parmjohal.carbontracker.R;
 
 import java.util.ArrayList;
 
+/**
+ * --EditCarActivity--
+ * Edits existing car in carlist and sends it back
+ * with the correct info.
+ * Proceeds back to SelectCarActivity
+ */
+
 public class EditCarActivity extends AppCompatActivity {
     private CarbonTrackerModel model;
     private String make;

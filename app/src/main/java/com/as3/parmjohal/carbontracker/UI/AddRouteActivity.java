@@ -20,6 +20,12 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.SharedPreference;
+/**
+ * --AddRouteActivity--
+ * Creates a Route for creating journey
+ * User can save, or not save the created route.
+ * Will Proceed to ConfirmTripActivity.
+ */
 
 public class AddRouteActivity extends AppCompatActivity {
     private CarbonTrackerModel model;

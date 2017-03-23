@@ -22,6 +22,14 @@ import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
+/**
+ * --ConfirmTripActivity--
+ * Shows final details of the journey that was created.
+ * User can confirm if journey is right, and add journey
+ * to the dashboard. Otherwise, user can go back to
+ * correct.
+ */
+
 public class ConfirmTripActivity extends AppCompatActivity {
 
     public static CarbonTrackerModel model;
