@@ -27,6 +27,7 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
+import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.as3.parmjohal.carbontracker.SharedPreference;
@@ -82,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
     DayManager day_manager;
 
     private ArrayList<Journey> journey;
+    private ArrayList<Utility> utilities;
     public static final int REQUEST_CODE_JOURNEY= 2020;
+    public static final int REQUEST_CODE_UTILITY= 2021;
     public static final int GET_DATE_FOR_CHART = 0;
 
 
@@ -102,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
         model.setEditJourney(false);
         model.setConfirmTrip(true);
         journey = model.getJourneyManager().getJourneyCollection();
+        utilities = model.getUtilityManager();
         day_manager = model.getDayManager();
+
 
         // sort all track types by date
         Collections.sort(journey, new Comparator<Journey>() {
@@ -117,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
+        Collections.reverse(utilities);
 
         // set Overview
         setOverview();
@@ -126,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
         // show Journeys
         setJourneys();
+
+        //show Utilities
+        setUtilities();
 
         // set tips
         setTips();
@@ -483,6 +492,14 @@ public class MainActivity extends AppCompatActivity {
         list.setFocusable(false);
         setListViewHeightBasedOnChildren(list);
     }
+    public void setUtilities() {
+        ArrayAdapter<Utility> adapter2 = new MyListAdapter2();
+        ListView list = (ListView) findViewById(R.id.utilities);
+        list.setAdapter(adapter2);
+
+        list.setFocusable(false);
+        setListViewHeightBasedOnChildren(list);
+    }
 
     private class MyListAdapter extends ArrayAdapter<Journey> {
         private String latest_day = "";
@@ -584,6 +601,108 @@ public class MainActivity extends AppCompatActivity {
             return itemView;
         }
     }
+    private class MyListAdapter2 extends ArrayAdapter<Utility> {
+        private String latest_day = "";
+        private int datepos = 0;
+        private int totalCo2 = 0;
+
+        public MyListAdapter2() {
+            super(MainActivity.this, R.layout.dashboard_item, utilities);
+            // get totalCO2 to use later
+            for (int i = 0; i < utilities.size(); i++) {
+                totalCo2 += utilities.get(i).getTotalCo2();
+            }
+        }
+
+
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
+            }
+
+            Utility cur_utility = utilities.get(position);
+
+            // DATE
+            // split the given date in the form "Day Month Year" into an array
+            String[] date = cur_utility.getDateInfo(cur_utility.getStartDate()).split("\\s+");
+
+            TextView track_day = (TextView) itemView.findViewById(R.id.track_day);
+            track_day.setText(date[0]);
+
+            TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
+            track_month_year.setText(date[1] + " " + date[2]);
+
+            if (!latest_day.equals(date[0])) {
+                latest_day = date[0];
+                datepos = position;
+            } else if (position != datepos) {
+                track_day.setAlpha(0.0f);
+                track_month_year.setAlpha(0.0f);
+            }
+
+            // META
+            TextView meta = (TextView) itemView.findViewById(R.id.meta);
+            meta.setText(cur_utility.toString());
+
+            // RESULTS
+            TextView results = (TextView) itemView.findViewById(R.id.result_value);
+            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + "kg CO₂");
+
+            // change colour black to orange to red depending on usage
+            float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;
+
+            float[] HSV = new float[3];
+            HSV[0] = (1-Co2_usage)*90;
+            HSV[1] = 1;
+            HSV[2] = 0.5f;
+
+            results.setTextColor(Color.HSVToColor(HSV));
+
+            // on track/item click
+           // CardView track = (CardView) itemView.findViewById(R.id.track);
+           // track.setOnClickListener(new View.OnClickListener() {
+           //     @Override
+          //      public void onClick(View v) {
+           //         model.setCurrentJouney(journey.get(position));
+           //         model.setConfirmTrip(false);
+
+            //        Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
+            //        Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+            //        startActivityForResult(intent,REQUEST_CODE_JOURNEY);
+          //      }
+         //   });
+
+            // on Overflow click
+           // ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
+           // overflow.setOnClickListener(new View.OnClickListener() {
+             //   @Override
+              //  public void onClick(View v) {
+            //        PopupMenu popup = new PopupMenu(MainActivity.this, v);
+            //        MenuInflater inflater = popup.getMenuInflater();
+             //       inflater.inflate(R.menu.menu_activity_journey, popup.getMenu());
+              //      popup.show();
+
+               //     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+               //         @Override
+                //        public boolean onMenuItemClick(MenuItem item) {
+                //            model.setCurrentJouney(journey.get(position));
+               //             model.setConfirmTrip(false);
+
+                 //           Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
+                //            intent.putExtra("menu_select", item.getItemId());
+                 //           startActivityForResult(intent,REQUEST_CODE_JOURNEY);
+                //            return true;
+                //        }
+                  //  });
+
+          //      }
+         //   });
+
+            return itemView;
+        }
+    }
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -696,7 +815,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startNewUtilities(){
         Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CODE_UTILITY);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
@@ -706,6 +825,9 @@ public class MainActivity extends AppCompatActivity {
                     restart();
                     break;
                 }
+            case (REQUEST_CODE_UTILITY):
+                restart();
+                break;
             default:
                 break;
 

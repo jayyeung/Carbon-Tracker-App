@@ -106,7 +106,8 @@ public class UtilitiesActivity extends AppCompatActivity {
 
             }
         });
-    button.setChecked(true);
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,8 +136,9 @@ public class UtilitiesActivity extends AppCompatActivity {
                 Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
                 model.getUtilityManager().add(utility);
                 Log.i("Test", utility.toString());
+                finish();
 
-               //  break;
+                 break;
             default:
                 break;
         }

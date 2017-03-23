@@ -76,6 +76,11 @@ public class Utility {
 
         model.getTipsManager().add(tip);
     }
+    public String getDateInfo(Date date)
+    {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        return df.format(date) ;
+    }
 
     public double getTotalCo2() {
         return totalCo2;
@@ -150,10 +155,11 @@ public class Utility {
 
     @Override
     public String toString() {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         if(isElectricity)
-            return "Electricity : " +electricity+ "KWh " +totalCo2+ "kg total co2";
+            return "Electricity : " +electricity+ "KWh from " + df.format(startDate)+" to "+df.format(endDate) ;
         else{
-            return "Natural Gas : " +gas+ "Gj " +totalCo2+ "kg total co2";
+            return "Natural Gas : " +gas+ "Gj " + df.format(startDate)+" to "+df.format(endDate) ;
         }
     }
 }
