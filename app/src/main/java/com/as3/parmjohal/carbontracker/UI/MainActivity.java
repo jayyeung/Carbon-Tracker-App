@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         journey = model.getJourneyManager().getJourneyCollection();
         day_manager = model.getDayManager();
 
+        model.getTipsManager().displayAll();
         // sort all track types by date
         Collections.sort(journey, new Comparator<Journey>() {
             public int compare(Journey o1, Journey o2) {

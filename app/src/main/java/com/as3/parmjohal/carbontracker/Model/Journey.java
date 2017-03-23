@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.UI.ConfirmTripActivity;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,9 +22,27 @@ public class Journey {
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
 
+    // Transportation Variables
+
+    private int highwayFuel1 = 0;
+    private double cityFuel1 = 0;
+    private String fuelType1 = " ";
+    private String info = " ";
+    private String objectType = " ";
+
+    //**************************
+
     public Journey(Transportation transportation , Route route) {
+
         this.transportation = transportation;
         this.route = route;
+
+        this.highwayFuel1 = transportation.getHighwayFuel();
+        this.cityFuel1 = transportation.getCityFuel();
+        this.fuelType1 = transportation.getFuelType();
+        this.info = transportation.getInfo();
+        this.objectType = transportation.getObjectType();
+
         calculateCO2();
     }
 
@@ -34,14 +54,14 @@ public class Journey {
         boolean checkWalk = transportation.getFuelType().equals("Walk");
         boolean checkBike = transportation.getFuelType().equals("Bike");
 
-        if(!checkElectricity && !checkSkyTrain && !checkBus && !checkWalk) {
+        if(!checkElectricity && !checkSkyTrain && !checkBus && !checkWalk && !checkBike) {
 
-            if (transportation.getFuelType().equals("Diesel")) {
+            if (fuelType1.equals("Diesel")) {
                 CO2_COVERTOR = 10.16;
             }
 
-            double hwyGallons = (double) route.getHwyDistance() / (double) transportation.getHighwayFuel() ;
-            double cityGallons = route.getCityDistance() / transportation.getCityFuel();
+            double hwyGallons = (double) route.getHwyDistance() / (double) highwayFuel1 ;
+            double cityGallons = route.getCityDistance() / cityFuel1;
             double hwyCO2 = CO2_COVERTOR * hwyGallons;
             double cityCO2 = CO2_COVERTOR * cityGallons;
 
@@ -55,12 +75,27 @@ public class Journey {
         else {
             co2 = 0.0;
         }
+
+        if(co2 > 0) {
+            String tip = "You used " + co2 + ", Maybe Consider Public Transportation";
+            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+        }
+        else if(!checkElectricity && transportation.getObjectType().equals("car")){
+            String tip = "You used " + co2 + " of CO2, Need a new Car? \n" +
+                    " Electric cars use less CO2";
+            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+        }
+        else {
+            String tip = "You used " + co2 + ", You are Saving the Environment. \n " +
+                    "Maybe try another somthing besides " + transportation.getObjectType() + " For More Fun";
+            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+        }
     }
 
 
     public String getTransportationInfo()
     {
-        return transportation.getInfo();
+        return info;
     }
 
     public String getRouteInfo()
@@ -126,16 +161,11 @@ public class Journey {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object obj) {
 
-        Journey journey = (Journey) o;
+        Journey j = (Journey) obj;
 
-        if (route != null ? !route.equals(journey.route) : journey.route != null) return false;
-        if (transportation != null ? !transportation.equals(journey.transportation) : journey.transportation != null)
-            return false;
-        return date != null ? date.equals(journey.date) : journey.date == null;
+        return j.getRoute().equals(route) && j.getTransportationType().equals(objectType);
     }
 
     public static Journey copy(Journey journey) {

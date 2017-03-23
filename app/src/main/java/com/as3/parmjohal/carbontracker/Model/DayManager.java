@@ -49,13 +49,18 @@ public class DayManager {
         int month = Integer.parseInt(tokens[1]);
         int year = Integer.parseInt(tokens[2]);
 
-        for(Day dayObject: days)
-        {
-            if(day == dayObject.getDay() && month == dayObject.getMonth() && year == dayObject.getYear())
-            {
-                add(newJourney);
-                dayObject.remove(oldJourney);
+        try {
+            for (Day dayObject : days) {
+                if (day == dayObject.getDay() && month == dayObject.getMonth() && year == dayObject.getYear()) {
+                    Log.i("Update ", dayObject.toString());
+                    dayObject.remove(oldJourney);
+                    add(newJourney);
+                }
             }
+        }
+        catch (java.util.ConcurrentModificationException e)
+        {
+
         }
     }
 
@@ -141,9 +146,11 @@ public class DayManager {
     //***** USE THE SAME CODE LAYOUT FOR PAST 365 DAYS UTILITIES ********
     //Returns all Journeys within the past 365 Days
     // dd/MM/yy
-    public ArrayList<Journey> getPast365Days_Journeys(int day, int month, int year)
+    public ArrayList<Double> getPast365Days_JourneysCO2(int day, int month, int year)
     {
         ArrayList<Journey> journeys = new ArrayList<>();
+        ArrayList<Double> totalJourneyCO2_perMonth = new ArrayList<>();
+
         ArrayList<Day> past365Days = getPast365Days(day,month,year);
 
         for(int i = 0; i < past365Days.size(); i++)
@@ -151,7 +158,25 @@ public class DayManager {
             Day currentDay = past365Days.get(i);
             journeys.addAll(currentDay.getAllJourneys());
         }
-        return journeys;
+
+        for(int i =0; i < 12;i++)
+        {
+            totalJourneyCO2_perMonth.add(0.0);
+        }
+
+        for(Journey journey: journeys)
+        {
+            String[] tokens = journey.getDateInfo2().split("/");
+            int journeyMonth = Integer.parseInt(tokens[1]) - 1;
+            totalJourneyCO2_perMonth.set(journeyMonth, totalJourneyCO2_perMonth.get(journeyMonth) + journey.getCo2());
+        }
+
+        for(Double num: totalJourneyCO2_perMonth)
+        {
+            Log.i("Past 365", " " + num);
+        }
+
+        return totalJourneyCO2_perMonth;
     }
 
     // dd/MM/yy

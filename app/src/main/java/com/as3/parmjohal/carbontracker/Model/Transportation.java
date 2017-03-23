@@ -19,6 +19,7 @@ public class Transportation {
         this.cityFuel1 = cityFuel;
         this.fuelType1 = fuelType;
         this.objectType = objectType;
+
     }
 
     public int getHighwayFuel() {
