@@ -40,6 +40,8 @@ public class SplashActivity extends AppCompatActivity {
 
         model.getDayManager().getPast28Days_JourneysCO2(01,04,17);
         model.getDayManager().getPast365Days_JourneysCO2(01,04,17);
+        //model.getTipsManager().getTip(this);
+        //model.getTipsManager().displayAll();
 
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),

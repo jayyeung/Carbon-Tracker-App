@@ -5,6 +5,7 @@ import android.util.Log;
 import com.as3.parmjohal.carbontracker.UI.ConfirmTripActivity;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class Journey {
     private double co2 = 0;
     private double CO2_COVERTOR = 8.89;
     private Date date = new Date();
+    private String tip = " ";
 
     // Transportation Variables
 
@@ -29,6 +31,7 @@ public class Journey {
     private String fuelType1 = " ";
     private String info = " ";
     private String objectType = " ";
+
 
     //**************************
 
@@ -76,22 +79,32 @@ public class Journey {
             co2 = 0.0;
         }
 
+
+
+        DecimalFormat df = new DecimalFormat("####0.00");
+
         if(co2 > 0) {
-            String tip = "You used " + co2 + ", Maybe Consider Public Transportation";
-            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+            String tip = "You used " + df.format(co2) + " of CO2, Maybe Consider Public Transportation";
+            this.tip = tip;
         }
         else if(!checkElectricity && transportation.getObjectType().equals("car")){
-            String tip = "You used " + co2 + " of CO2, Need a new Car? \n" +
+            String tip = "You used " + df.format(co2) + " of CO2, Need a new Car? \n" +
                     " Electric cars use less CO2";
-            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+
+            this.tip = tip;
         }
         else {
-            String tip = "You used " + co2 + ", You are Saving the Environment. \n " +
+            String tip = "You used " + df.format(co2) + ", You are Saving the Environment. \n " +
                     "Maybe try another somthing besides " + transportation.getObjectType() + " For More Fun";
-            CarbonTrackerModel.getModel().getTipsManager().add(tip);
+            this.tip = tip;
         }
+
+        CarbonTrackerModel.getModel().getTipsManager().add(tip);
     }
 
+    public String getTip() {
+        return tip;
+    }
 
     public String getTransportationInfo()
     {

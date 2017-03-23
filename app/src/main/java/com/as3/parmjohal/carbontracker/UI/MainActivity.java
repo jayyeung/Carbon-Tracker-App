@@ -57,6 +57,7 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         journey = model.getJourneyManager().getJourneyCollection();
         day_manager = model.getDayManager();
 
-        model.getTipsManager().displayAll();
         // sort all track types by date
         Collections.sort(journey, new Comparator<Journey>() {
             public int compare(Journey o1, Journey o2) {
@@ -647,7 +647,8 @@ public class MainActivity extends AppCompatActivity {
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                journey_message.setText("This message has changed");
+                String tip = model.getTipsManager().getTip(MainActivity.this);
+                journey_message.setText(tip);
             }
         });
     };
