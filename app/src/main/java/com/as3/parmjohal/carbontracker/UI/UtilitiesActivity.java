@@ -136,8 +136,9 @@ public class UtilitiesActivity extends AppCompatActivity {
 
                 Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
                 model.getUtilityManager().add(utility);
+                Log.i("Test", utility.toString());
 
-                 break;
+               //  break;
             default:
                 break;
         }

@@ -28,6 +28,7 @@ public class Utility {
 
 
     public Utility(boolean isElectricity, int amount, int persons, Date startDate, Date endDate){
+        this.isElectricity=isElectricity;
         this.startDate = startDate;
         this.endDate = endDate;
         LocalDate sDate = new LocalDate(startDate);
@@ -125,7 +126,7 @@ public class Utility {
         if(isElectricity)
             return "Electricity : " +electricity+ "KWh " +totalCo2+ "kg total co2";
         else{
-            return "Natural Gas : " +gas+ "KWh " +totalCo2+ "kg total co2";
+            return "Natural Gas : " +gas+ "Gj " +totalCo2+ "kg total co2";
         }
     }
 }

@@ -691,7 +691,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void startNewJourney() {
         Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
-        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     private void startNewUtilities(){
