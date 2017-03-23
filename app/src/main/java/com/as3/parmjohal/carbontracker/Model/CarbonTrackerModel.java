@@ -27,6 +27,7 @@ public class CarbonTrackerModel {
     private Manager<Bus> busManager = new Manager<>();
     private Manager<Walk> walkManager = new Manager<>();
     private Manager<Bike> bikeManager = new Manager<>();
+    private TipManager tipsManager = new TipManager();
 
     private Manager<Utility> utilityManager = new Manager<>();
 
@@ -41,6 +42,7 @@ public class CarbonTrackerModel {
     private Journey currentJouney;
     private boolean confirmTrip = true;
     private boolean editJourney = false;
+    private Transportation transportation;
 
     private CarbonTrackerModel() {
 
@@ -62,6 +64,11 @@ public class CarbonTrackerModel {
         }
 
         count++;
+        return carbonTrackerModel;
+    }
+
+    public static CarbonTrackerModel getModel()
+    {
         return carbonTrackerModel;
     }
 
@@ -102,6 +109,10 @@ public class CarbonTrackerModel {
 
     public DayManager getDayManager() {
         return dayManager;
+    }
+
+    public TipManager getTipsManager() {
+        return tipsManager;
     }
     //*********************************************************************
 
@@ -170,4 +181,12 @@ public class CarbonTrackerModel {
     public boolean isEditJourney(){return  editJourney;}
 
     public void setEditJourney(boolean editJourney){this.editJourney = editJourney;}
+
+    public Transportation getTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(Transportation transportation) {
+        this.transportation = transportation;
+    }
 }

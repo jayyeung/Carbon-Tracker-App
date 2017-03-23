@@ -15,7 +15,7 @@
 
     <string name="chart_type">Daily Carbon Usage</string>
     <string name="chart_radio_monthly">Monthly</string>
-    <string name="chart_radio_daily">Daily</string>
+    <string name="chart_radio_daily">Daily ▾</string>
     <string name="chart_radio_yearly">Yearly</string>
 
     <string name="tip_title">Journey Tip</string>

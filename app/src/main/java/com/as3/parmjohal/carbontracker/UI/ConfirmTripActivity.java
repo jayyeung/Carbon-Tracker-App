@@ -20,7 +20,7 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
-    CarbonTrackerModel model;
+    public static CarbonTrackerModel model;
     private Journey journey;
 
     public static final int REQUEST_CODE_CAR= 2017;
@@ -73,8 +73,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        //setupTextView(R.id.display_CarName, journey.getCar().getName());
-        setupTextView(R.id.display_MainCar, journey.getTransportation().getInfo());
+        setupTextView(R.id.display_CarName, journey.getTransportationInfo());
+        setupTextView(R.id.display_MainCar, journey.getTransportation().getObjectType());
         setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
@@ -159,6 +159,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
             Log.i("CO2", currentTransportation.toString());
 
             journey = new Journey(currentTransportation, currentRoute);
+
+
         }
         else {
             Log.i("Journey: ", "Clicked Journey");
@@ -235,6 +237,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     model.setEditJourney(false);
                     restart();
+
                     break;
 
 

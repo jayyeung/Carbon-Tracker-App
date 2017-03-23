@@ -38,18 +38,10 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("walk", "Start");
-
-        Walk walk = new Walk("Park",5);
-        Route route = walk.getRoute();
-        Journey journey = new Journey(walk,route);
-
-        JourneyManager journeyManager = model.getJourneyManager();
-        //journeyManager.add(journey);
-        //SharedPreference.saveCurrentModel(this);
-        journeyManager.displayAll();
-        Log.i("walk", "Total Walk distance: " + journeyManager.getTotalWalkDistance());
-
+        model.getDayManager().getPast28Days_JourneysCO2(01,04,17);
+        model.getDayManager().getPast365Days_JourneysCO2(01,04,17);
+        //model.getTipsManager().getTip(this);
+        //model.getTipsManager().displayAll();
 
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),

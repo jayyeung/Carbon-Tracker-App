@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -26,6 +28,13 @@ public class Manager<T> {
         collection.set(index, object2);
     }
 
+    public void displayAll()
+    {
+        for(T object: collection)
+        {
+            Log.i("Tip", object.toString());
+        }
+    }
     public ArrayList<T> getRouteCollection ()
     {
         return (ArrayList<T>) collection.clone();

@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -52,10 +54,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,15 +76,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
-    private enum Chart_options {DAILY, MONTHLY, YEARLY}
-
-    ;
+    private enum Chart_options { DAILY, MONTHLY, YEARLY };
 
     CarbonTrackerModel model;
     DayManager day_manager;
 
     private ArrayList<Journey> journey;
-    public static final int REQUEST_CODE_JOURNEY = 2020;
+    public static final int REQUEST_CODE_JOURNEY= 2020;
+    public static final int GET_DATE_FOR_CHART = 0;
 
 
     @Override
@@ -151,33 +154,52 @@ public class MainActivity extends AppCompatActivity {
         chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // checkedId is the RadioButton selected
-                switch (checkedId) {
+                switch(checkedId) {
                     case R.id.day_radio:
-                        chart_status.setText("Today");
-                        chart_type.setText("Daily Carbon Usage");
-                        setGraph(Chart_options.DAILY);
+                        RadioButton radio = (RadioButton) findViewById(R.id.day_radio);
+                        PopupMenu popup = new PopupMenu(MainActivity.this, radio);
+
+                        ArrayList<Day> days = day_manager.getDays();
+                        Menu menu = popup.getMenu();
+
+                        for (int i = 0; i < days.size(); i++) {
+                            final Day day = days.get(i);
+
+                            MenuItem item = menu.add(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
+                            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    chart_status.setText(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
+                                    chart_type.setText("Daily Carbon Usage");
+                                    setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
+                                    return true;
+                                }
+                            });
+                        }
+
+                        popup.show(); //showing popup menu
                         break;
                     case R.id.month_radio:
-                        chart_status.setText("Last 28 days");
+                        chart_status.setText("Last 28 days (Today)");
                         chart_type.setText("Monthly Carbon Usage");
-                        setGraph(Chart_options.MONTHLY);
+                        setGraph(Chart_options.MONTHLY, 0,0,0);
                         break;
                     case R.id.year_radio:
-                        chart_status.setText("Last 365 days");
+                        chart_status.setText("Last 365 days (Today)");
                         chart_type.setText("Annual Carbon Usage");
-                        setGraph(Chart_options.YEARLY);
+                        setGraph(Chart_options.YEARLY, 0,0,0);
                         break;
                 }
+
             }
         });
 
         // set default chart at start by selecting a radio button
-        RadioButton default_chart = (RadioButton) findViewById(R.id.day_radio);
+        RadioButton default_chart = (RadioButton) findViewById(R.id.year_radio);
         default_chart.setChecked(true);
     }
 
-    public void setGraph(Chart_options option) {
+    public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
         LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
 
@@ -189,10 +211,9 @@ public class MainActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd MM yy");
         String[] date = (df.format(new Date())).split("\\s+");
 
-        int day = Integer.parseInt(date[0]),
-                month = Integer.parseInt(date[1]),
-                year = Integer.parseInt(date[2]);
-
+        int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
+            month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
+            year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
 
         ////////////////
         // DAILY GRAPH
@@ -216,11 +237,11 @@ public class MainActivity extends AppCompatActivity {
             //entries.add(new PieEntry(total, "Utility"));
 
 
-            int[] COLORS = {Color.rgb(52, 152, 219), Color.rgb(230, 126, 34)};
+            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
             PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
             journeyDataSet.setValueTextSize(16f);
-            journeyDataSet.setColors(COLORS);
+            journeyDataSet.setColors( COLORS );
             journeyDataSet.setValueTextColor(Color.WHITE);
 
             // create chart
@@ -252,18 +273,18 @@ public class MainActivity extends AppCompatActivity {
             chart.invalidate();
         }
 
-
         ////////////////
         // MONTHLY GRAPH
         ////////////////
 
         else if (option == option.MONTHLY) {
             final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            Collections.reverse(month_CO2);
+            ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
 
-            if (month_CO2.size() <= 0) {
-                return;
-            }
+            Collections.reverse(month_CO2);
+            Collections.reverse(journey_CO2);
+
+            if (month_CO2.size() <= 0) { return; }
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
@@ -271,13 +292,13 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
-                entries.add(new Entry(counter, (float) day_obj.getTotalCO2()));
+                entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
                 counter++;
             }
 
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
             totalDataSet.setColors(Color.rgb(38, 166, 91));
-            totalDataSet.setCircleColor(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
             totalDataSet.setValueTextColor(Color.WHITE);
             totalDataSet.setValueTextSize(16f);
@@ -290,26 +311,14 @@ public class MainActivity extends AppCompatActivity {
             entries = new ArrayList<>();
             counter = 0;
 
-            for (Day day_obj : month_CO2) {
-
-                ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
-                        day_obj.getDay(),
-                        day_obj.getMonth(),
-                        day_obj.getYear()
-                );
-
-                float journey_day_CO2 = 0;
-                for (int i = 0; i < day_journeys.size(); i++) {
-                    journey_day_CO2 += day_journeys.get(i).getCo2();
-                }
-
-                entries.add(new Entry(counter, journey_day_CO2));
+            for (Double journey_day : journey_CO2) {
+                entries.add(new Entry(counter , journey_day.floatValue()));
                 counter++;
             }
 
             LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
-            journeyDataSet.setColors(Color.rgb(52, 152, 219));
-            journeyDataSet.setCircleColor(Color.rgb(52, 152, 219));
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
             journeyDataSet.setValueTextColor(Color.WHITE);
             journeyDataSet.setValueTextSize(16f);
@@ -323,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setScaleMinima((5 / 28) * (month_CO2.size()), 1f); // widen the gaps between points depending on number of points
+            chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -335,16 +344,18 @@ public class MainActivity extends AppCompatActivity {
             xval.setDrawAxisLine(false);
             xval.setDrawGridLines(false);
             xval.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xval.setValueFormatter(new IAxisValueFormatter() {
+            xval.setValueFormatter(new IAxisValueFormatter()
+            {
                 @Override
-                public String getFormattedValue(float value, AxisBase axis) {
-                    if ((int) value > month_CO2.size() || (int) value <= month_CO2.size()) {
-                        return "";
-                    }
+                public String getFormattedValue(float value, AxisBase axis)
+                {
+                    try {
+                        Day day = month_CO2.get((int) value);
+                        String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
+                        return month + " " + day.getDay();
+                    } catch (Exception e) {}
 
-                    Day day = month_CO2.get((int) value);
-                    String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
-                    return month + " " + day.getDay();
+                    return "";
                 }
             });
 
@@ -358,28 +369,34 @@ public class MainActivity extends AppCompatActivity {
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
 
-            chart.setData(data);
-            chart.animateY(1500);
-            chart.invalidate();
+            try {
+                chart.setData(data);
+                chart.animateY(1500);
+                chart.invalidate();
+            } catch (Exception e) {}
         }
 
         ////////////////
         // YEARLY GRAPH
         ////////////////
+
         else if (option == option.YEARLY) {
-            ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
-            ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
+            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year);
+
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Double month_obj : year_CO2) {
-                entries.add(new Entry(counter, month_obj.floatValue()));
+                entries.add(new Entry(counter , month_obj.floatValue()));
                 counter++;
             }
+
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
             totalDataSet.setColors(Color.rgb(38, 166, 91));
-            totalDataSet.setCircleColor(Color.rgb(38, 166, 91));
+            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
             totalDataSet.setValueTextColor(Color.WHITE);
             totalDataSet.setValueTextSize(16f);
@@ -387,16 +404,20 @@ public class MainActivity extends AppCompatActivity {
             totalDataSet.setLineWidth(5f);
             totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(totalDataSet);
+
             // Journey
             entries = new ArrayList<>();
             counter = 0;
-            for (Journey journey_obj : month_journey_CO2) {
-                entries.add(new Entry(counter, (float) journey_obj.getCo2()));
+            for (Double journey_obj : month_journey_CO2) {
+                Log.i("JOURENY", journey_obj+"");
+
+                entries.add(new Entry(counter , journey_obj.floatValue()));
                 counter++;
             }
+
             LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
-            journeyDataSet.setColors(Color.rgb(52, 152, 219));
-            journeyDataSet.setCircleColor(Color.rgb(52, 152, 219));
+            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
+            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
             journeyDataSet.setValueTextColor(Color.WHITE);
             journeyDataSet.setValueTextSize(16f);
@@ -404,33 +425,61 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
+
             LineData data = new LineData(lines);
+
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
+
             chart.setScaleMinima(5f, 1f);
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
-            chart.getXAxis().setEnabled(false);
+
+            XAxis xval = chart.getXAxis();
+            xval.setGranularity(1f);
+            xval.setTextSize(16f);
+            xval.setTextColor(Color.WHITE);
+            xval.setDrawAxisLine(false);
+            xval.setDrawGridLines(false);
+            xval.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xval.setValueFormatter(new IAxisValueFormatter()
+            {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis)
+                {
+                    try {
+                        String month = new DateFormatSymbols().getShortMonths()[(int) value];
+                        return month;
+                    } catch (Exception e) {}
+
+                    return "";
+                }
+            });
+
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
             legend.setTextSize(16f);
             legend.setWordWrapEnabled(true);
+
             Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
-            chart.setData(data);
-            chart.animateY(1500);
-            chart.invalidate();
+
+            try {
+                chart.setData(data);
+                chart.animateY(1500);
+                chart.invalidate();
+            } catch (Exception e) {}
         }
     }
-
 
     // set Journeys
     public void setJourneys() {
         ArrayAdapter<Journey> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.journeys);
         list.setAdapter(adapter);
+
         list.setFocusable(false);
         setListViewHeightBasedOnChildren(list);
     }
@@ -565,7 +614,6 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
         fab_utility = (FloatingActionButton) findViewById(R.id.fab_utility);
-        fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -601,7 +649,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     // set tips
     public void setTips() {
         CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
@@ -610,7 +657,8 @@ public class MainActivity extends AppCompatActivity {
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                journey_message.setText("This message has changed");
+                String tip = model.getTipsManager().getTip(MainActivity.this);
+                journey_message.setText(tip);
             }
         });
     };
@@ -642,6 +690,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startNewJourney() {
+        Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
