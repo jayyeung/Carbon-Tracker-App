@@ -152,6 +152,17 @@ public class DayManager {
         return null;
     }
 
+    public ArrayList<Utility> getDay_Utilities(int day, int month, int year) {
+        for(int i=0; i < days.size(); i++)
+        {
+            Day dayObject = days.get(i);
+            if(dayObject.getDay() == day && dayObject.getMonth() == month && dayObject.getYear() == year)
+            {
+                return days.get(i).getAllUtilities();
+            }
+        }
+        return null;
+    }
 
     //returns an arraylist of size 12 with total CO2 for that mont
     //arraylist.get(0) will be the total CO2 for the month of january in the past 365 days

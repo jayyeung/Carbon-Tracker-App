@@ -106,6 +106,10 @@ public class Day {
         return journeyManager.getJourneyCollection();
     }
 
+    public ArrayList<Utility> getAllUtilities() {
+        return utilityManager.getRouteCollection();
+    }
+
     public ArrayList<Double> getAllCO2Values() {
         return allCO2Values;
     }
