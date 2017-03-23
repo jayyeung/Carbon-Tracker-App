@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
-                                    chart_status.setText("Today");
+                                    chart_status.setText(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
                                     chart_type.setText("Daily Carbon Usage");
                                     setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
                                     return true;
