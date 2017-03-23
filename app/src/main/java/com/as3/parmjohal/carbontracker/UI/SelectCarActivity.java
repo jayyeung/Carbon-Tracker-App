@@ -166,6 +166,10 @@ public class SelectCarActivity extends AppCompatActivity {
                         populateListView();
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
+                        if(model.getCurrentJouney().getTransportation() instanceof Car == false){
+                            Intent intent2 = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                            startActivity(intent2);
+                        }
                         finish();
                         break;
                     }

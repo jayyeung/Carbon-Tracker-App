@@ -614,6 +614,7 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
         fab_utility = (FloatingActionButton) findViewById(R.id.fab_utility);
+        fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);

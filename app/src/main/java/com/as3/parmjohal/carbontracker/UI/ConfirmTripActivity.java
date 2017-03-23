@@ -10,10 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.as3.parmjohal.carbontracker.Model.Bike;
+import com.as3.parmjohal.carbontracker.Model.Bus;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
 import com.as3.parmjohal.carbontracker.Model.Transportation;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.SharedPreference;
@@ -73,8 +77,14 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        setupTextView(R.id.display_CarName, journey.getTransportationInfo());
-        setupTextView(R.id.display_MainCar, journey.getTransportation().getObjectType());
+        if(journey.getTransportation()instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus) {
+            setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
+            setupTextView(R.id.display_MainCar, "");
+        }
+        else {
+            setupTextView(R.id.display_MainCar, journey.getTransportationInfo());
+            setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
+        }
         setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
@@ -179,8 +189,25 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void editRoute(){
         model.setEditJourney(true);
-        Intent intent = SelectRouteActivity.makeIntent(ConfirmTripActivity.this);
-        startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        Intent intent;
+        if(model.getCurrentJouney().getTransportation() instanceof Bike == true ||model.getCurrentJouney().getTransportation() instanceof Walk == true){
+            intent = WalkActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else if (model.getCurrentJouney().getTransportation() instanceof Skytrain == true){
+            intent = TrainActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else if (model.getCurrentJouney().getTransportation() instanceof Bus == true){
+            intent = BusActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else{
+            intent = SelectRouteActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+
+
     }
 
     private void editDate()
@@ -223,11 +250,17 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_ROUTE):
                 if(resultCode == Activity.RESULT_OK){
-                    journey.setRoute(model.getCurrentRoute());
+                    if(journey.getTransportationType().equals("Car")==false){
+                        Log.i("true",""+journey.getTransportationType());
+                        journey.setRoute(model.getCurrentRoute());
+                    }
+                    journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
-                    model.setCurrentRoute(null);
+                    Log.i("test",""+journey.toString());
+                    model.setCurrentCar(null);
                     model.setCurrentTransportation(null);
                     model.setEditJourney(false);
+
                     restart();
 
                     break;
