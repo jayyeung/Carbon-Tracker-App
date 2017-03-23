@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Journey> journey;
     private ArrayList<Utility> utilities;
     public static final int REQUEST_CODE_JOURNEY= 2020;
+    public static final int REQUEST_CODE_UTILITY= 2021;
     public static final int GET_DATE_FOR_CHART = 0;
 
 
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
+        Collections.reverse(utilities);
 
         // set Overview
         setOverview();
@@ -813,7 +815,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startNewUtilities(){
         Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CODE_UTILITY);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
@@ -823,6 +825,9 @@ public class MainActivity extends AppCompatActivity {
                     restart();
                     break;
                 }
+            case (REQUEST_CODE_UTILITY):
+                restart();
+                break;
             default:
                 break;
 
