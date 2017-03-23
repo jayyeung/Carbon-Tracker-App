@@ -102,8 +102,6 @@ public class UtilitiesActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.gasText);
                 textView.setText("Amount of Natural Gas Used (Gj): ");
 
-
-
             }
         });
 
@@ -135,6 +133,7 @@ public class UtilitiesActivity extends AppCompatActivity {
 
                 Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
                 model.getUtilityManager().add(utility);
+                model.getDayManager().addUtility1(utility);
                 Log.i("Test", utility.toString());
                 finish();
 
