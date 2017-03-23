@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import static org.joda.time.Days.daysBetween;
 
@@ -17,6 +18,7 @@ import static org.joda.time.Days.daysBetween;
  */
 
 public class Utility {
+
     private int electricity,gas,persons;
     private boolean isElectricity;
     private double totalCo2,dailyCo2;
@@ -24,8 +26,7 @@ public class Utility {
     private double CO2_Gas_COVERTOR = 56.1;
     private Date startDate,endDate;
     private int totalDays;
-
-
+    private String tip = " ";
 
     public Utility(boolean isElectricity, int amount, int persons, Date startDate, Date endDate){
         this.isElectricity=isElectricity;
@@ -48,6 +49,37 @@ public class Utility {
         }
 
         Log.i("Test", "" +getTotalDays()+" " + getDailyCo2() + " " +getTotalCo2());
+
+        generateTips();
+    }
+
+    private void generateTips() {
+        CarbonTrackerModel model = CarbonTrackerModel.getModel();
+        Random rand = new Random();
+
+        String[] electricityHelp = {"turning off the Lights help", "turning off all un-used electronics"
+        ,"Spending more time outside doing activities" };
+
+        String[] gasHelp = {" Shorter showers might help cut down emissions from hot water heater"
+        ,"Lowering the House temp While no one is Home"
+        };
+
+        if(isElectricity)
+        {
+            tip = "You generate " + totalCo2 + " kg of CO2 from Electricity in a month \n"
+                    + " Simple things like " + electricityHelp[rand.nextInt(electricityHelp.length)];
+        }
+        else {
+            tip = "You generate " + totalCo2 + " kg of CO2 from Natural Gas in a month \n"
+                    + gasHelp[rand.nextInt(gasHelp.length)];
+        }
+
+        model.getTipsManager().add(tip);
+    }
+    public String getDateInfo(Date date)
+    {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        return df.format(date) ;
     }
 
     public double getTotalCo2() {
@@ -123,10 +155,11 @@ public class Utility {
 
     @Override
     public String toString() {
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         if(isElectricity)
-            return "Electricity : " +electricity+ "KWh " +totalCo2+ "kg total co2";
+            return "Electricity : " +electricity+ "KWh from " + df.format(startDate)+" to "+df.format(endDate) ;
         else{
-            return "Natural Gas : " +gas+ "Gj " +totalCo2+ "kg total co2";
+            return "Natural Gas : " +gas+ "Gj " + df.format(startDate)+" to "+df.format(endDate) ;
         }
     }
 }

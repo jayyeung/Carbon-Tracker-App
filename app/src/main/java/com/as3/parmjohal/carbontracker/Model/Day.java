@@ -1,10 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
-import android.util.Log;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 /**
  * Created by ParmJohal on 2017-03-20.
@@ -13,10 +10,12 @@ import java.util.InputMismatchException;
 public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
+    private Manager<Utility> utilityManager = new Manager<>();
 
     private ArrayList<Double> allCO2Values = new ArrayList<>();
     private double totalCO2 = 0;
     String tip = " ";
+    private double totalUtility = 0;
 
     private String date;
     private int year = 0;
@@ -48,6 +47,12 @@ public class Day {
 
     public int getDay() {
         return day;
+    }
+
+    public void addUtility(Utility utility){
+        utilityManager.add(utility);
+        //allCO2Values.add(utility.getDailyCo2());
+        //totalCO2  +=(utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
@@ -95,6 +100,15 @@ public class Day {
 
     public double getTotalCO2() {
         return totalCO2;
+    }
+
+    public void setTotalUtility(double totalUtility) {
+        totalCO2 += totalUtility;
+        this.totalUtility = totalUtility;
+    }
+
+    public double getTotalUtility() {
+        return totalUtility;
     }
 
     @Override

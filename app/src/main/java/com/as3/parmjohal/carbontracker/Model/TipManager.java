@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by ParmJohal on 2017-03-22.
@@ -45,6 +46,10 @@ public class TipManager {
 
     public String getTip(Context context)
     {
+        if(count ==0) {
+            Collections.shuffle(tips);
+        }
+
         getLargestCO2_tip(context);
         count++;
         if(count >= tips.size())
