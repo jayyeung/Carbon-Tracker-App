@@ -174,11 +174,12 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < days.size(); i++) {
                             final Day day = days.get(i);
 
-                            MenuItem item = menu.add(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
+                            final String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+                            MenuItem item = menu.add(date);
                             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
-                                    chart_status.setText(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
+                                    chart_status.setText(date);
                                     chart_type.setText("Daily Carbon Usage");
                                     setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
                                     return true;
@@ -244,6 +245,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Utility
+            ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
+            total = 0;
+
+            if (day_utilities != null) {
+                for (int i = 0; i < day_utilities.size(); i++) {
+                    total += day_utilities.get(i).getTotalCo2();
+                }
+                entries.add(new PieEntry(total, "Utility"));
+            }
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
