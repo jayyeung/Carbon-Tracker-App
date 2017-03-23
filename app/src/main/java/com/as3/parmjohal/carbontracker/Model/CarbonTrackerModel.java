@@ -28,6 +28,8 @@ public class CarbonTrackerModel {
     private Manager<Walk> walkManager = new Manager<>();
     private Manager<Bike> bikeManager = new Manager<>();
 
+    private Manager<Utility> utilityManager = new Manager<>();
+
     public static ArrayList<Car> cars = new ArrayList<Car>();
 
     private static int count = 0;
@@ -71,7 +73,6 @@ public class CarbonTrackerModel {
         return carManager;
     }
 
-
     public RouteManager getRouteManager()
     {
         return routeManager;
@@ -96,6 +97,8 @@ public class CarbonTrackerModel {
     public Manager<Bike> getBikeManager() {
         return bikeManager;
     }
+
+    public Manager<Utility> getUtilityManager(){return utilityManager;}
 
     public DayManager getDayManager() {
         return dayManager;

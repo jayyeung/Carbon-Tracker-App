@@ -13,17 +13,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UtilitiesActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_START_DATE =111;
@@ -34,9 +38,12 @@ public class UtilitiesActivity extends AppCompatActivity {
     private EditText editPersons;
     private Button start;
     private Button end;
+    private boolean isElectricity=true;
 
-    private int electricity;
-    private int gas;
+    private Date startDate;
+    private Date endDate;
+
+    private int amount;
     private int persons;
 
 
@@ -47,6 +54,7 @@ public class UtilitiesActivity extends AppCompatActivity {
         SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setupButtons();
+        createRadioButtonListener();
 
 
 
@@ -74,15 +82,77 @@ public class UtilitiesActivity extends AppCompatActivity {
         Intent intent= new Intent(context, UtilitiesActivity.class);
         return intent;
     }
+    private void createRadioButtonListener() {
+        // RadioGroup type = (RadioGroup) findViewById(R.id.radioList);
+        RadioButton button = (RadioButton) findViewById(R.id.radioButton1);
+        RadioButton button2 = (RadioButton) findViewById(R.id.radioButton2);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = (TextView) findViewById(R.id.gasText);
+                isElectricity=true;
+                textView.setText("Amount of Electricity Used (KWh):");
+
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isElectricity = false;
+                TextView textView = (TextView) findViewById(R.id.gasText);
+                textView.setText("Amount of Natural Gas Used (Gj): ");
+
+
+
+            }
+        });
+    button.setChecked(true);
+
+
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_activity_confirm_decline, menu);
+            return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        OptionSelect(item.getItemId());
+        return true;
+
+    }
+    public void OptionSelect(int id) {
+        switch (id) {
+            case android.R.id.home:
+
+                finish();
+                break;
+            case R.id.action_confirm:
+                editGas = (EditText) findViewById(R.id.editAmount);
+                editPersons = (EditText) findViewById(R.id.editPersons);
+                String stringAmount =  editGas.getText().toString();
+                String stringPersons =  editPersons.getText().toString();
+                amount = Integer.parseInt(stringAmount);
+                persons = Integer.parseInt(stringPersons);
+
+                Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
+                model.getUtilityManager().add(utility);
+
+                 break;
+            default:
+                break;
+        }
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case (REQUEST_CODE_START_DATE):
                 if(resultCode == Activity.RESULT_OK){
+                    startDate = model.getCurrentDate();
                     DateFormat df = new SimpleDateFormat("dd MMM yyyy");
                     String dateString = df.format(model.getCurrentDate());
                     start.setText(dateString);
-                    //pass date to utilities
+
 
                     model.setCurrentDate(null);
                     break;
@@ -91,6 +161,7 @@ public class UtilitiesActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_END_DATE):
                 if(resultCode == Activity.RESULT_OK){
+                    endDate = model.getCurrentDate();
                     DateFormat df = new SimpleDateFormat("dd MMM yyyy");
                     String dateString = df.format(model.getCurrentDate());
                     end.setText(dateString);
