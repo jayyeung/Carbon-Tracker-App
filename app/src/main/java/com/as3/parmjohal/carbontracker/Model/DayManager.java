@@ -93,12 +93,12 @@ public class DayManager {
         }
     }
 
-    // **** PARMS CODE ***** 
+    // **** PARMS CODE *****
     public void addUtility1(Utility utility) {
         utilityManager.add(utility);
         for(int i =0; i<days.size();i++) {
             if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
-                Log.i("Utility", "Added to day " +days.get(i).toString());
+                Log.i("Utility", "Added to day " + days.get(i).toString());
                 days.get(i).setTotalUtility(utility.getDailyCo2());
             }
         }
@@ -111,6 +111,9 @@ public class DayManager {
 
         return (( d.isAfter( min ) ) && ( d.isBefore( max )));
     }
+
+
+
 
     public boolean add(Journey journey)
     {
@@ -174,10 +177,25 @@ public class DayManager {
         return totalCO2_perMonth;
     }
 
+    public ArrayList<Double> getPast365Days_UtilityCO2(int day, int month, int year)
+    {
+        ArrayList<Day> past365Days = getPast365Days(day,month,year);
+        ArrayList<Double> totalUtilityCO2_perMonth = new ArrayList<>();
 
-    //***** USE THE SAME CODE LAYOUT FOR PAST 365 DAYS UTILITIES ********
-    //Returns all Journeys within the past 365 Days
-    // dd/MM/yy
+        for(int i =0; i < 12;i++)
+        {
+            totalUtilityCO2_perMonth.add(0.0);
+        }
+
+        for(Day dayObject: past365Days)
+        {
+            int dayMonth = dayObject.getMonth() - 1;
+            totalUtilityCO2_perMonth.set(dayMonth, totalUtilityCO2_perMonth.get(dayMonth) + dayObject.getTotalUtility());
+        }
+
+        return totalUtilityCO2_perMonth;
+    }
+
     public ArrayList<Double> getPast365Days_JourneysCO2(int day, int month, int year)
     {
         ArrayList<Journey> journeys = new ArrayList<>();
@@ -278,13 +296,22 @@ public class DayManager {
             totalJourneyCO2_perDay.add(day1.getTotalCO2());
         }
 
-        for(Double num: totalJourneyCO2_perDay)
-        {
-            Log.i("Past 28", " " + num);
-        }
-
         return totalJourneyCO2_perDay;
     }
+
+    public ArrayList<Double> getPast28Days_UtilityCO2(int day, int month, int year)
+    {
+        ArrayList<Double> totalUtilityCO2_perDay = new ArrayList<>();
+        ArrayList<Day> past28Days = getPast28Days(day,month,year);
+
+        for(Day dayObject: past28Days)
+        {
+            totalUtilityCO2_perDay.add(dayObject.getTotalUtility());
+        }
+
+        return totalUtilityCO2_perDay;
+    }
+
 
     // dd/MM/yy
     public ArrayList<Day> getPast28Days(int day, int month, int year)

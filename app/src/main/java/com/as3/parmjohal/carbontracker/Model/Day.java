@@ -107,6 +107,10 @@ public class Day {
         this.totalUtility = totalUtility;
     }
 
+    public double getTotalUtility() {
+        return totalUtility;
+    }
+
     @Override
     public String toString() {
         return "Day{" +
