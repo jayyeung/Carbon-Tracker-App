@@ -14,6 +14,8 @@ import java.util.Date;
 public class DayManager {
 
     private ArrayList<Day> days = new ArrayList<>();
+    private Manager<Utility> utilityManager = new Manager<>();
+
 
     public DayManager() {
 
@@ -83,13 +85,23 @@ public class DayManager {
         }
     }
 
-    public void addUtility(Utility utility){
+    public void addUtility(Utility utility) {
         for(int i =0; i<days.size();i++) {
            if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
                days.get(i).addUtility(utility);
            }
         }
+    }
 
+    // **** PARMS CODE ***** 
+    public void addUtility1(Utility utility) {
+        utilityManager.add(utility);
+        for(int i =0; i<days.size();i++) {
+            if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
+                Log.i("Utility", "Added to day " +days.get(i).toString());
+                days.get(i).setTotalUtility(utility.getDailyCo2());
+            }
+        }
     }
 
     private boolean checkDayExists(Day day, Date startDate, Date endDate) {

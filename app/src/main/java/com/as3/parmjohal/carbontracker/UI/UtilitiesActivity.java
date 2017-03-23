@@ -107,8 +107,6 @@ public class UtilitiesActivity extends AppCompatActivity {
             }
         });
     button.setChecked(true);
-
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
