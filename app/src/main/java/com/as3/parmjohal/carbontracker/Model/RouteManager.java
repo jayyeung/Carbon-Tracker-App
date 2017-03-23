@@ -3,7 +3,8 @@ package com.as3.parmjohal.carbontracker.Model;
 import java.util.ArrayList;
 
 /**
- * Created by ParmJohal on 2017-03-03.
+ * keeps track of all the routes
+ * provides basic functions such as add/edit/delet and look for
  */
 
 public class RouteManager {

@@ -14,7 +14,9 @@ import java.util.Random;
 import static org.joda.time.Days.daysBetween;
 
 /**
- * Created by Shane Salarda` on 3/22/2017.
+ * Holds the information that the user would want to store about a monthlu utility bill
+ * Calculates the CO2 for both electricity and ags bills and finds the daily average of both
+ * generates tips based on the entered info
  */
 
 public class Utility {

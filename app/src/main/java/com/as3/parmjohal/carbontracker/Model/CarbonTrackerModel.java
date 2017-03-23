@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by ParmJohal on 2017-03-05.
+ *  This is our teams facade class, that is our sole point of communication between the UI and Model
  */
 
 public class CarbonTrackerModel {

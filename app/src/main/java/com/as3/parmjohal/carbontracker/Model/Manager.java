@@ -5,7 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by ParmJohal on 2017-03-20.
+ * Takes in a generic type of object and holds that one type
+ * provides basic functions such as add/edit/delet and look for
  */
 
 public class Manager<T> {

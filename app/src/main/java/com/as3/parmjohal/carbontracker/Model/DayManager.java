@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by ParmJohal on 2017-03-20.
+ * Keeps track of all the days and the corresponding journeys
+ * Provides the ability to filter out all the days within a given tome period
  */
 
 public class DayManager {

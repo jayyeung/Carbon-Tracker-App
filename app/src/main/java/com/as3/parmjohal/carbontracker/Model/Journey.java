@@ -12,8 +12,10 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by ParmJohal on 2017-03-03.
+ * Holds both a means of transportation the user has entered and the length of the route
+ * With both we can calculate the total CO2 for the specific journey
  */
+
 
 public class Journey {
 

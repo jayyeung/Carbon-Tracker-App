@@ -1,7 +1,8 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 /**
- * Created by ParmJohal on 2017-03-20.
+ * Holds the name of the walk trip and distance
+ * generates a Route object that can be used later to make a Walk journey
  */
 
 public class Walk extends Transportation{

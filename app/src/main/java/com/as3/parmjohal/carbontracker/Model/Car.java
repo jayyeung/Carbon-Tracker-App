@@ -3,9 +3,9 @@ package com.as3.parmjohal.carbontracker.Model;
 import android.util.Log;
 
 /**
- * Created by ParmJohal on 2017-03-01.
+ * A class designed to make a Car object that holds multiple variables needed to keep track of cars
+ *
  */
-
 public class Car extends Transportation{
 
     //make	model	year	trany	cylinders	displ	fuelType	city08	highway08

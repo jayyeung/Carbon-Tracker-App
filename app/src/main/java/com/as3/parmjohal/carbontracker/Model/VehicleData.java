@@ -17,7 +17,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by ParmJohal on 2017-03-01.
+ * Reads in a CSV file that contains all the data of vehicles in the US
+ * Generates all car objects in the CSV file
+ * and outputs ifo such as make/model/ and year based on the users selection
  */
 
 

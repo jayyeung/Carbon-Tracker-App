@@ -1,7 +1,7 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 /**
- * Created by ParmJohal on 2017-03-03.
+ * Holds distance between two end points and he desired name of the route
  */
 
 public class Route {
