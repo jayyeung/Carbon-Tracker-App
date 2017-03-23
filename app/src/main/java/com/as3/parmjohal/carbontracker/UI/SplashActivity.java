@@ -20,9 +20,13 @@ import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.JourneyManager;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;
@@ -43,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         //model.getTipsManager().getTip(this);
         //model.getTipsManager().displayAll();
 
+        DayManager dayManager = new DayManager();
 
         final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);

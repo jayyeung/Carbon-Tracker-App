@@ -79,12 +79,11 @@ public class Journey {
             co2 = 0.0;
         }
 
-
-
         DecimalFormat df = new DecimalFormat("####0.00");
 
         if(co2 > 0) {
-            String tip = "You used " + df.format(co2) + " of CO2, Maybe Consider Public Transportation";
+            String tip = "You used " + df.format(co2) + " of CO2, Skytrain produces the least amount \n" +
+                    "of CO2 out of all Public Transit";
             this.tip = tip;
         }
         else if(!checkElectricity && transportation.getObjectType().equals("car")){
