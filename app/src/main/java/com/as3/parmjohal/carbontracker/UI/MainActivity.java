@@ -408,8 +408,8 @@ public class MainActivity extends AppCompatActivity {
             // Journey
             entries = new ArrayList<>();
             counter = 0;
-            for (Journey journey_obj : month_journey_CO2) {
-                entries.add(new Entry(counter , (float) journey_obj.getCo2()));
+            for (Double journey_obj : month_journey_CO2) {
+                entries.add(new Entry(counter , journey_obj.floatValue()));
                 counter++;
             }
 
