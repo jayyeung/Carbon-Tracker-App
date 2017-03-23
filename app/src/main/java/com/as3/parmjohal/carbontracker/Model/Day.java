@@ -2,6 +2,7 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -14,11 +15,13 @@ public class Day {
     private JourneyManager journeyManager = new JourneyManager();
     private ArrayList<Double> allCO2Values = new ArrayList<>();
     private double totalCO2 = 0;
+    String tip = " ";
 
     private String date;
     private int year = 0;
     private int month = 0;
     private int day = 0;
+
 
     public Day(String date) {
         this.date = date;
@@ -51,11 +54,32 @@ public class Day {
         journeyManager.add(journey);
         allCO2Values.add(journey.getCo2());
         totalCO2 += journey.getCo2();
+
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+
+        if(journey.getTransportation().getObjectType().equals("car")) {
+            tip = "On " + date + " you used " + df.format(totalCO2) + " kg of CO2 \n"
+                    + " Maybe consider taking public transit";
+        }
+        else if(journey.getTransportation().getObjectType().equals("bike")) {
+            tip = "On " + date + " you spent " + 0 + " kg of CO2 \n"
+                    + " to get to a destination, because you rode a bike";
+        }
+        else if(journey.getTransportation().getObjectType().equals("bus")) {
+            tip = "On " + date + " you spent " + df.format(journey.getCo2()) + " kg of CO2 \n"
+                    + " ont the bus. Did you know that the SkyTrain projects less CO2";
+        }
+        else if(journey.getTransportation().getObjectType().equals("walk")) {
+            tip = "Keep walking because On " + date + " you spent " + 0 + " kg of CO2 \n"
+                    + " to get to your destination";
+        }
+
+        CarbonTrackerModel.getModel().getTipsManager().add(tip);
         return true;
     }
 
     public void remove(Journey journey){
-
         totalCO2 -= journey.getCo2();
         journeyManager.remove(journey);
     }
