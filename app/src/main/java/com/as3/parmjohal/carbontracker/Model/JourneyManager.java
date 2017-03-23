@@ -23,7 +23,20 @@ public class JourneyManager {
 
     public void remove(Journey journey)
     {
-        journeyCollection.remove(journey);
+        Log.i("Day", "All Journey's in Collection");
+
+        for(Journey journey1: journeyCollection)
+        {
+            Log.i("Day", journey1.toString());
+        }
+
+        if(journeyCollection.remove(journey)){
+            Log.i("Day", "REMOVED " + journey.toString());
+        }
+        else {
+            Log.i("Day", "Not Removed " + journey.toString());
+
+        }
     }
 
     public void update(Journey currentjourney, Journey newJourney)

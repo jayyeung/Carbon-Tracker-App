@@ -7,6 +7,7 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Created by ParmJohal on 2017-03-05.
@@ -25,6 +26,7 @@ public class CarbonTrackerModel {
     private Manager<Skytrain> skytrainManager = new Manager<>();
     private Manager<Walk> walkManager = new Manager<>();
     private Manager<Bike> bikeManager = new Manager<>();
+    private Manager<String> tipsManager = new Manager<>();
 
     public static ArrayList<Car> cars = new ArrayList<Car>();
 
@@ -35,6 +37,7 @@ public class CarbonTrackerModel {
     private Journey currentJouney;
     private boolean confirmTrip = true;
     private boolean editJourney = false;
+    private Transportation transportation;
 
     private CarbonTrackerModel() {
 
@@ -56,6 +59,11 @@ public class CarbonTrackerModel {
         }
 
         count++;
+        return carbonTrackerModel;
+    }
+
+    public static CarbonTrackerModel getModel()
+    {
         return carbonTrackerModel;
     }
 
@@ -90,6 +98,10 @@ public class CarbonTrackerModel {
 
     public DayManager getDayManager() {
         return dayManager;
+    }
+
+    public Manager<String> getTipsManager() {
+        return tipsManager;
     }
     //*********************************************************************
 
@@ -139,4 +151,12 @@ public class CarbonTrackerModel {
     public boolean isEditJourney(){return  editJourney;}
 
     public void setEditJourney(boolean editJourney){this.editJourney = editJourney;}
+
+    public Transportation getTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(Transportation transportation) {
+        this.transportation = transportation;
+    }
 }

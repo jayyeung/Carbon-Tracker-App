@@ -36,8 +36,6 @@ public class TrainActivity extends AppCompatActivity {
             stopsList.add(stops[i]);
         }
 
-
-
        setUpSpinners();
 
     }

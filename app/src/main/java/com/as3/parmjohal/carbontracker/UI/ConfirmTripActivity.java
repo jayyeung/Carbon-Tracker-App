@@ -19,7 +19,7 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 public class ConfirmTripActivity extends AppCompatActivity {
 
-    CarbonTrackerModel model;
+    public static CarbonTrackerModel model;
     private Journey journey;
 
     public static final int REQUEST_CODE_CAR= 2017;
@@ -140,10 +140,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
             Log.i("Journey: ", "New Journey");
             Car currentCar = model.getCurrentCar();
             Route currentRoute = model.getCurrentRoute();
-
-            Log.i("CO2", currentCar.toString());
-
             journey = new Journey(currentCar, currentRoute);
+
         }
         else {
             Log.i("Journey: ", "Clicked Journey");
