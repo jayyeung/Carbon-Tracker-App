@@ -27,6 +27,12 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.Calendar;
 import java.util.Date;
+/**
+ * --SplashActivity--
+ * Welcome Screen for User.
+ * User can also create new journey right away
+ * or continue to Dashboard.
+ */
 
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;

@@ -18,6 +18,11 @@ import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
+/**
+ * --WalkActivity--
+ * User creates new Walk journey and route
+ * for new Journey.
+ */
 
 public class WalkActivity extends AppCompatActivity {
     private String type="";

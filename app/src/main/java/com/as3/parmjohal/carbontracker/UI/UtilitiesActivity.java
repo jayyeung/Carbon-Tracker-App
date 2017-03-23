@@ -28,6 +28,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+/**
+ * --UtilitiesActivity--
+ *User Creates new electric/gas utility
+ *to add to dashboard.
+ * Proceeds to Dashboard on completion.
+ */
 
 public class UtilitiesActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_START_DATE =111;

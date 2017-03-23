@@ -30,6 +30,11 @@ import java.util.ArrayList;
 
 import static android.support.design.R.id.info;
 
+/**
+ * --SelectRouteActivity--
+ * Shows a listview of existing routes that user
+ * can select to create a journey
+ */
 public class SelectRouteActivity extends AppCompatActivity {
     CarbonTrackerModel model;
     ArrayList<Route> routeList = new ArrayList<Route>();

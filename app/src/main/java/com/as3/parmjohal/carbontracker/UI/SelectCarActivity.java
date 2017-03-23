@@ -27,7 +27,11 @@ import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
-
+/**
+ * --SelectCarActivity--
+ * Shows a listview of existing cars that user
+ * can select to create a journey
+ */
 public class SelectCarActivity extends AppCompatActivity {
 
     CarbonTrackerModel model;

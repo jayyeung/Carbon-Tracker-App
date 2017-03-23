@@ -70,7 +70,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * --MainActivity--
+ *The Dashboard with selectable graphs
+ * and listviews of utilities and Journeys.
+ * Can create new journey/utility with the
+ * floating action button.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Boolean isFabOpen = false;

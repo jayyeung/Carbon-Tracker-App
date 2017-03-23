@@ -20,6 +20,11 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * --TrainActivity--
+ * User creates new Skytrain journey and route
+ * for new Journey.
+ */
 
 public class TrainActivity extends AppCompatActivity {
     private Skytrain newTrain;

@@ -13,7 +13,12 @@ import android.widget.Toast;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
-
+/**
+ * --EditRouteActivity--
+ * Edits existing route in routelist and sends it back
+ * with the correct info.
+ * Proceeds back to SelectRouteActivity
+ */
 public class EditRouteActivity extends AppCompatActivity {
     private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
     private EditText routeName;
