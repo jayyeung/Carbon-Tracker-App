@@ -2,7 +2,10 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ParmJohal on 2017-03-20.
@@ -78,6 +81,23 @@ public class DayManager {
                 dayObject.remove(journey);
             }
         }
+    }
+
+    public void addUtility(Utility utility){
+        for(int i =0; i<days.size();i++) {
+           if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
+               days.get(i).addUtility(utility);
+           }
+        }
+
+    }
+
+    private boolean checkDayExists(Day day, Date startDate, Date endDate) {
+        LocalDate min = new LocalDate(startDate);
+        LocalDate max = new LocalDate(endDate);   // assume these are set to something
+        LocalDate d = new LocalDate(day);          // the date in question
+
+        return (( d.isAfter( min ) ) && ( d.isBefore( max )));
     }
 
     public boolean add(Journey journey)

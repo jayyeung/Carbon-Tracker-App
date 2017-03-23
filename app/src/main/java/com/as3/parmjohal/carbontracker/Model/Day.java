@@ -13,6 +13,7 @@ import java.util.InputMismatchException;
 public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
+    private Manager<Utility> utilityManager = new Manager<>();
 
     private ArrayList<Double> allCO2Values = new ArrayList<>();
     private double totalCO2 = 0;
@@ -48,6 +49,12 @@ public class Day {
 
     public int getDay() {
         return day;
+    }
+
+    public void addUtility(Utility utility){
+        utilityManager.add(utility);
+        //allCO2Values.add(utility.getDailyCo2());
+        //totalCO2  +=(utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
