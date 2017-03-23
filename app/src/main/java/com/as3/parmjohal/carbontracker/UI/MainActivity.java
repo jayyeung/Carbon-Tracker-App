@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < days.size(); i++) {
                             final Day day = days.get(i);
 
-                            MenuItem item = menu.add("" + day);
+                            MenuItem item = menu.add(day.getDay() + "/" + day.getMonth() + "/" + day.getYear());
                             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
