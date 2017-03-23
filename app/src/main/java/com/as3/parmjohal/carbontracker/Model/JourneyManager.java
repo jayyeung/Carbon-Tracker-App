@@ -7,7 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by ParmJohal on 2017-03-05.
+ * Keeps track of all journeys
+ * provides basic functions such as add/edit/delet and look for
  */
 
 public class JourneyManager {

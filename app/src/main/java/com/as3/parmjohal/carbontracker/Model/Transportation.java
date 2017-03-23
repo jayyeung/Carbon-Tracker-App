@@ -3,7 +3,8 @@ package com.as3.parmjohal.carbontracker.Model;
 import android.util.Log;
 
 /**
- * Created by ParmJohal on 2017-03-18.
+ * A base class for every object that "is-a" transportation. Ex) Skytrain
+ * holds the basic info needed in the jouney class in order to calculate the CO2
  */
 
 public class Transportation {

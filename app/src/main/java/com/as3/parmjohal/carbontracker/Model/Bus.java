@@ -6,7 +6,8 @@ import android.view.Menu;
 import com.as3.parmjohal.carbontracker.R;
 
 /**
- * Created by ParmJohal on 2017-03-17.
+ * A class designed to make a Bus object that holds the distance and name
+ * Auto generates a route based on the inputted data
  */
 
 public class Bus extends Transportation{

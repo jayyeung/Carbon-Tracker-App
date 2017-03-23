@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by ParmJohal on 2017-03-22.
+ * Keeps track of all tips and has the ability to find the journey with the largest CO2 and display that journey's tip
  */
 
 public class TipManager {

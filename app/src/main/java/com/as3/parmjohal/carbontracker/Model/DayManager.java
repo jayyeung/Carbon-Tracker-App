@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by ParmJohal on 2017-03-20.
+ * Keeps track of all the days and the corresponding journeys
+ * Provides the ability to filter out all the days within a given tome period
  */
 
 public class DayManager {
@@ -85,35 +86,32 @@ public class DayManager {
         }
     }
 
-    public void addUtility(Utility utility) {
-        for(int i =0; i<days.size();i++) {
-           if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
-               days.get(i).addUtility(utility);
-           }
-        }
-    }
+//    public void addUtility(Utility utility) {
+//        for(int i =0; i<days.size();i++) {
+//           if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
+//               days.get(i).addUtility(utility);
+//           }
+//        }
+//    }
 
     // **** PARMS CODE *****
     public void addUtility1(Utility utility) {
         utilityManager.add(utility);
         for(int i =0; i<days.size();i++) {
-            if( checkDayExists(days.get(i),utility.getStartDate(),utility.getEndDate())){
+            if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
                 Log.i("Utility", "Added to day " + days.get(i).toString());
                 days.get(i).setTotalUtility(utility.getDailyCo2());
             }
         }
     }
 
-    private boolean checkDayExists(Day day, Date startDate, Date endDate) {
+    private boolean checkDayExists(Date day, Date startDate, Date endDate) {
         LocalDate min = new LocalDate(startDate);
         LocalDate max = new LocalDate(endDate);   // assume these are set to something
         LocalDate d = new LocalDate(day);          // the date in question
 
         return (( d.isAfter( min ) ) && ( d.isBefore( max )));
     }
-
-
-
 
     public boolean add(Journey journey)
     {
@@ -154,6 +152,17 @@ public class DayManager {
         return null;
     }
 
+    public ArrayList<Utility> getDay_Utilities(int day, int month, int year) {
+        for(int i=0; i < days.size(); i++)
+        {
+            Day dayObject = days.get(i);
+            if(dayObject.getDay() == day && dayObject.getMonth() == month && dayObject.getYear() == year)
+            {
+                return days.get(i).getAllUtilities();
+            }
+        }
+        return null;
+    }
 
     //returns an arraylist of size 12 with total CO2 for that mont
     //arraylist.get(0) will be the total CO2 for the month of january in the past 365 days
@@ -191,6 +200,11 @@ public class DayManager {
         {
             int dayMonth = dayObject.getMonth() - 1;
             totalUtilityCO2_perMonth.set(dayMonth, totalUtilityCO2_perMonth.get(dayMonth) + dayObject.getTotalUtility());
+        }
+
+        for(double num: totalUtilityCO2_perMonth)
+        {
+            Log.i("Utility", " " + num);
         }
 
         return totalUtilityCO2_perMonth;

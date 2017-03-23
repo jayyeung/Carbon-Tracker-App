@@ -1,7 +1,8 @@
 package com.as3.parmjohal.carbontracker.Model;
 
 /**
- * Created by ParmJohal on 2017-03-20.
+ * A class designed to make a Bike object that holds the distance and name
+ * Auto generates a route based on the inputted data
  */
 
 public class Bike extends  Transportation{

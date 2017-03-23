@@ -3,7 +3,9 @@ package com.as3.parmjohal.carbontracker.Model;
 import android.util.Log;
 
 /**
- * Created by ParmJohal on 2017-03-17.
+ * Holds the information needed to calculate the distance between to stops that the user has entered
+ * finds the distance using the information provided by translinkdb.ca
+ * returns a route specificly made for the given Skytrain start and end points
  */
 
 public class Skytrain extends Transportation{

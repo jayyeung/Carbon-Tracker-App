@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by ParmJohal on 2017-03-02.
+ *  Keeps track of all car objects in an arraylist
+ *  provides the ability to search for and edit specific cars in one command
  */
 
 public class CarManager {
