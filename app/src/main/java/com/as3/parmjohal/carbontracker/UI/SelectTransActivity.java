@@ -10,7 +10,13 @@ import android.widget.Button;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
-
+/**
+ * --SelectTransActivity--
+ * Can select to choose the following transportations:
+ * Car,Bus,Skytrain,Walk/Bike
+ * Proceeds to following activity based on
+ * transportation selected.
+ */
 public class SelectTransActivity extends AppCompatActivity {
     CarbonTrackerModel model;
 
