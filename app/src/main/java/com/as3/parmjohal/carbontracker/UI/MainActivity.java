@@ -301,8 +301,6 @@ public class MainActivity extends AppCompatActivity {
 
             for (Day day_obj : month_CO2) {
 
-                Log.i("MONTH SIZE", month_CO2.size()+"");
-
                 ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
                         day_obj.getDay(),
                         day_obj.getMonth(),
@@ -312,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
                 float journey_day_CO2 = 0;
                 for (int i=0; i<day_journeys.size(); i++) {
                     journey_day_CO2 += day_journeys.get(i).getCo2();
-                    Log.i("CO2", journey_day_CO2+"");
                 }
 
                 entries.add(new Entry(counter , journey_day_CO2));
@@ -352,11 +349,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis)
                 {
-                   if ((int) value > month_CO2.size() || (int) value <= month_CO2.size()) { return ""; }
+                    try {
+                        Day day = month_CO2.get((int) value);
+                        String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
+                        return month + " " + day.getDay();
+                    } catch (Exception e) {}
 
-                    Day day = month_CO2.get((int) value);
-                    String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
-                    return month + " " + day.getDay();
+                    return "";
                 }
             });
 
@@ -370,9 +369,11 @@ public class MainActivity extends AppCompatActivity {
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
 
-            chart.setData(data);
-            chart.animateY(1500);
-            chart.invalidate();
+            try {
+                chart.setData(data);
+                chart.animateY(1500);
+                chart.invalidate();
+            } catch (Exception e) {}
         }
 
         ////////////////
@@ -380,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.YEARLY) {
-            ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
             ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
@@ -432,7 +433,27 @@ public class MainActivity extends AppCompatActivity {
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
-            chart.getXAxis().setEnabled(false);
+
+            XAxis xval = chart.getXAxis();
+            xval.setGranularity(1f);
+            xval.setTextSize(16f);
+            xval.setTextColor(Color.WHITE);
+            xval.setDrawAxisLine(false);
+            xval.setDrawGridLines(false);
+            xval.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xval.setValueFormatter(new IAxisValueFormatter()
+            {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis)
+                {
+                    try {
+                        String month = new DateFormatSymbols().getShortMonths()[(int) value];
+                        return month;
+                    } catch (Exception e) {}
+
+                    return "";
+                }
+            });
 
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
@@ -443,9 +464,11 @@ public class MainActivity extends AppCompatActivity {
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
 
-            chart.setData(data);
-            chart.animateY(1500);
-            chart.invalidate();
+            try {
+                chart.setData(data);
+                chart.animateY(1500);
+                chart.invalidate();
+            } catch (Exception e) {}
         }
     }
 
