@@ -27,6 +27,13 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.util.ArrayList;
 
+/**
+ * --AddCarActivity--
+ * Creates a new Car object on completion
+ * and adds to to the existing CarList.
+ * Proceeds to SelectRouteActivity.
+ */
+
 public class AddCarActivity extends AppCompatActivity {
     private CarbonTrackerModel model ;
     private String make;

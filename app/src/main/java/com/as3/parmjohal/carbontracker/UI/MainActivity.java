@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
@@ -71,6 +72,7 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+
     private Boolean isFabOpen = false;
     private LinearLayout fabs;
     private FloatingActionButton fab, fab_transport, fab_utility;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Utility> utilities;
     public static final int REQUEST_CODE_JOURNEY= 2020;
     public static final int REQUEST_CODE_UTILITY= 2021;
+    private static final int REQUEST_CODE_EDIT = 2022;
     public static final int GET_DATE_FOR_CHART = 0;
 
 
@@ -706,51 +709,60 @@ public class MainActivity extends AppCompatActivity {
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;
 
             float[] HSV = new float[3];
-            HSV[0] = (1-Co2_usage)*90;
+            HSV[0] = (1 - Co2_usage) * 90;
             HSV[1] = 1;
             HSV[2] = 0.5f;
 
             results.setTextColor(Color.HSVToColor(HSV));
 
             // on track/item click
-           // CardView track = (CardView) itemView.findViewById(R.id.track);
-           // track.setOnClickListener(new View.OnClickListener() {
-           //     @Override
-          //      public void onClick(View v) {
-           //         model.setCurrentJouney(journey.get(position));
-           //         model.setConfirmTrip(false);
+            // CardView track = (CardView) itemView.findViewById(R.id.track);
+            // track.setOnClickListener(new View.OnClickListener() {
+            //     @Override
+            //      public void onClick(View v) {
+            //         model.setCurrentJouney(journey.get(position));
+            //         model.setConfirmTrip(false);
 
             //        Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
             //        Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
             //        startActivityForResult(intent,REQUEST_CODE_JOURNEY);
-          //      }
-         //   });
+            //      }
+            //   });
 
             // on Overflow click
-           // ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
-           // overflow.setOnClickListener(new View.OnClickListener() {
-             //   @Override
-              //  public void onClick(View v) {
-            //        PopupMenu popup = new PopupMenu(MainActivity.this, v);
-            //        MenuInflater inflater = popup.getMenuInflater();
-             //       inflater.inflate(R.menu.menu_activity_journey, popup.getMenu());
-              //      popup.show();
+            ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
+            overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.menu_activity_utility, popup.getMenu());
+                    popup.show();
 
-               //     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-               //         @Override
-                //        public boolean onMenuItemClick(MenuItem item) {
-                //            model.setCurrentJouney(journey.get(position));
-               //             model.setConfirmTrip(false);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
 
-                 //           Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                //            intent.putExtra("menu_select", item.getItemId());
-                 //           startActivityForResult(intent,REQUEST_CODE_JOURNEY);
-                //            return true;
-                //        }
-                  //  });
+                            if (item.getItemId() == R.id.delete) {
+                                model.getUtilityManager().remove(position);
+                                restart();
+                            } else if (item.getItemId() == R.id.edit) {
+                                model.setCurrentPos(position);
+                                model.setEditUtility(true);
+                                Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
+                                startActivityForResult(intent,REQUEST_CODE_UTILITY);
 
-          //      }
-         //   });
+
+
+                            }
+                            return true;
+                        }
+
+
+                    });
+
+                }
+            });
 
             return itemView;
         }
@@ -883,6 +895,14 @@ public class MainActivity extends AppCompatActivity {
             case (REQUEST_CODE_UTILITY):
                 restart();
                 break;
+            case(REQUEST_CODE_EDIT):
+                if (resultCode == Activity.RESULT_OK) {
+                    model.setCurrentUtility(null);
+                    model.setEditUtility(false);
+                    restart();
+                    break;
+                }
+
             default:
                 break;
 

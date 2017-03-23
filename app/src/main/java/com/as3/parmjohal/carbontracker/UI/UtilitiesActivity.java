@@ -102,6 +102,8 @@ public class UtilitiesActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.gasText);
                 textView.setText("Amount of Natural Gas Used (Gj): ");
 
+
+
             }
         });
 
@@ -132,10 +134,20 @@ public class UtilitiesActivity extends AppCompatActivity {
                 persons = Integer.parseInt(stringPersons);
 
                 Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
-                model.getUtilityManager().add(utility);
-                model.getDayManager().addUtility1(utility);
+
                 Log.i("Test", utility.toString());
-                finish();
+
+                if(model.isEditUtility()) {
+                    model.getUtilityManager().remove(model.getCurrentPos());
+                    model.getUtilityManager().add(utility);
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+                else{
+                    model.getUtilityManager().add(utility);
+                    finish();
+                }
 
                  break;
             default:

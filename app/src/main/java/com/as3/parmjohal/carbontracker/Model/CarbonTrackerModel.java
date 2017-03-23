@@ -38,10 +38,12 @@ public class CarbonTrackerModel {
     private Transportation currentTrans;
     private Route currentRoute;
     private Date currentDate;
+    private Utility currentUtility;
     public int currentPos;
     private Journey currentJouney;
     private boolean confirmTrip = true;
     private boolean editJourney = false;
+    private boolean editUtility = false;
     private Transportation transportation;
 
     private CarbonTrackerModel() {
@@ -164,9 +166,18 @@ public class CarbonTrackerModel {
         return currentDate;
     }
 
+    public Utility getCurrentUtility() {
+        return currentUtility;
+    }
+
+    public void setCurrentUtility(Utility currentUtility) {
+        this.currentUtility = currentUtility;
+    }
+
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
+
 
 
 
@@ -181,6 +192,10 @@ public class CarbonTrackerModel {
     public boolean isEditJourney(){return  editJourney;}
 
     public void setEditJourney(boolean editJourney){this.editJourney = editJourney;}
+    public boolean isEditUtility(){return  editUtility;}
+
+    public void setEditUtility(boolean editUtility){this.editUtility = editUtility;}
+
 
     public Transportation getTransportation() {
         return transportation;
