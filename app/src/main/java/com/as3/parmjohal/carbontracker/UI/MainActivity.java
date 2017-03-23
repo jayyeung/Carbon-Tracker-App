@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout fabs;
     private FloatingActionButton fab, fab_transport, fab_utility;
     private ImageView fab_overlay;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out, pulse;
 
     private enum Chart_options { DAILY, MONTHLY, YEARLY };
 
@@ -620,6 +620,7 @@ public class MainActivity extends AppCompatActivity {
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        pulse = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.pulse);
 
         fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fade_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
@@ -660,6 +661,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tip = model.getTipsManager().getTip(MainActivity.this);
                 journey_message.setText(tip);
+                v.startAnimation(pulse);
             }
         });
     };
