@@ -58,7 +58,6 @@ public class CalenderActivity extends Activity {
                     model.getCurrentJouney().setDate(setYear, setMonth, setDay);
                     Journey newJourney = model.getCurrentJouney();
                     model.getDayManager().updateDay(oldJourney,newJourney);
-
                     finish();
                 }
                 else{

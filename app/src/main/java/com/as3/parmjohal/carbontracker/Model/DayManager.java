@@ -298,4 +298,5 @@ public class DayManager {
         return days1;
     }
 
+    public ArrayList<Day> getDays() { return days; }
 }

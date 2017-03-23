@@ -54,6 +54,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Journey> journey;
     public static final int REQUEST_CODE_JOURNEY= 2020;
+    public static final int GET_DATE_FOR_CHART = 0;
 
 
     @Override
@@ -151,35 +153,40 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // checkedId is the RadioButton selected
-
                 switch(checkedId) {
                     case R.id.day_radio:
                         RadioButton radio = (RadioButton) findViewById(R.id.day_radio);
                         PopupMenu popup = new PopupMenu(MainActivity.this, radio);
 
+                        ArrayList<Day> days = day_manager.getDays();
                         Menu menu = popup.getMenu();
-                        SubMenu year_menu = menu.addSubMenu("2017");
 
-                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            public boolean onMenuItemClick(MenuItem item) {
-                                chart_status.setText("Today");
-                                chart_type.setText("Daily Carbon Usage");
-                                setGraph(Chart_options.DAILY);
-                                return true;
-                            }
-                        });
+                        for (int i = 0; i < days.size(); i++) {
+                            final Day day = days.get(i);
+
+                            MenuItem item = menu.add("" + day);
+                            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    chart_status.setText("Today");
+                                    chart_type.setText("Daily Carbon Usage");
+                                    setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
+                                    return true;
+                                }
+                            });
+                        }
+
                         popup.show(); //showing popup menu
                         break;
                     case R.id.month_radio:
-                        chart_status.setText("Last 28 days");
+                        chart_status.setText("Last 28 days (Today)");
                         chart_type.setText("Monthly Carbon Usage");
-                        setGraph(Chart_options.MONTHLY);
+                        setGraph(Chart_options.MONTHLY, 0,0,0);
                         break;
                     case R.id.year_radio:
-                        chart_status.setText("Last 365 days");
+                        chart_status.setText("Last 365 days (Today)");
                         chart_type.setText("Annual Carbon Usage");
-                        setGraph(Chart_options.YEARLY);
+                        setGraph(Chart_options.YEARLY, 0,0,0);
                         break;
                 }
 
@@ -191,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         default_chart.setChecked(true);
     }
 
-    public void setGraph(Chart_options option) {
+    public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
         LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
 
@@ -203,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd MM yy");
         String[] date = (df.format(new Date())).split("\\s+");
 
-        int day = Integer.parseInt(date[0]),
-                month = Integer.parseInt(date[1]),
-                year = Integer.parseInt(date[2]);
+        int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
+            month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
+            year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
 
         ////////////////
         // DAILY GRAPH
@@ -271,7 +278,10 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.MONTHLY) {
             final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+            ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
+
             Collections.reverse(month_CO2);
+            Collections.reverse(journey_CO2);
 
             if (month_CO2.size() <= 0) { return; }
 
@@ -300,20 +310,8 @@ public class MainActivity extends AppCompatActivity {
             entries = new ArrayList<>();
             counter = 0;
 
-            for (Day day_obj : month_CO2) {
-
-                ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(
-                        day_obj.getDay(),
-                        day_obj.getMonth(),
-                        day_obj.getYear()
-                );
-
-                float journey_day_CO2 = 0;
-                for (int i=0; i<day_journeys.size(); i++) {
-                    journey_day_CO2 += day_journeys.get(i).getCo2();
-                }
-
-                entries.add(new Entry(counter , journey_day_CO2));
+            for (Double journey_day : journey_CO2) {
+                entries.add(new Entry(counter , journey_day.floatValue()));
                 counter++;
             }
 
@@ -383,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.YEARLY) {
             final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
-            ArrayList<Journey> month_journey_CO2 = day_manager.getPast28Days_Journeys(day, month, year);
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year);
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
@@ -410,6 +408,8 @@ public class MainActivity extends AppCompatActivity {
             entries = new ArrayList<>();
             counter = 0;
             for (Double journey_obj : month_journey_CO2) {
+                Log.i("JOURENY", journey_obj+"");
+
                 entries.add(new Entry(counter , journey_obj.floatValue()));
                 counter++;
             }
