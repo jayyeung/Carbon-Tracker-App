@@ -97,10 +97,14 @@ public class SelectCarActivity extends AppCompatActivity {
             track.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    model.setCurrentCar(carList.get(position));
+                    model.setCurrentTransportation(carList.get(position));
                     if (model.isEditJourney()){
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
+                        if(model.getCurrentJouney().getTransportation() instanceof Car == false){
+                            Intent intent2 = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                            startActivity(intent2);
+                        }
                         finish();
                     }
                     else {
@@ -162,6 +166,10 @@ public class SelectCarActivity extends AppCompatActivity {
                         populateListView();
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
+                        if(model.getCurrentJouney().getTransportation() instanceof Car == false){
+                            Intent intent2 = SelectRouteActivity.makeIntent(SelectCarActivity.this);
+                            startActivity(intent2);
+                        }
                         finish();
                         break;
                     }

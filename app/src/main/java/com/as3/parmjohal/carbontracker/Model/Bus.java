@@ -33,6 +33,10 @@ public class Bus extends Transportation{
     {
         return busRoute;
     }
+    @Override
+    public String getInfo() {
+        return "Bus Trip: "+name+" .";
+    }
 
 
 

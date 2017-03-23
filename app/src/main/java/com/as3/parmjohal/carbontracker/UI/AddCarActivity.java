@@ -254,7 +254,7 @@ public class AddCarActivity extends AppCompatActivity {
                     Log.i("CO2", "Car Clicked: " + carClicked.toString());
                     carClicked.setName(carNameString);
 
-                    model.setCurrentCar( model.getCarManager().add(carClicked));
+                    model.setCurrentTransportation( model.getCarManager().add(carClicked));
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
                         Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());

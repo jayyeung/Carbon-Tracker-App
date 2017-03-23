@@ -79,7 +79,7 @@ public class Skytrain extends Transportation{
             stops = canadeLine_stops;
             minutes = canadaLine_minutes;
         }
-            
+
         int stop1 = 0;
         int stop2 = 0;
 
@@ -117,16 +117,16 @@ public class Skytrain extends Transportation{
         return (totalMinutes * MIN_TO_HOURS) ;
     }
 
-    public String[] getStops(){
-        if(trainType.equals("Expo Line")) {
+    public String[] getStops(String line){
+        if(line.equals("Expo Line")) {
 
             return expoLine_stops;
         }
-        else if(trainType.equals("Millennium Line")) {
+        else if(line.equals("Millennium Line")) {
 
            return millenniumLine_stops;
         }
-        else if(trainType.equals("Canada Line")) {
+        else if(line.equals("Canada Line")) {
 
             return canadeLine_stops;
 

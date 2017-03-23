@@ -7,7 +7,7 @@ import com.as3.parmjohal.carbontracker.SharedPreference;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.Date;
 
 /**
  * Created by ParmJohal on 2017-03-05.
@@ -24,15 +24,20 @@ public class CarbonTrackerModel {
     private DayManager dayManager = new DayManager();
 
     private Manager<Skytrain> skytrainManager = new Manager<>();
+    private Manager<Bus> busManager = new Manager<>();
     private Manager<Walk> walkManager = new Manager<>();
     private Manager<Bike> bikeManager = new Manager<>();
     private TipManager tipsManager = new TipManager();
+
+    private Manager<Utility> utilityManager = new Manager<>();
 
     public static ArrayList<Car> cars = new ArrayList<Car>();
 
     private static int count = 0;
     private Car currentCar;
+    private Transportation currentTrans;
     private Route currentRoute;
+    private Date currentDate;
     public int currentPos;
     private Journey currentJouney;
     private boolean confirmTrip = true;
@@ -88,6 +93,10 @@ public class CarbonTrackerModel {
         return skytrainManager;
     }
 
+    public Manager<Bus> getBusManager() {
+        return busManager;
+    }
+
     public Manager<Walk> getWalkManager() {
         return walkManager;
     }
@@ -95,6 +104,8 @@ public class CarbonTrackerModel {
     public Manager<Bike> getBikeManager() {
         return bikeManager;
     }
+
+    public Manager<Utility> getUtilityManager(){return utilityManager;}
 
     public DayManager getDayManager() {
         return dayManager;
@@ -114,6 +125,15 @@ public class CarbonTrackerModel {
     public Car getCurrentCar() {
         return currentCar;
     }
+
+
+    public Transportation getCurrentTransportation(){
+    return  currentTrans;}
+    public void setCurrentTransportation(Transportation trans){
+        this.currentTrans = trans;
+    }
+
+
 
     public void setCurrentCar(Car currentCar) {
 
@@ -139,6 +159,16 @@ public class CarbonTrackerModel {
     public void setCurrentJouney(Journey currentJouney) {
         this.currentJouney = currentJouney;
     }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
+
 
     public boolean isConfirmTrip() {
         return confirmTrip;

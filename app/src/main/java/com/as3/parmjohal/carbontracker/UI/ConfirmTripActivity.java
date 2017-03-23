@@ -10,9 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.as3.parmjohal.carbontracker.Model.Bike;
+import com.as3.parmjohal.carbontracker.Model.Bus;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Transportation;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.Model.Route;
 import com.as3.parmjohal.carbontracker.SharedPreference;
@@ -25,6 +30,12 @@ public class ConfirmTripActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_CAR= 2017;
     public static final int REQUEST_CODE_ROUTE= 2018;
     public static final int REQUEST_CODE_DATE= 2019;
+
+    boolean checkElectricity;
+    boolean checkBus;
+    boolean checkSkyTrain;
+    boolean checkWalk;
+    boolean checkBike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +56,15 @@ public class ConfirmTripActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         getJourneyData();
+        boolean checkElectricity = journey.getTransportation().getFuelType().equals("Electricity");
+        boolean checkBus = journey.getTransportation().getFuelType().equals("Bus");
+        boolean checkSkyTrain = journey.getTransportation().getFuelType().equals("Skytrain");
+        boolean checkWalk = journey.getTransportation().getFuelType().equals("Walk");
+        boolean checkBike = journey.getTransportation().getFuelType().equals("Bike");
+
 
         populateTextViews();
+
 
         // if a menu option was selected at dashboard:
         int menu_select_id = getIntent().getIntExtra("menu_select", 0);
@@ -59,8 +77,14 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
-        setupTextView(R.id.display_CarName, journey.getTransportationInfo());
-        setupTextView(R.id.display_MainCar, journey.getTransportation().getObjectType());
+        if(journey.getTransportation()instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus) {
+            setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
+            setupTextView(R.id.display_MainCar, "");
+        }
+        else {
+            setupTextView(R.id.display_MainCar, journey.getTransportationInfo());
+            setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
+        }
         setupTextView(R.id.display_RouteName, journey.getRoute().getRouteName());
         setupTextView(R.id.display_Route, journey.getRouteInfo());
 
@@ -105,6 +129,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 Intent intent = MainActivity.makeIntent(ConfirmTripActivity.this);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//reset activity stack
                 model.setCurrentCar(null);
+                model.setCurrentTransportation(null);
                 model.setCurrentRoute(null);
                 finish();
                 startActivity(intent);//go to dashboard
@@ -138,9 +163,13 @@ public class ConfirmTripActivity extends AppCompatActivity {
     {
         if(model.isConfirmTrip()) {
             Log.i("Journey: ", "New Journey");
-            Car currentCar = model.getCurrentCar();
+            Transportation currentTransportation = model.getCurrentTransportation();
             Route currentRoute = model.getCurrentRoute();
-            journey = new Journey(currentCar, currentRoute);
+
+            Log.i("CO2", currentTransportation.toString());
+
+            journey = new Journey(currentTransportation, currentRoute);
+
 
         }
         else {
@@ -154,18 +183,36 @@ public class ConfirmTripActivity extends AppCompatActivity {
     private void editCar()
     {
         model.setEditJourney(true);
-        Intent intent = SelectCarActivity.makeIntent(ConfirmTripActivity.this);
+        Intent intent = SelectTransActivity.makeIntent(ConfirmTripActivity.this);
         startActivityForResult(intent,REQUEST_CODE_CAR);
     }
 
     private void editRoute(){
         model.setEditJourney(true);
-        Intent intent = SelectRouteActivity.makeIntent(ConfirmTripActivity.this);
-        startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        Intent intent;
+        if(model.getCurrentJouney().getTransportation() instanceof Bike == true ||model.getCurrentJouney().getTransportation() instanceof Walk == true){
+            intent = WalkActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else if (model.getCurrentJouney().getTransportation() instanceof Skytrain == true){
+            intent = TrainActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else if (model.getCurrentJouney().getTransportation() instanceof Bus == true){
+            intent = BusActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+        else{
+            intent = SelectRouteActivity.makeIntent(ConfirmTripActivity.this);
+            startActivityForResult(intent,REQUEST_CODE_ROUTE);
+        }
+
+
     }
 
     private void editDate()
     {
+        model.setEditJourney(true);
         startActivityForResult(new Intent(ConfirmTripActivity.this,CalenderActivity.class),REQUEST_CODE_DATE);
     }
 
@@ -183,9 +230,16 @@ public class ConfirmTripActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_CODE_CAR):
                 if (resultCode == Activity.RESULT_OK) {
-                    journey.setCar(model.getCurrentCar());
+                    Log.i("test",""+journey.getTransportationType());
+                    if(journey.getTransportationType().equals("Car")==false){
+                        Log.i("true",""+journey.getTransportationType());
+                    journey.setRoute(model.getCurrentRoute());
+                    }
+                    journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
+                    model.setCurrentTransportation(null);
                     model.setEditJourney(false);
 
                     restart();
@@ -196,10 +250,17 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_ROUTE):
                 if(resultCode == Activity.RESULT_OK){
-                    journey.setRoute(model.getCurrentRoute());
+                    if(journey.getTransportationType().equals("Car")==false){
+                        Log.i("true",""+journey.getTransportationType());
+                        journey.setRoute(model.getCurrentRoute());
+                    }
+                    journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
-                    model.setCurrentRoute(null);
+                    Log.i("test",""+journey.toString());
+                    model.setCurrentCar(null);
+                    model.setCurrentTransportation(null);
                     model.setEditJourney(false);
+
                     restart();
 
                     break;
@@ -207,6 +268,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_DATE):
                 if (resultCode == Activity.RESULT_OK) {
+                    model.setEditJourney(false);
                     restart();
 
                     break;

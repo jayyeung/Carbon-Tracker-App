@@ -13,6 +13,7 @@ import java.util.InputMismatchException;
 public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
+
     private ArrayList<Double> allCO2Values = new ArrayList<>();
     private double totalCO2 = 0;
     String tip = " ";

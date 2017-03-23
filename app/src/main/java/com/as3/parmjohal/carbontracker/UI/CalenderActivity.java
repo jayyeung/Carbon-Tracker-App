@@ -14,6 +14,9 @@ import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.R;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class CalenderActivity extends Activity {
     private CarbonTrackerModel model ;
 
@@ -54,14 +57,20 @@ public class CalenderActivity extends Activity {
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 if (clicked) {
-                    Journey oldJourney = Journey.copy(model.getCurrentJouney());
-                    model.getCurrentJouney().setDate(setYear, setMonth, setDay);
-                    Journey newJourney = model.getCurrentJouney();
-                    model.getDayManager().updateDay(oldJourney,newJourney);
-                    finish();
-                }
-                else{
-                    finish();
+                    if (model.isEditJourney()) {
+                        Journey oldJourney = Journey.copy(model.getCurrentJouney());
+                        model.getCurrentJouney().setDate(setYear, setMonth, setDay);
+                        Journey newJourney = model.getCurrentJouney();
+                        model.getDayManager().updateDay(oldJourney, newJourney);
+
+                        finish();
+                    } else {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(setYear, setMonth, setDay);
+                        Date date = cal.getTime();
+                        model.setCurrentDate(date);
+                        finish();
+                    }
                 }
 
 

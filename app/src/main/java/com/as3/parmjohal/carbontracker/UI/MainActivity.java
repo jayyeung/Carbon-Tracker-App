@@ -56,6 +56,8 @@ import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -70,7 +72,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     private LinearLayout fabs;
-    private FloatingActionButton fab, fab_transport;
+    private FloatingActionButton fab, fab_transport, fab_utility;
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out;
 
@@ -149,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView chart_status = (TextView) findViewById(R.id.chart_status);
         final TextView chart_type = (TextView) findViewById(R.id.chart_type);
 
-        chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId) {
@@ -612,6 +613,8 @@ public class MainActivity extends AppCompatActivity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
+        fab_utility = (FloatingActionButton) findViewById(R.id.fab_utility);
+        fab_transport = (FloatingActionButton) findViewById(R.id.fab_journey);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -633,6 +636,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startNewJourney();
                 model.setConfirmTrip(true);
+                isFabOpen = true;
+                animateFAB();
+            }
+        });
+        fab_utility.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewUtilities();
                 isFabOpen = true;
                 animateFAB();
             }
@@ -681,6 +692,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startNewJourney() {
         Intent intent = SelectTransActivity.makeIntent(MainActivity.this);
+        startActivity(intent);
+    }
+    private void startNewUtilities(){
+        Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
         startActivity(intent);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
