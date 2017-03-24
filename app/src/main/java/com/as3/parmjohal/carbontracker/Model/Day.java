@@ -69,7 +69,7 @@ public class Day {
 
     public boolean add(Journey journey)
     {
-        journeyManager.add(journey);
+       // journeyManager.add(journey);
         allCO2Values.add(journey.getCo2());
         totalCO2 += journey.getCo2();
 

@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
         int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
             month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
             year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
+        final int months = month;
 
         ////////////////
         // DAILY GRAPH
@@ -305,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.MONTHLY) {
-            final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+            final ArrayList<Day> month_CO2 = day_manager.getPast28Days2(day, month, year);
             Collections.reverse(month_CO2);
 
             if (month_CO2.size() <= 0) { return; }
@@ -382,7 +383,9 @@ public class MainActivity extends AppCompatActivity {
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
+
+            chart.setScaleMinima(5f, 1f);
+            //chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -434,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (year_CO2.size() <= 0) { return; }
 
-            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year);
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
 
             ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year);
 
@@ -520,8 +523,17 @@ public class MainActivity extends AppCompatActivity {
                 public String getFormattedValue(float value, AxisBase axis)
                 {
                     try {
-                        String month = new DateFormatSymbols().getShortMonths()[(int) value];
-                        return month;
+                        if (months - value -1  >=0)
+                        {
+                            String month = new DateFormatSymbols().getShortMonths()[(int) (months - value -1)];
+                            return month;
+                        }
+                        else{
+                            String month = new DateFormatSymbols().getShortMonths()[(int) (12 + (months - value - 1))];
+                            return month;
+
+                        }
+
                     } catch (Exception e) {}
 
                     return "";
@@ -709,7 +721,7 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + "kg CO₂");
+            results.setText(String.format("%.2f", cur_utility.getDailyCo2()) + "kg CO₂");
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;
@@ -899,6 +911,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             case (REQUEST_CODE_UTILITY):
+                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                 restart();
                 break;
             case(REQUEST_CODE_EDIT):
@@ -914,6 +927,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setOverview();
     }
 
     private void restart()

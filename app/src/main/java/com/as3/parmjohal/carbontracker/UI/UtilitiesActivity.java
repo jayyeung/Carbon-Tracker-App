@@ -141,14 +141,18 @@ public class UtilitiesActivity extends AppCompatActivity {
 
                 Utility utility = new Utility(isElectricity,amount,persons,startDate,endDate);
 
+
+
                 Log.i("Test", utility.toString());
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+
 
                 if(model.isEditUtility()) {
                     model.getUtilityManager().remove(model.getCurrentPos());
                     model.getUtilityManager().add(utility);
-                    Intent intent = new Intent();
-                    setResult(Activity.RESULT_OK, intent);
                     finish();
+
                 }
                 else{
                     model.getUtilityManager().add(utility);

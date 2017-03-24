@@ -154,6 +154,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 break;
             case R.id.delete_id:
                 model.getJourneyManager().remove(journey);
+                model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                 model.setConfirmTrip(true);
                 finish();
                 break;
@@ -164,7 +165,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void addJourney() {
         model.getJourneyManager().add(journey);
-        model.getDayManager().add(journey);
+        model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
+        Log.i("test", journey.getDateInfo2());
     }
 
     private void getJourneyData()
@@ -245,6 +247,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     }
                     journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                     Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
                     model.setCurrentTransportation(null);
@@ -264,6 +267,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     }
                     journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                     Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
                     model.setCurrentTransportation(null);
@@ -277,6 +281,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
             case (REQUEST_CODE_DATE):
                 if (resultCode == Activity.RESULT_OK) {
                     model.setEditJourney(false);
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                     restart();
 
                     break;

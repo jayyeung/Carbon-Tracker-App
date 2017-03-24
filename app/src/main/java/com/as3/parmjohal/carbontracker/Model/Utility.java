@@ -83,7 +83,11 @@ public class Utility {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         return df.format(date) ;
     }
-
+    public String getDateInfo2()
+    {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(startDate);
+    }
     public double getTotalCo2() {
         return totalCo2;
     }
