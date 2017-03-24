@@ -857,12 +857,27 @@ public class MainActivity extends AppCompatActivity {
     public void setTips() {
         CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
         final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
+        String tip = model.getTipsManager().getTip(MainActivity.this);
+        journey_message.setText(tip);
 
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String tip = model.getTipsManager().getTip(MainActivity.this);
                 journey_message.setText(tip);
+                v.startAnimation(pulse);
+            }
+        });
+        CardView utility_tip_module = (CardView) findViewById(R.id.utility_tip_module);
+        final TextView utility_message = (TextView) findViewById(R.id.tip_message_utility);
+        String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+        utility_message.setText(tip);
+
+        utility_tip_module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+                utility_message.setText(tip2);
                 v.startAnimation(pulse);
             }
         });

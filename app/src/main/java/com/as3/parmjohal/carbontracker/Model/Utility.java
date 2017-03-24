@@ -76,7 +76,7 @@ public class Utility {
                     + gasHelp[rand.nextInt(gasHelp.length)];
         }
 
-        model.getTipsManager().add(tip);
+        model.getTipsManager().addUtilityTip(tip);
     }
     public String getDateInfo(Date date)
     {
