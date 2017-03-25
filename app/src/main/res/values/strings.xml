@@ -133,5 +133,6 @@
     <string name="bike2">bike</string>
     <string name="distance_travelled">Distance Travelled:</string>
     <string name="car_trip">Car Trip</string>
+    <string name="utility_tip">Utility Tip</string>
 
 </resources>

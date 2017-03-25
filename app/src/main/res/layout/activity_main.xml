@@ -416,7 +416,7 @@
                             android:id="@+id/tip_title_utility"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Utility Tip"
+                            android:text="@string/utility_tip"
                             android:textColor="@color/cardview_light_background"
                             android:textStyle="bold" />
 
