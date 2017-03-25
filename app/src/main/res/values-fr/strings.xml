@@ -10,8 +10,8 @@
     <string name="carbon_overview">"Vue d'ensemble du carbone"</string>
     <string name="all_journeys">"Vos derniers Journeys"</string>
     <string name="all_utilities">"Vos derniers Utilities"</string>
-    <string name="fab_label_utility">"New Utility"</string>
-    <string name="fab_label_journey">"New Journey"</string>
+    <string name="fab_label_utility">"Nouvelle utilité"</string>
+    <string name="fab_label_journey">"Nouveau voyage"</string>
 
     <string name="chart_type">"Utilisation quotidienne de carbone"</string>
     <string name="chart_radio_monthly">"Mensuel"</string>
@@ -99,8 +99,8 @@
     <string name="Amount_of_Electricity_Used">"Quantité d'électricité utilisée (KWh):"</string>
     <string name="Amount_of_Natural_Gas_Used">"Quantité de gaz naturel utilisé (Gj):"</string>
     <string name="WALK">"marche"</string>
-    <string name="bike">"bicyclette"</string>
-    <string name="car_name2">"Nom de voitures"</string>
+    <string name="bike">"Bicyclette"</string>
+    <string name="car_name2">"Nom de voitures2"</string>
     <string name="eg_family_car">"Par exemple. Car la famille"</string>
     <string name="select_car_type2">"Sélectionner le type de voiture 2"</string>
     <string name="eg_sfu_surrey">"Par exemple. SFU Surrey"</string>
@@ -123,17 +123,17 @@
     <string name="amount_of_electricty_used_gj">"Montant de Electricty occasion (Gj):"</string>
     <string name="amount_of_people_in_house">"Nombre de personnes dans la maison:"</string>
     <string name="from">"De:"</string>
-    <string name="set_date">"régler la date"</string>
+    <string name="set_date">"Régler la date"</string>
     <string name="to">"A:"</string>
     <string name="set_date2">"Fixer la date 2"</string>
     <string name="description">"La description:"</string>
     <string name="type_of_transportation">"Type de transport:"</string>
-    <string name="walk">"marche"</string>
-    <string name="bike2">"bicyclette2"</string>
+    <string name="walk">"Marche"</string>
+    <string name="bike2">"Bicyclette2"</string>
     <string name="distance_travelled">"Distance parcourue :"</string>
     <string name="car_trip">"Voyage de voiture"</string>
     <string name="utility_tip">Utilitaire Conseils</string>
-    <string name="journey_tip">périple pointe</string>
+    <string name="journey_tip">Périple pointe</string>
     <string name="select_transit_line">Sélectionnez la ligne de transit:</string>
 
 
