@@ -56,9 +56,9 @@ public class TrainActivity extends AppCompatActivity {
     private void setUpLineSpinner() {
         final Spinner line = (Spinner) findViewById(R.id.lineSpinner);
         final ArrayList<String> lines = new ArrayList<String>();
-        lines.add("Expo Line");
-        lines.add("Millennium Line");
-        lines.add("Canada Line");
+        lines.add(getString(R.string.Expo_Line));
+        lines.add(getString(R.string.Millennium_Line));
+        lines.add(getString(R.string.Canada_Line));
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lines);
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,7 +81,7 @@ public class TrainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                TransitLine = "Expo Line";
+                TransitLine = getString(R.string.Expo_Line);
                 stops = newTrain.getStops(TransitLine);
                 stopsList=new ArrayList<String>();
                 for(int i=0;i<stops.length;i++){

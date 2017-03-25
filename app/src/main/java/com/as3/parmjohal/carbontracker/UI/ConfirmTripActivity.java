@@ -170,7 +170,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
     private void getJourneyData()
     {
         if(model.isConfirmTrip()) {
-            Log.i("Journey: ", "New Journey");
+            Log.i(getString(R.string.journey), getString(R.string.new_journey));
             Transportation currentTransportation = model.getCurrentTransportation();
             Route currentRoute = model.getCurrentRoute();
 
@@ -181,7 +181,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
         }
         else {
-            Log.i("Journey: ", "Clicked Journey");
+            Log.i(getString(R.string.journey)+": ", getString(R.string.clicked_journey));
             journey = model.getCurrentJouney();
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);

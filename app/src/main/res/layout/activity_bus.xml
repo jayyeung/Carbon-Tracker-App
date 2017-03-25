@@ -24,7 +24,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Bus Number/Name:"
+                android:text="@string/bus_number_name"
                 tools:layout_editor_absoluteX="2dp"
                 tools:layout_editor_absoluteY="4dp" />
 
@@ -51,7 +51,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Distance Travelled (km):" />
+                android:text="@string/distance_travelled_km" />
 
             <EditText
                 android:id="@+id/editDistance"

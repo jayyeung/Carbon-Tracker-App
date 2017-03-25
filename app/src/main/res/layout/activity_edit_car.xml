@@ -42,7 +42,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Eg. Family Car"
+                android:hint="@string/eg_family_car2"
                 android:inputType="text"
                 android:textColorHint="@color/colorSubtitle"
                 android:textSize="30sp" />

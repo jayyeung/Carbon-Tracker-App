@@ -202,7 +202,8 @@ public class EditCarActivity extends AppCompatActivity {
             carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
             TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
-            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description2.setText(getString(R.string.Transmission)+": " +thisCar.getTranyType() + ", " + thisCar.getFuelType()
+                    + getString(R.string.fuel)+", " + getString(R.string.engindisplacement)+thisCar.getEngineDisplacment()+ "L");
             description.setVisibility(View.GONE);
             registerClickCallBack();
 
@@ -251,15 +252,15 @@ public class EditCarActivity extends AppCompatActivity {
                 carNameString = editName.getText().toString();
 
                 if (carNameString.isEmpty()){
-                    Toast.makeText(EditCarActivity.this, "Please Name Your Car", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCarActivity.this, getString(R.string.please_name_your_car), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 else if(!carIsClicked) {
-                    Toast.makeText(EditCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCarActivity.this, getString(R.string.please_select_your_car), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                else if(checkDuplicate(carClicked)){
-                    Toast.makeText(EditCarActivity.this, "This Car Already Exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCarActivity.this,  getString(R.string.this_car_already_exist), Toast.LENGTH_SHORT).show();
                     return false;
                 }
 
@@ -271,7 +272,7 @@ public class EditCarActivity extends AppCompatActivity {
                     model.getJourneyManager().recalculateCarbon();
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
-                        Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
+                        Log.i( getString(R.string.car_collection), model.getCarManager().getCarCollection().get(i).toString());
 
                     }
 

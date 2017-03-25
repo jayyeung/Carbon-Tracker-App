@@ -50,12 +50,12 @@ public class SelectRouteActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         if (model.isEditJourney()) {
-            setTitle("Edit Journey's Route");
+            setTitle(getString(R.string.Edit_Journeys_Route));
         } else {
-            setTitle("Select Route");
+            setTitle(getString(R.string.Select_Route));
         }
 
-        setTitle("Select Route");
+        setTitle(getString(R.string.Select_Route));
 
         populateListView();
 
@@ -98,9 +98,9 @@ public class SelectRouteActivity extends AppCompatActivity {
               TextView routeName = (TextView) itemView.findViewById(R.id.routeName);
               routeName.setText(thisRoute.getRouteName());
               TextView highway= (TextView) itemView.findViewById(R.id.distanceH);
-              highway.setText(thisRoute.getHwyDistance()+" km on Highway");//fill
+              highway.setText(thisRoute.getHwyDistance()+getString(R.string.km_on_Highway));//fill
               TextView city= (TextView) itemView.findViewById(R.id.distanceC);
-              city.setText(thisRoute.getCityDistance()+" km in the City");//fill
+              city.setText(thisRoute.getCityDistance()+getString(R.string.km_in_the_City));//fill
 
 
 
@@ -140,14 +140,14 @@ public class SelectRouteActivity extends AppCompatActivity {
                             if(item.getItemId() == R.id.delete_id)
                             {
                                 //do stuff if the delete button is clicked...
-                                Toast.makeText(SelectRouteActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectRouteActivity.this, getString(R.string.DELECTED), Toast.LENGTH_SHORT).show();
                                 model.getRouteManager().remove(clickedRoute);
                                 restart();
                             }
                             else if(item.getItemId() == R.id.edit_id)
                             {
                                 //do stuff if the edit is clicked
-                                Toast.makeText(SelectRouteActivity.this, "EDIT", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectRouteActivity.this, R.string.EDIT, Toast.LENGTH_SHORT).show();
 
                                 model.setCurrentRoute(clickedRoute);
                                 Intent intent2 = EditRouteActivity.makeIntent(SelectRouteActivity.this);

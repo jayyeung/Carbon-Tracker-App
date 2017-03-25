@@ -17,7 +17,7 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Billing Type"
+            android:text="@string/select_billing_type"
             android:textSize="24sp" />
 
         <RadioGroup
@@ -30,14 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Electricity" />
+                android:text="@string/electricity" />
 
             <RadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Natural Gas" />
+                android:text="@string/natural_gas" />
         </RadioGroup>
 
         <LinearLayout
@@ -50,7 +50,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:text="Amount of Electricty Used (Gj):"
+                android:text="@string/amount_of_electricty_used_gj"
                 android:textSize="14sp" />
 
             <EditText
@@ -73,7 +73,7 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:text="Amount of People in House:" />
+                android:text="@string/amount_of_people_in_house" />
 
             <EditText
                 android:id="@+id/editPersons"
@@ -89,25 +89,25 @@
             android:id="@+id/startText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="From:" />
+            android:text="@string/from" />
 
         <Button
             android:id="@+id/startButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Date" />
+            android:text="@string/set_date" />
 
         <TextView
             android:id="@+id/endText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="To:" />
+            android:text="@string/to" />
 
         <Button
             android:id="@+id/endButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Date" />
+            android:text="@string/set_date2" />
 
     </LinearLayout>
 

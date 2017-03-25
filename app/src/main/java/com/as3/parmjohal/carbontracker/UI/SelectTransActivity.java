@@ -27,7 +27,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-        setTitle("Select Transportation");
+        setTitle(getString(R.string.Select_Transportation));
 
         setupButtons();
     }

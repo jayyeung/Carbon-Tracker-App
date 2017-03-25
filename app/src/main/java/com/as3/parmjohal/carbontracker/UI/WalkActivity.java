@@ -60,13 +60,13 @@ public class WalkActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setType("Walk");
+                setType(getString(R.string.WALK));
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setType("Bike");
+                setType(getString(R.string.bike));
             }
         });
 
@@ -90,12 +90,12 @@ public class WalkActivity extends AppCompatActivity {
                 distance=editDistance.getText().toString();
 
                 if (distance.isEmpty()==true||name.isEmpty()==true) {
-                    Toast.makeText(WalkActivity.this, "Please complete info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WalkActivity.this, getString(R.string.please_complete_info), Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 else {
                     intDistance = Integer.parseInt(distance);
-                    if (type.equals("Walk")) {
+                    if (type.equals(getString(R.string.WALK))) {
 
 
                         Walk newWalk = new Walk(name, intDistance);
@@ -114,7 +114,7 @@ public class WalkActivity extends AppCompatActivity {
                         startActivity(intent);//go to dashboard
                         break;
 
-                    } else if (type.equals("Bike")) {
+                    } else if (type.equals(getString(R.string.bike))) {
 
                         Bike newBike = new Bike(name, intDistance);
                         model.getBikeManager().add(newBike);
@@ -134,7 +134,7 @@ public class WalkActivity extends AppCompatActivity {
 
                     }
                     else{
-                        Toast.makeText(WalkActivity.this, "Select Transportation", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WalkActivity.this, getString(R.string.Select_Transportation), Toast.LENGTH_SHORT).show();
                     }
 
 

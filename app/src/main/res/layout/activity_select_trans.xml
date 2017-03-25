@@ -20,28 +20,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Car" />
+            android:text="@string/car" />
 
         <Button
             android:id="@+id/busButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.00"
-            android:text="Bus" />
+            android:text="@string/bus" />
 
         <Button
             android:id="@+id/trainButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.00"
-            android:text="Skytrain" />
+            android:text="@string/skytrain" />
 
         <Button
             android:id="@+id/walkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="walk/bike" />
+            android:text="@string/walk_bike" />
     </LinearLayout>
 
 </RelativeLayout>

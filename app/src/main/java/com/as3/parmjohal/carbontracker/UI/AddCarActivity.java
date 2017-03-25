@@ -69,7 +69,7 @@ public class AddCarActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("CO2 ", "Destroy");
+        Log.i("CO2 ", getString(R.string.destroy));
         SharedPreference.saveCurrentModel(this);
     }
 
@@ -242,7 +242,7 @@ public class AddCarActivity extends AppCompatActivity {
                 return true;
             case R.id.action_confirm:
                 carNameString = editName.getText().toString();
-                Log.i("test", ""+carNameString);
+                Log.i(getString(R.string.test), ""+carNameString);
 
 
                 if (carNameString.isEmpty()){
@@ -265,7 +265,7 @@ public class AddCarActivity extends AppCompatActivity {
                     model.setCurrentTransportation( model.getCarManager().add(carClicked));
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
-                        Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
+                        Log.i(getString(R.string.car_collection), model.getCarManager().getCarCollection().get(i).toString());
 
                     }
                     Intent intent = new Intent();
@@ -282,7 +282,7 @@ public class AddCarActivity extends AppCompatActivity {
 
     private boolean checkDuplicate(Car carClicked) {
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            Log.i("test2", ""+model.getCarManager().getCarCollection().get(i).getName());
+            Log.i(getString(R.string.test2), ""+model.getCarManager().getCarCollection().get(i).getName());
             if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && carNameString.equals(model.getCarManager().getCarCollection().get(i).getName())) {
                 return true;
             }
