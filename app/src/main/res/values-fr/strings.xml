@@ -18,7 +18,6 @@
     <string name="chart_radio_daily">"quotidien, 646"</string>
     <string name="chart_radio_yearly">"Annuelle"</string>
 
-    <string name="tip_title">"Journey Tip"</string>
     <string name="tip_message">"Astuce message Goes Here"</string>
 
 
@@ -133,5 +132,9 @@
     <string name="bike2">"vÃ©lo"</string>
     <string name="distance_travelled">"Distance parcourue :"</string>
     <string name="car_trip">"Voyage de voiture"</string>
+    <string name="utility_tip">Utilitaire Conseils</string>
+    <string name="journey_tip">périple pointe</string>
+
+
 
 </resources>

@@ -18,7 +18,6 @@
     <string name="chart_radio_daily">Daily ▾</string>
     <string name="chart_radio_yearly">Yearly</string>
 
-    <string name="tip_title">Journey Tip</string>
     <string name="tip_message">Tip Message Goes Here</string>
 
 
@@ -134,5 +133,6 @@
     <string name="distance_travelled">Distance Travelled:</string>
     <string name="car_trip">Car Trip</string>
     <string name="utility_tip">Utility Tip</string>
+    <string name="journey_tip">journey_tip</string>
 
 </resources>
