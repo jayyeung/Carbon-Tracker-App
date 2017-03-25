@@ -126,7 +126,7 @@
     <string name="set_date">"régler la date"</string>
     <string name="to">"A:"</string>
     <string name="set_date2">"Fixer la date 2"</string>
-    <string name="description">"Description :"</string>
+    <string name="description">"La description:"</string>
     <string name="type_of_transportation">"Type de transport:"</string>
     <string name="walk">"marche"</string>
     <string name="bike2">"bicyclette2"</string>
