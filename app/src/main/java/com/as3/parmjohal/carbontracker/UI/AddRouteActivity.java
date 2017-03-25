@@ -38,10 +38,10 @@ public class AddRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
-        Log.i("CO2 ", "Add Route");
+        Log.i("CO2 ", getString(R.string.add_route));
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
-        setTitle("Add Route");
+        setTitle(getString(R.string.add_route));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -39,5 +39,14 @@
     <string name="main_car">Main Car:</string>
     <string name="route">Route:</string>
     <string name="select_car_hold_to_edit">Select Car:</string>
+    <string name="add_transportation">Add Transportation</string>
+    <string name="transmission">Transmission:</string>
+    <string name="fuel">Fuel,</string>
+    <string name="engindisplacement">Engine Displacement:</string>
+    <string name="please_name_your_car">Please Name Your Car</string>
+    <string name="please_select_your_car">Please Select a Car</string>
+    <string name="this_car_already_exist">This Car Already Exists</string>
+    <string name="car_cliked">Car Clicked:</string>
+    <string name="add_route">Add Route</string>
 
 </resources>
