@@ -135,6 +135,21 @@
     <string name="utility_tip">Utilitaire Conseils</string>
     <string name="journey_tip">Périple pointe</string>
     <string name="select_transit_line">Sélectionnez la ligne de transit:</string>
+    <string name="add">Ajouter</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Effacer</string>
+    <string name="confirm">Confirmer</string>
+    <string name="decline">Déclin</string>
+    <string name="edit_transportation">Modifier transport</string>
+    <string name="edit_route">Edit Route</string>
+    <string name="edit_date">modifier Date</string>
+    <string name="delete_journey">Supprimer le voyage</string>
+    <string name="confirmtrip">Confirm Trip</string>
+    <string name="Journey_Data">Confirmer le voyage</string>
+    <string name="Edit_Transportation">Modifier le transport</string>
+    <string name="SkyTrain_Journey">Voyage SkyTrain</string>
+    <string name="Walk_Bike_Journey">Randonnée pédestre / vélo
+</string>
 
 
 

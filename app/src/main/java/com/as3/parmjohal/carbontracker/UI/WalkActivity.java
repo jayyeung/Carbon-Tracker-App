@@ -44,7 +44,7 @@ public class WalkActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setTitle("Walk/Bike Journey");
+        setTitle(getString(R.string.Walk_Bike_Journey));
         
         createRadioButtonListener();
 

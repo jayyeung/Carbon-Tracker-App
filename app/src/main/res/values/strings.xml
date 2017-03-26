@@ -148,5 +148,6 @@
     <string name="Journey_Data">Journey Data</string>
     <string name="Edit_Transportation">Edit Transportation</string>
     <string name="SkyTrain_Journey">SkyTrain Journey</string>
+    <string name="Walk_Bike_Journey">Walk/Bike Journey</string>
 
 </resources>
