@@ -45,7 +45,7 @@ public class TrainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("SkyTrain Journey");
+        setTitle(getString(R.string.SkyTrain_Journey));
 
         newTrain = new Skytrain("","","","");
 

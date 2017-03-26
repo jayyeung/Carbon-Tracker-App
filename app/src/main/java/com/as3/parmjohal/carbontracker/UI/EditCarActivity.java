@@ -51,7 +51,7 @@ public class EditCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_car);
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
-        setTitle("Edit Transportation");
+        setTitle(getString(R.string.Edit_Transportation));
 
         //adjust layout position when keyboard is out
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

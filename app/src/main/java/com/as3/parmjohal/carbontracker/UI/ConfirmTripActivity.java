@@ -53,11 +53,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         if(model.isConfirmTrip()) {
-            setTitle("Confirm Trip");
+            setTitle(getString(R.string.confirmtrip));
 
         }
         else {
-            setTitle("Journey Data");
+            setTitle(getString(R.string.Journey_Data));
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

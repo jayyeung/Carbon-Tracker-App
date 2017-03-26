@@ -135,5 +135,18 @@
     <string name="utility_tip">Utility Tip</string>
     <string name="journey_tip">journey_tip</string>
     <string name="select_transit_line">Select Transit Line:</string>
+    <string name="add">add</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="confirm">confirm</string>
+    <string name="decline">decline</string>
+    <string name="edit_transportation">Edit Transportation</string>
+    <string name="edit_route">Edit Route</string>
+    <string name="edit_date">Edit Date</string>
+    <string name="delete_journey">Delete Journey</string>
+    <string name="confirmtrip">Confirm Trip</string>
+    <string name="Journey_Data">Journey Data</string>
+    <string name="Edit_Transportation">Edit Transportation</string>
+    <string name="SkyTrain_Journey">SkyTrain Journey</string>
 
 </resources>
