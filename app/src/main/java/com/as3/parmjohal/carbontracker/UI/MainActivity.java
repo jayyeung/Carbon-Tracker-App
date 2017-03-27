@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
-                entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
+                entries.add(new Entry(counter , (float) day_obj.getTotalC02()));
                 counter++;
             }
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
@@ -424,8 +424,9 @@ public class MainActivity extends AppCompatActivity {
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
-            for (Double month_obj : year_CO2) {
-                entries.add(new Entry(counter , month_obj.floatValue()));
+            for (int i = 0;i<year_CO2.size();i++) {
+                float value = (month_journey_CO2.get(i).floatValue())+ (month_utility_CO2.get(i).floatValue());
+                entries.add(new Entry(counter , value));
                 counter++;
             }
 
