@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         model.setEditJourney(false);
         model.setConfirmTrip(true);
+        model.setEditUtility(false);
         journey = model.getJourneyManager().getJourneyCollection();
         utilities = model.getUtilityManager();
         day_manager = model.getDayManager();
@@ -304,21 +305,15 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
         // MONTHLY GRAPH
         ////////////////
-
         else if (option == option.MONTHLY) {
-            final ArrayList<Day> month_CO2 = day_manager.getPast28Days2(day, month, year);
+            final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
             Collections.reverse(month_CO2);
-
             if (month_CO2.size() <= 0) { return; }
-
             ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
             Collections.reverse(journey_CO2);
-
             ArrayList<Double> utility_CO2 = day_manager.getPast28Days_UtilityCO2(day, month, year);
             Collections.reverse(utility_CO2);
-
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
-
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
@@ -326,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                 entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
                 counter++;
             }
-
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
             totalDataSet.setColors(Color.rgb(38, 166, 91));
             totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
@@ -337,16 +331,13 @@ public class MainActivity extends AppCompatActivity {
             totalDataSet.setLineWidth(5f);
             totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(totalDataSet);
-
             // Journey
             entries = new ArrayList<>();
             counter = 0;
-
             for (Double journey_day : journey_CO2) {
                 entries.add(new Entry(counter , journey_day.floatValue()));
                 counter++;
             }
-
             LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
             journeyDataSet.setColors( Color.rgb(52, 152, 219) );
             journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
@@ -357,16 +348,13 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
-
             // Utility
             entries = new ArrayList<>();
             counter = 0;
-
             for (Double utility_day : utility_CO2) {
                 entries.add(new Entry(counter , utility_day.floatValue()));
                 counter++;
             }
-
             LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
             utilityDataSet.setColors( Color.rgb(230, 126, 34) );
             utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
@@ -377,19 +365,13 @@ public class MainActivity extends AppCompatActivity {
             utilityDataSet.setLineWidth(5f);
             utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(utilityDataSet);
-
             LineData data = new LineData(lines);
-
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
-
-
-            chart.setScaleMinima(5f, 1f);
-            //chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
+            chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
-
             XAxis xval = chart.getXAxis();
             xval.setGranularity(1f);
             xval.setTextSize(16f);
@@ -407,20 +389,16 @@ public class MainActivity extends AppCompatActivity {
                         String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
                         return month + " " + day.getDay();
                     } catch (Exception e) {}
-
                     return "";
                 }
             });
-
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
             legend.setTextSize(16f);
             legend.setWordWrapEnabled(true);
-
             Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
-
             try {
                 chart.setData(data);
                 chart.animateY(1500);
@@ -439,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
 
-            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year);
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year,model.getUtilityManager());
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
@@ -763,6 +741,10 @@ public class MainActivity extends AppCompatActivity {
 
                             if (item.getItemId() == R.id.delete) {
                                 model.getUtilityManager().remove(position);
+                                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
+                                for(int i = 0;i<model.getUtilityManager().size();i++){
+                                    model.getUtilityManager().get(i).toString();
+                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);
@@ -871,7 +853,7 @@ public class MainActivity extends AppCompatActivity {
         CardView utility_tip_module = (CardView) findViewById(R.id.utility_tip_module);
         final TextView utility_message = (TextView) findViewById(R.id.tip_message_utility);
         String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
-        utility_message.setText(tip);
+        utility_message.setText(tip2);
 
         utility_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,7 +23,7 @@ public class Utility {
 
     private int electricity,gas,persons;
     private boolean isElectricity;
-    private double totalCo2,dailyCo2;
+    private double totalCo2,dailyCo2,co2StartMonth,co2EndMonth;
     private double CO2_Elec_COVERTOR = 9000;
     private double CO2_Gas_COVERTOR = 56.1;
     private Date startDate,endDate;
@@ -40,7 +40,7 @@ public class Utility {
         totalDays= total.getDays();
         if(isElectricity){
             electricity = amount;
-            totalCo2 = (CO2_Elec_COVERTOR * (double)amount)/(double)persons;
+            totalCo2 = (CO2_Elec_COVERTOR * (double)amount)/((double)persons * 1000000);
             dailyCo2 =totalCo2/totalDays;
         }
         else{
@@ -52,6 +52,7 @@ public class Utility {
 
         Log.i("Test", "" +getTotalDays()+" " + getDailyCo2() + " " +getTotalCo2());
 
+        getMonthlyCo2();
         generateTips();
     }
 
@@ -167,6 +168,34 @@ public class Utility {
         else{
             return "Natural Gas : " +gas+ "Gj " + df.format(startDate)+" to "+df.format(endDate) ;
         }
+    }
+
+    public double getCo2StartMonth() {
+        return co2StartMonth;
+    }
+
+    public double getCo2EndMonth() {
+        return co2EndMonth;
+    }
+
+    public void getMonthlyCo2() {
+        LocalDate startDay = new LocalDate(startDate);
+        LocalDate endDay = new LocalDate(endDate);
+        int endMonth = endDay.getMonthOfYear();
+        int startMonth = startDay.getMonthOfYear();
+        do{
+            co2EndMonth += dailyCo2;
+           endDay= endDay.minusDays(1);
+            Log.i("month1",endDay.toString());
+        }while (endDay.getMonthOfYear() ==endMonth);
+        if(startMonth!=endMonth) {
+            do {
+                co2StartMonth += dailyCo2;
+                startDay=startDay.plusDays(1);
+                Log.i("month2", startDay.toString());
+            } while (startDay.getMonthOfYear() == startMonth);
+        }
+
     }
 }
 

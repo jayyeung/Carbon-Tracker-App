@@ -119,7 +119,6 @@ public class Day {
     }
 
     public void setTotalUtility(double totalUtility) {
-        totalCO2 += totalUtility;
         this.totalUtility = totalUtility;
     }
 
