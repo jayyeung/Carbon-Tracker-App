@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/editCar_id"
-        android:title="Edit Transportation" />
+        android:title="@string/edit_transportation" />
     <item
         android:id="@+id/editRoute_id"
-        android:title="Edit Route" />
+        android:title="@string/edit_route" />
     <item
         android:id="@+id/edit_date_id"
-        android:title="Edit Date" />
+        android:title="@string/edit_date" />
     <item
         android:id="@+id/delete_id"
-        android:title="Delete Journey" />
+        android:title="@string/delete_journey" />
 </menu>

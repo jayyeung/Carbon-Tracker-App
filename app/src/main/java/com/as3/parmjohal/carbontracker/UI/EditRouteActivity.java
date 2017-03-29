@@ -31,7 +31,7 @@ public class EditRouteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_route);
 
-        setTitle("Edit Route");
+        setTitle(getString(R.string.Edit_Route));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         routeName = (EditText) findViewById(R.id.editRouteName);
@@ -63,11 +63,11 @@ public class EditRouteActivity extends AppCompatActivity {
 
                 //Error Checker
                 if (route.isEmpty() == true || city.isEmpty() == true || highway.isEmpty() == true) {
-                    Toast.makeText(EditRouteActivity.this, "Please complete info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditRouteActivity.this, R.string.Please_complete_info, Toast.LENGTH_SHORT).show();
 
                 } else {
                     if (containsOnlyNumbers(city) == false || containsOnlyNumbers(highway) == false) {
-                        Toast.makeText(EditRouteActivity.this, "Distancemust contain only numbers", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditRouteActivity.this, R.string.Distancemust_contain_only_numbers, Toast.LENGTH_SHORT).show();
 
 
 

@@ -48,10 +48,10 @@ public class SelectCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_car);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         if(model.isEditJourney()){
-            setTitle("Edit Journey's Car");
+            setTitle(getString(R.string.Edit_Journeys_Car));
         }
         else {
-            setTitle("Select Car");
+            setTitle(getString(R.string.select_car));
         }
 
         populateListView();
@@ -93,7 +93,8 @@ public class SelectCarActivity extends AppCompatActivity {
             description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
 
             TextView description2 = (TextView) itemView.findViewById(R.id.carDescription2);
-            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +thisCar.getEngineDisplacment()+"L");//fill
+            description2.setText(thisCar.getTranyType() + ", " + thisCar.getFuelType() + getString(R.string.fuel)+", "
+                    +thisCar.getEngineDisplacment()+"L");//fill
 
 
             // on track/item click
@@ -137,7 +138,7 @@ public class SelectCarActivity extends AppCompatActivity {
                             if(item.getItemId() == R.id.delete_id)
                             {
                                 //do stuff if the delete button is clicked...
-                                Toast.makeText(SelectCarActivity.this, "DELETED", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectCarActivity.this, R.string.DELECTED, Toast.LENGTH_SHORT).show();
                                 model.getCarManager().remove(clickedCar);
                                 restart();
                             }

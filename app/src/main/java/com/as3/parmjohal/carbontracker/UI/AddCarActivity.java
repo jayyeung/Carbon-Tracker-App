@@ -52,7 +52,7 @@ public class AddCarActivity extends AppCompatActivity {
         SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-        setTitle("Add Transportation");
+        setTitle(getString(R.string.add_transportation));
 
         //adjust layout position when keyboard is out
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -69,7 +69,7 @@ public class AddCarActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("CO2 ", "Destroy");
+        Log.i("CO2 ", getString(R.string.destroy));
         SharedPreference.saveCurrentModel(this);
     }
 
@@ -195,7 +195,8 @@ public class AddCarActivity extends AppCompatActivity {
             carName.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());
             TextView description= (TextView) itemView.findViewById(R.id.carDescription);
             TextView description2= (TextView) itemView.findViewById(R.id.carDescription2);
-            description2.setText("Transmission: " +thisCar.getTranyType() + ", " + thisCar.getFuelType() + " Fuel, " +"Engine Displacement: "+thisCar.getEngineDisplacment()+ "L");
+            description2.setText(getString(R.string.transmission) +thisCar.getTranyType() + ", "
+                    + thisCar.getFuelType() + getString(R.string.fuel) +getString(R.string.engindisplacement)+thisCar.getEngineDisplacment()+ "L");
             description.setVisibility(View.GONE);
             registerClickCallBack();
 
@@ -241,30 +242,30 @@ public class AddCarActivity extends AppCompatActivity {
                 return true;
             case R.id.action_confirm:
                 carNameString = editName.getText().toString();
-                Log.i("test", ""+carNameString);
+                Log.i(getString(R.string.test), ""+carNameString);
 
 
                 if (carNameString.isEmpty()){
-                    Toast.makeText(AddCarActivity.this, "Please Name Your Car", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCarActivity.this, R.string.please_name_your_car, Toast.LENGTH_SHORT).show();
                     return false;
                 }
                else if(!carIsClicked) {
-                    Toast.makeText(AddCarActivity.this, "Please Select a Car", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCarActivity.this, R.string.please_select_your_car, Toast.LENGTH_SHORT).show();
                     return false;
                 }
                if(checkDuplicate(carClicked)){
-                   Toast.makeText(AddCarActivity.this, "This Car Already Exists", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(AddCarActivity.this, R.string.this_car_already_exist, Toast.LENGTH_SHORT).show();
                    return false;
                 }
 
                 else{
-                    Log.i("CO2", "Car Clicked: " + carClicked.toString());
+                    Log.i("CO2", getString(R.string.car_cliked) + carClicked.toString());
                     carClicked.setName(carNameString);
 
                     model.setCurrentTransportation( model.getCarManager().add(carClicked));
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
 
-                        Log.i("car collection: ", model.getCarManager().getCarCollection().get(i).toString());
+                        Log.i(getString(R.string.car_collection), model.getCarManager().getCarCollection().get(i).toString());
 
                     }
                     Intent intent = new Intent();
@@ -281,7 +282,7 @@ public class AddCarActivity extends AppCompatActivity {
 
     private boolean checkDuplicate(Car carClicked) {
         for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
-            Log.i("test2", ""+model.getCarManager().getCarCollection().get(i).getName());
+            Log.i(getString(R.string.test2), ""+model.getCarManager().getCarCollection().get(i).getName());
             if (carClicked.equals(model.getCarManager().getCarCollection().get(i)) && carNameString.equals(model.getCarManager().getCarCollection().get(i).getName())) {
                 return true;
             }

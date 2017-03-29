@@ -23,7 +23,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:text="Select Transit Line:" />
+                android:text="@string/select_transit_line" />
 
             <Spinner
                 android:id="@+id/lineSpinner"
@@ -42,7 +42,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:text="Start At Startion:"
+                android:text="@string/start_at_startion"
                 android:textSize="14sp" />
 
             <Spinner
@@ -62,7 +62,7 @@
                 android:id="@+id/endText"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="End At Station:" />
+                android:text="@string/end_at_station" />
 
             <Spinner
                 android:id="@+id/endSpinner"
