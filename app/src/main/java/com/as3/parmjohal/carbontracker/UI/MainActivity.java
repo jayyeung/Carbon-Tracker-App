@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
-        setTitle("Dashboard");
+        setTitle(getString(R.string.Dashboard));
 
         SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     chart_status.setText(date);
-                                    chart_type.setText("Daily Carbon Usage");
+                                    chart_type.setText(R.string.Daily_Carbon_Usage);
                                     setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
                                     return true;
                                 }
@@ -199,13 +199,13 @@ public class MainActivity extends AppCompatActivity {
                         popup.show(); //showing popup menu
                         break;
                     case R.id.month_radio:
-                        chart_status.setText("Last 28 days (Today)");
-                        chart_type.setText("Monthly Carbon Usage");
+                        chart_status.setText(R.string.Last_28_days);
+                        chart_type.setText(R.string.Monthly_Carbon_Usage);
                         setGraph(Chart_options.MONTHLY, 0,0,0);
                         break;
                     case R.id.year_radio:
-                        chart_status.setText("Last 365 days (Today)");
-                        chart_type.setText("Annual Carbon Usage");
+                        chart_status.setText(R.string.Last_365_days);
+                        chart_type.setText(R.string.Annual_Carbon_Usage);
                         setGraph(Chart_options.YEARLY, 0,0,0);
                         break;
                 }
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < day_journeys.size(); i++) {
                     total += day_journeys.get(i).getCo2();
                 }
-                entries.add(new PieEntry(total, "Journey"));
+                entries.add(new PieEntry(total, getString(R.string.journey)));
             }
 
             // Utility
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < day_utilities.size(); i++) {
                     total += day_utilities.get(i).getTotalCo2();
                 }
-                entries.add(new PieEntry(total, "Utility"));
+                entries.add(new PieEntry(total, getString(R.string.Utility)));
             }
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            LineDataSet totalDataSet = new LineDataSet(entries, getString(R.string.total_CO2));
             totalDataSet.setColors(Color.rgb(38, 166, 91));
             totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            LineDataSet journeyDataSet = new LineDataSet(entries, getString(R.string.journey_co2));
             journeyDataSet.setColors( Color.rgb(52, 152, 219) );
             journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
+            LineDataSet utilityDataSet = new LineDataSet(entries, getString(R.string.ulityli_co2));
             utilityDataSet.setColors( Color.rgb(230, 126, 34) );
             utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
             utilityDataSet.setDrawCircleHole(false);
@@ -448,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            LineDataSet totalDataSet = new LineDataSet(entries, getString(R.string.total_co2));
             totalDataSet.setColors(Color.rgb(38, 166, 91));
             totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            LineDataSet journeyDataSet = new LineDataSet(entries, getString(R.string.journey_co2));
             journeyDataSet.setColors( Color.rgb(52, 152, 219) );
             journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
+            LineDataSet utilityDataSet = new LineDataSet(entries, getString(R.string.utility_CO2));
             utilityDataSet.setColors( Color.rgb(230, 126, 34) );
             utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
             utilityDataSet.setDrawCircleHole(false);
@@ -608,7 +608,7 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_journey.getCo2()) + "kg CO₂");
+            results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_journey.getCo2() / totalCo2;
@@ -628,7 +628,7 @@ public class MainActivity extends AppCompatActivity {
                     model.setCurrentJouney(journey.get(position));
                     model.setConfirmTrip(false);
 
-                    Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
+                    Log.i(getString(R.string.journey)+": ", getString(R.string.clickedjourney) + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                     startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                 }
@@ -651,7 +651,7 @@ public class MainActivity extends AppCompatActivity {
                             model.setConfirmTrip(false);
 
                             Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                            intent.putExtra("menu_select", item.getItemId());
+                            intent.putExtra(getString(R.string.menuselect), item.getItemId());
                             startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                             return true;
                         }
@@ -709,7 +709,7 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + "kg CO₂");
+            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;

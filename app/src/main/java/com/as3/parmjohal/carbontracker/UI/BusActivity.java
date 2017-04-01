@@ -42,7 +42,7 @@ public class BusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setTitle("Bus Journey");
+        setTitle(getString(R.string.bus_journey));
 
         editBus = (EditText) findViewById(R.id.editBus);
         editDistance = (EditText) findViewById(R.id.editDistance);

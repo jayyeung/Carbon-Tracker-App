@@ -93,7 +93,7 @@
             android:layout_marginTop="48dp"
             android:fontFamily="sans-serif"
             android:letterSpacing="0.2"
-            android:text="Transportation Details"
+            android:text="@string/transportation_details"
             android:textAllCaps="true"
             android:textColor="@color/colorHeading"
             android:textSize="14sp"

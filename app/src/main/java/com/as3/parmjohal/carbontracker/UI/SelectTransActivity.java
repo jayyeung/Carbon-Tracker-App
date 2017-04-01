@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
@@ -27,7 +28,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-        setTitle("Select Transportation");
+        setTitle(getString(R.string.Select_Transportation));
 
         setupButtons();
     }
