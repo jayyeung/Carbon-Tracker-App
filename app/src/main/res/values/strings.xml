@@ -67,9 +67,9 @@
     <string name="Distancemust_contain_only_numbers">Distancemust contain only numbers</string>
     <string name="Dashboard">Dashboard</string>
     <string name="Daily_Carbon_Usage">Daily Carbon Usage</string>
-    <string name="Last_28_days">Last 28 days (Today)</string>
+    <string name="Last_28_days">This Month</string>
     <string name="Monthly_Carbon_Usage">Monthly Carbon Usage</string>
-    <string name="Last_365_days">Last 365 days (Today)</string>
+    <string name="Last_365_days">This Year</string>
     <string name="Annual_Carbon_Usage">Annual Carbon Usage</string>
     <string name="Utility">Utility</string>
     <string name="total_CO2">Total CO₂</string>

@@ -2,16 +2,13 @@ package com.as3.parmjohal.carbontracker.UI;
 
 import android.animation.PropertyValuesHolder;
 import android.app.Activity;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Rect;
-<<<<<<< HEAD
-=======
 import android.os.Build;
->>>>>>> master
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,22 +17,18 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
@@ -44,6 +37,8 @@ import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.R;
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;
+import com.db.chart.model.Bar;
+import com.db.chart.model.BarSet;
 import com.db.chart.model.ChartSet;
 import com.db.chart.model.LineSet;
 import com.db.chart.model.Point;
@@ -51,23 +46,14 @@ import com.db.chart.renderer.AxisRenderer;
 import com.db.chart.tooltip.Tooltip;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
-import com.github.mikephil.charting.charts.LineChart;
 import com.as3.parmjohal.carbontracker.SharedPreference;
+import com.db.chart.view.StackBarChartView;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import android.content.Context;
 import android.content.Intent;
@@ -76,22 +62,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 /**
  * --MainActivity--
@@ -242,10 +219,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
-        HorizontalScrollView chart_container = (HorizontalScrollView) findViewById(R.id.chart_container);
+        final LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+        final ImageButton chart_type = (ImageButton) findViewById(R.id.chart_type_button);
+        chart_type.setImageResource(R.drawable.pie_chart_icon);
+        chart_type.setVisibility(View.INVISIBLE);
+
+        final ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -254,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         String[] date = (df.format(new Date())).split("\\s+");
 
         // if no input day, month, and year is given, default current day, month, year
-        int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
+        final int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
             month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
             year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
 
@@ -271,56 +252,155 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.MONTHLY) {
+            chart_type.setVisibility(View.VISIBLE);
+
+            /////////////////
+            //// LINE CHART
+            /////////////////
+
             final LineChartView chart = new LineChartView(getBaseContext());
+
+            //// TOTAL
+            ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+            if (month_CO2.size() <= 0) { return; }
 
             //// JOURNEY
             LineSet dataset = new LineSet();
-            dataset.addPoint(new Point("first", 5));
-            dataset.addPoint(new Point("second",3));
-            dataset.addPoint(new Point("third", 4));
-            dataset.addPoint(new Point("forth", 3));
-            dataset.addPoint(new Point("fifth", 3));
+            ArrayList<Journey> vals = day_manager.getPast28Days_Journeys(day, month, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point(vals.get(i).getDateInfo(), (float) vals.get(i).getCo2())); }
 
             // set line styles
             chart.setHorizontalScrollBarEnabled(true);
-
             dataset.setDotsColor( Color.rgb(255,255,255) );
-            dataset.setDotsStrokeColor( Color.rgb(52, 152, 219) );
+            dataset.setDotsStrokeColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
             dataset.setColor( Color.rgb(44, 133, 193) );
             dataset.setDotsRadius(14f);
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
 
-            setGeneralChartStylings(chart, dataset, Color.rgb(52, 152, 219), 0);
+            setGeneralChartStylings(chart, dataset, 0);
 
             //// UTILITY
-            LineSet dataset2 = new LineSet();
-            dataset2.addPoint(new Point("first", 1));
-            dataset2.addPoint(new Point("second",2));
-            dataset2.addPoint(new Point("third", 5));
-            dataset2.addPoint(new Point("forth", 3));
-            dataset2.addPoint(new Point("fifth", 3));
 
             // set line styles
-            dataset2.setDotsColor( Color.rgb(255, 255, 255) );
-            dataset2.setDotsStrokeColor( Color.rgb(230, 126, 34) );
-            dataset2.setColor( Color.rgb(211, 84, 0) );
-            dataset2.setDotsRadius(14f);
-            dataset2.setDotsStrokeThickness(8f);
-            dataset2.setThickness(12f);
-            dataset2.setSmooth(true);
+            dataset.setDotsColor( Color.rgb(255, 255, 255) );
+            dataset.setDotsStrokeColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+            dataset.setDotsRadius(14f);
+            dataset.setDotsStrokeThickness(8f);
+            dataset.setThickness(12f);
+            dataset.setSmooth(true);
 
-            setGeneralChartStylings(chart, dataset2, Color.rgb(230, 126, 34), 4f);
+            setGeneralChartStylings(chart, dataset, 4f);
 
             // sexy animation
-            // NOTE: com.db.chart.animation.Animation == Animation, but since Animation is already used
-            // we have to use the entire path
             int entry_size = dataset.getEntries().size();
             int[] order = new int[entry_size];
             for (int i = 0; i < entry_size; i++) { order[i] = i; }
 
-            com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(1000);
+            com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
+            anim.setEasing(new DecelerateInterpolator());
+            anim.setAlpha(2);
+            anim.setOverlap(0.5f, order);
+
+            chart.setPadding(35,36,45,12);
+            chart_container.addView(chart, params);
+            chart.show(anim);
+
+            /////////////////
+            //// PIE CHART
+            /////////////////
+
+            chart_type.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chart_type.setImageResource(R.drawable.line_chart_icon);
+                    chart_container.removeAllViewsInLayout();
+
+                    ArrayList<PieEntry> entries = new ArrayList<>();
+
+                    // Journey
+                    ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
+                    float total = 0;
+                    if (day_journeys != null) {
+                        for (int i = 0; i < day_journeys.size(); i++) {
+                            total += day_journeys.get(i).getCo2();
+                        }
+                        entries.add(new PieEntry(total, getString(R.string.journey)));
+                    }
+
+                    PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
+                    journeyDataSet.setValueTextSize(16f);
+                    journeyDataSet.setValueTextColor(Color.WHITE);
+
+                    // create chart
+                    PieChart chart = new PieChart(getBaseContext());
+                    chart_container.addView(chart, params);
+
+                    setGeneralPieChartStylings(chart);
+
+                    // set data
+                    PieData data = new PieData(journeyDataSet);
+                    data.setValueFormatter(new PercentFormatter());
+                    chart.setData(data);
+                    chart.invalidate();
+                }
+            });
+        }
+
+        ////////////////
+        // YEARLY GRAPH
+        ////////////////
+
+        else if (option == option.YEARLY) {
+            chart_type.setVisibility(View.VISIBLE);
+
+            /////////////////
+            //// STACKED BAR CHART
+            /////////////////
+
+            final StackBarChartView chart = new StackBarChartView(getBaseContext());
+
+            String[] labels = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+            float[][] stacked_values;
+
+            //// JOURNEY
+            BarSet dataset = new BarSet();
+            ArrayList<Double> vals = day_manager.getPast365Days_JourneysCO2(31, 12, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
+
+            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
+            chart.addData(dataset);
+
+            // UTILITY
+            dataset = new BarSet();
+            vals = day_manager.getPast365Days_UtilityCO2(31, 12, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
+
+            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+            chart.addData(dataset);
+
+            // AVERAGE
+
+
+            // TARGET
+
+            // set bar styles
+            chart.setBarSpacing(Tools.fromDpToPx(16));
+            chart.setRoundCorners(Tools.fromDpToPx(50));
+
+            setGeneralChartStylings(chart, dataset, 35f);
+            chart.setAxisLabelsSpacing(24f);
+            chart.setFontSize(18);
+            // chart.setYLabels(AxisRenderer.LabelPosition.NONE);
+
+            // sexy animation
+            int entry_size = dataset.getEntries().size();
+            int[] order = new int[entry_size];
+            for (int i = 0; i < entry_size; i++) { order[i] = i; }
+
+            com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
             anim.setEasing(new DecelerateInterpolator());
             anim.setAlpha(2);
             anim.setOverlap(0.5f, order);
@@ -329,17 +409,31 @@ public class MainActivity extends AppCompatActivity {
             chart_container.addView(chart, params);
             chart.show(anim);
         }
+    }
 
-        ////////////////
-        // YEARLY GRAPH
-        ////////////////
+    // set chart stylings for pie chart
+    private void setGeneralPieChartStylings(final PieChart chart) {
+        chart.setUsePercentValues(true);
+        chart.setTouchEnabled(false);
+        chart.setHoleRadius(50f);
+        chart.setTransparentCircleRadius(20f);
+        chart.setHoleColor(Color.TRANSPARENT);
+        chart.setDescription(null);
 
-        else if (option == option.YEARLY) {
-        }
+        Legend legend = chart.getLegend();
+        legend.setXOffset(16);
+        legend.setTextColor(R.color.colorAccent);
+        legend.setTextSize(16f);
+        legend.setWordWrapEnabled(true);
+
+        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+        slide_in.setDuration(1800);
+        chart.startAnimation(slide_in);
+        chart.animateY(1500);
     }
 
     // set chart stylings for line/stacked bar chart
-    private void setGeneralChartStylings(final ChartView chart, ChartSet set, final int tooltip_colour, float national_target) {
+    private void setGeneralChartStylings(final ChartView chart, final ChartSet set, float national_target) {
         // set general chart styles
         chart.setYAxis(false);
         chart.setXAxis(false);
@@ -355,8 +449,8 @@ public class MainActivity extends AppCompatActivity {
             paint.setColor(Color.parseColor("#95a5a6"));
             paint.setStyle(Paint.Style.STROKE);
             paint.setAntiAlias(true);
-            paint.setStrokeWidth(Tools.fromDpToPx(4f));
-            paint.setPathEffect(new DashPathEffect(new float[]{10.0f, 5.0f}, 0));
+            paint.setStrokeWidth(Tools.fromDpToPx(2f));
+            paint.setPathEffect(new DashPathEffect(new float[]{15.0f, 5.0f}, 0));
             chart.setValueThreshold(national_target, national_target, paint);
         }
 
@@ -377,7 +471,24 @@ public class MainActivity extends AppCompatActivity {
                 Tooltip tip = new Tooltip(getBaseContext(), R.layout.chart_tooltip, R.id.value);
                 tip.setVerticalAlignment(Tooltip.Alignment.BOTTOM_TOP);
                 tip.setDimensions((int) Tools.fromDpToPx(58), (int) Tools.fromDpToPx(26));
-                ((RelativeLayout) tip.findViewById(R.id.tip)).setBackgroundColor( tooltip_colour );
+
+                RelativeLayout tip_item = (RelativeLayout) tip.findViewById(R.id.tip);
+
+                switch(setIndex) {
+                    case 3:
+                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
+                        break;
+                    case 2:
+                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+                        break;
+                    case 1:
+                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorAverage) );
+                        break;
+                    default:
+                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorBody) );
+                        break;
+                }
+
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                     tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1)).setDuration(150);

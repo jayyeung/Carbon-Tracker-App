@@ -30,6 +30,34 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/journeys">
 
+                <ImageView
+                    android:id="@+id/background"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:alpha="0.8"
+                    android:cropToPadding="false"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/dashboard" />
+
+                <ImageView
+                    android:id="@+id/background_overlay"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:alpha="0.3"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/colorPrimary" />
+
                 <TextView
                     android:id="@+id/chart_type"
                     android:layout_width="0dp"
@@ -68,6 +96,20 @@
                     android:textStyle="normal|bold"
                     app:layout_constraintLeft_toLeftOf="@+id/chart_type"
                     app:layout_constraintTop_toTopOf="@+id/background_overlay" />
+
+                <ImageButton
+                    android:id="@+id/chart_type_button"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/circle_button"
+                    android:elevation="1dp"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintRight_toRightOf="@+id/background_overlay"
+                    app:layout_constraintTop_toTopOf="@+id/chart_container"
+                    app:srcCompat="@drawable/pie_chart_icon" />
 
                 <RadioGroup
                     android:id="@+id/chart_options"
@@ -281,60 +323,21 @@
 
                 </LinearLayout>
 
-<<<<<<< HEAD
                 <LinearLayout
-=======
-                <HorizontalScrollView
->>>>>>> master
                     android:id="@+id/chart_container"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_below="@+id/title"
                     android:layout_marginBottom="52dp"
+                    android:layout_marginTop="8dp"
                     android:clipToPadding="true"
-                    android:elevation="3dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/background_overlay"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="@+id/background_overlay"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginTop="8dp"
-<<<<<<< HEAD
-                    app:layout_constraintTop_toBottomOf="@+id/chart_legend">
-=======
                     app:layout_constraintTop_toBottomOf="@+id/chart_legend"
-                    app:layout_constraintVertical_bias="0.0">
->>>>>>> master
-
-                </HorizontalScrollView>
-
-                <ImageView
-                    android:id="@+id/background"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:alpha="0.8"
-                    android:cropToPadding="false"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/dashboard" />
-
-                <ImageView
-                    android:id="@+id/background_overlay"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:alpha="0.3"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/background"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@color/colorPrimary" />
+                    app:layout_constraintVertical_bias="0.0"></LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
 
