@@ -1,11 +1,16 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Rect;
+<<<<<<< HEAD
+=======
+import android.os.Build;
+>>>>>>> master
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -236,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
-        LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
+        HorizontalScrollView chart_container = (HorizontalScrollView) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
@@ -273,8 +279,11 @@ public class MainActivity extends AppCompatActivity {
             dataset.addPoint(new Point("second",3));
             dataset.addPoint(new Point("third", 4));
             dataset.addPoint(new Point("forth", 3));
+            dataset.addPoint(new Point("fifth", 3));
 
             // set line styles
+            chart.setHorizontalScrollBarEnabled(true);
+
             dataset.setDotsColor( Color.rgb(255,255,255) );
             dataset.setDotsStrokeColor( Color.rgb(52, 152, 219) );
             dataset.setColor( Color.rgb(44, 133, 193) );
@@ -291,11 +300,12 @@ public class MainActivity extends AppCompatActivity {
             dataset2.addPoint(new Point("second",2));
             dataset2.addPoint(new Point("third", 5));
             dataset2.addPoint(new Point("forth", 3));
+            dataset2.addPoint(new Point("fifth", 3));
 
             // set line styles
-            dataset2.setDotsColor( Color.rgb(255,255,255) );
+            dataset2.setDotsColor( Color.rgb(255, 255, 255) );
             dataset2.setDotsStrokeColor( Color.rgb(230, 126, 34) );
-            dataset2.setColor( Color.rgb(230, 126, 34) );
+            dataset2.setColor( Color.rgb(211, 84, 0) );
             dataset2.setDotsRadius(14f);
             dataset2.setDotsStrokeThickness(8f);
             dataset2.setThickness(12f);
@@ -368,6 +378,11 @@ public class MainActivity extends AppCompatActivity {
                 tip.setVerticalAlignment(Tooltip.Alignment.BOTTOM_TOP);
                 tip.setDimensions((int) Tools.fromDpToPx(58), (int) Tools.fromDpToPx(26));
                 ((RelativeLayout) tip.findViewById(R.id.tip)).setBackgroundColor( tooltip_colour );
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1)).setDuration(150);
+                    tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA,0)).setDuration(150);
+                }
 
                 chart.setTooltips(tip);
             }
