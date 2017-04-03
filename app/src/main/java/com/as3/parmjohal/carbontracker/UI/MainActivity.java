@@ -608,8 +608,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
-
+            if(model.isTree())
+            {
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_journey.getCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
+            }
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_journey.getCo2() / totalCo2;
 
@@ -709,7 +714,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
+            if(model.isTree()){
+
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_utility.getTotalCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
+            }
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;
@@ -757,8 +768,6 @@ public class MainActivity extends AppCompatActivity {
                                 model.setEditUtility(true);
                                 Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
                                 startActivityForResult(intent,REQUEST_CODE_UTILITY);
-
-
 
                             }
                             return true;

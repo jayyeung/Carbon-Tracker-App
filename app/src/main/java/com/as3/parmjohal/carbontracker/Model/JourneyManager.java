@@ -13,15 +13,43 @@ import java.util.Date;
 
 public class JourneyManager {
     private ArrayList<Journey> journeyCollection = new ArrayList<>();
+    private ArrayList<Car> cars = new ArrayList<>();
+
+    double totalCO2_Car = 0;
+    double totalCO2_Skytrain = 0;
+    double totalCO2_Bus = 0;
+
     private int[] totalWalkDistance = {0};
 
     public void add(Journey journey)
     {
         journeyCollection.add(journey);
+        addToArray(journey);
         if(journey.getTransportationType().equals("walk"))
             totalWalkDistance[0] = totalWalkDistance[0] + (int) journey.getRoute().getCityDistance();
     }
 
+    private void addToArray(Journey journey)
+    {
+        try {
+            switch (journey.getTransportationType()) {
+                case "car":
+                    cars.add((Car) journey.getTransportation());
+                    totalCO2_Car += journey.getCo2();
+                    break;
+                case "bus":
+                    totalCO2_Bus += journey.getCo2();
+                    break;
+                case "skytrain":
+                    totalCO2_Skytrain += journey.getCo2();
+                    break;
+            }
+        }
+        catch (java.lang.ClassCastException e)
+        {
+
+        }
+    }
     public void remove(Journey journey)
     {
         Log.i("Day", "All Journey's in Collection");
@@ -58,8 +86,20 @@ public class JourneyManager {
         return journeys;
     }
 
-    public int getTotalWalkDistance() {
-        return totalWalkDistance[0];
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    public double getTotalCO2_Car() {
+        return totalCO2_Car;
+    }
+
+    public double getTotalCO2_Skytrain() {
+        return totalCO2_Skytrain;
+    }
+
+    public double getTotalCO2_Bus() {
+        return totalCO2_Bus;
     }
 
     public void displayAll()
