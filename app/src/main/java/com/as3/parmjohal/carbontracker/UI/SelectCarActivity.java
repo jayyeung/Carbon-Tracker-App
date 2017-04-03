@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +89,9 @@ public class SelectCarActivity extends AppCompatActivity {
 
             TextView carName = (TextView) itemView.findViewById(R.id.carName);
             carName.setText(thisCar.getName());
+
+            ImageView car = (ImageView) itemView.findViewById(R.id.carImage);
+            car.setImageDrawable(getDrawable(thisCar.getCarImage()));
 
             TextView description = (TextView) itemView.findViewById(R.id.carDescription);
             description.setText(thisCar.getMake() + ", " + thisCar.getModel() + ", " + thisCar.getYear());

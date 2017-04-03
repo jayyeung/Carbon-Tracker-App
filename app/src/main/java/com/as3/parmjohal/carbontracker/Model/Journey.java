@@ -2,6 +2,7 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.UI.ConfirmTripActivity;
 
 import java.text.DateFormat;
@@ -33,6 +34,7 @@ public class Journey {
     private String fuelType1 = " ";
     private String info = " ";
     private String objectType = " ";
+    private int image = R.drawable.cycle;
 
 
     //**************************
@@ -47,6 +49,7 @@ public class Journey {
         this.fuelType1 = transportation.getFuelType();
         this.info = transportation.getInfo();
         this.objectType = transportation.getObjectType();
+        this.image = transportation.getImage();
 
         calculateCO2();
     }
@@ -143,6 +146,10 @@ public class Journey {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public int getImage() {
+        return image;
     }
 
     public void setCar(Car car) {

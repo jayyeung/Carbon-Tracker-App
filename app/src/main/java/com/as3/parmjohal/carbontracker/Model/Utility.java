@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
+
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -28,6 +30,7 @@ public class Utility {
     private double CO2_Gas_COVERTOR = 56.1;
     private Date startDate,endDate;
     private int totalDays;
+    private int uImage= R.drawable.flash;
     private String tip = " ";
 
     public Utility(boolean isElectricity, int amount, int persons, Date startDate, Date endDate){
@@ -45,7 +48,7 @@ public class Utility {
         }
         else{
             gas = amount;
-
+            uImage=R.drawable.flammable;
             totalCo2 = ((CO2_Gas_COVERTOR * (double)amount))/(double)persons;
             dailyCo2 =totalCo2/totalDays;
         }
@@ -110,6 +113,10 @@ public class Utility {
 
     public int getGas() {
         return gas;
+    }
+
+    public int getuImage() {
+        return uImage;
     }
 
     public void setGas(int gas) {

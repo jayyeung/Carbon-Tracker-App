@@ -307,12 +307,12 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
         else if (option == option.MONTHLY) {
             final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            Collections.reverse(month_CO2);
+            //Collections.reverse(month_CO2);
             if (month_CO2.size() <= 0) { return; }
             ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
-            Collections.reverse(journey_CO2);
+           // Collections.reverse(journey_CO2);
             ArrayList<Double> utility_CO2 = day_manager.getPast28Days_UtilityCO2(day, month, year);
-            Collections.reverse(utility_CO2);
+         //   Collections.reverse(utility_CO2);
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setScaleMinima(5f, 1f);
+            chart.setScaleMinima(2.5f, 1f);
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -546,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(list);
     }
     public void setUtilities() {
-        ArrayAdapter<Utility> adapter2 = new MyListAdapter2();
+        ArrayAdapter<Utility> adapter2 = new MainActivity.MyListAdapter2();
         ListView list = (ListView) findViewById(R.id.utilities);
         list.setAdapter(adapter2);
 
@@ -558,6 +558,8 @@ public class MainActivity extends AppCompatActivity {
         private String latest_day = "";
         private int datepos = 0;
         private int totalCo2 = 0;
+
+
 
         public MyListAdapter() {
             super(MainActivity.this, R.layout.dashboard_item, journey);
@@ -571,6 +573,7 @@ public class MainActivity extends AppCompatActivity {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
+                ImageView cardImage = (ImageView) findViewById(R.id.myImage);
             }
 
             Journey cur_journey = journey.get(position);
@@ -581,6 +584,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_day = (TextView) itemView.findViewById(R.id.track_day);
             track_day.setText(date[0]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_journey.getImage()));
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
@@ -618,7 +624,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     model.setCurrentJouney(journey.get(position));
                     model.setConfirmTrip(false);
-
                     Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                     startActivityForResult(intent,REQUEST_CODE_JOURNEY);
@@ -685,6 +690,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_utility.getuImage()));
 
             if (!latest_day.equals(date[0])) {
                 latest_day = date[0];

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.as3.parmjohal.carbontracker.Model.Bike;
@@ -85,6 +86,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
         setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
         setupTextView(R.id.display_CO2Units, "kg of CO₂");
         setupTextView(R.id.date, "On " + journey.getDateInfo());
+        ImageView image = (ImageView) findViewById(R.id.imageView);
+        image.setImageDrawable(getDrawable(journey.getImage()));
         if(journey.getTransportation()instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus) {
             setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
             setupTextView(R.id.display_MainCar, "");
