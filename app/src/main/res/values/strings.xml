@@ -58,7 +58,8 @@
     <string name="dont_save">Don\'t Save</string>
     <string name="save">Save</string>
     <string name="bus_journey">Bus Journey</string>
-    <string name="journey">Journey:</string>
+    <string name="journey">Journey</string>
+    <string name="utility">Utility</string>
     <string name="new_journey">New Journey</string>
     <string name="clicked_journey">Clicked Journey</string>
     <string name="Transmission">Transmission</string>

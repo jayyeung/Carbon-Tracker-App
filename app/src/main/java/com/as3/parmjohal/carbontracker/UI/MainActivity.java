@@ -64,11 +64,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * --MainActivity--
@@ -183,7 +186,9 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < days.size(); i++) {
                             final Day day = days.get(i);
 
-                            final String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+                            String month = new DateFormatSymbols().getMonths()[day.getMonth()-1];
+                            final String date = day.getDay() + " " + month + " " + day.getYear();
+
                             MenuItem item = menu.add(date);
                             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
@@ -230,6 +235,11 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
+        int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
+                               ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
+                               ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
+        };
+
         // Get Current Date
         DateFormat df = new SimpleDateFormat("dd MM yy");
         String[] date = (df.format(new Date())).split("\\s+");
@@ -244,7 +254,29 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         if (option == option.DAILY) {
+            ArrayList<PieEntry> entries = new ArrayList<>();
 
+            // Journey
+            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
+            float total = 0;
+            if (day_journeys != null) {
+                for (Journey journey : day_journeys) { total += journey.getCo2(); }
+                entries.add(new PieEntry(total, getString(R.string.journey)));
+            }
+
+            // Utility
+            ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
+            total = 0;
+            if (day_utilities != null) {
+                for (Utility utility : day_utilities) { total += utility.getTotalCo2(); }
+                entries.add(new PieEntry(total, getString(R.string.Utility)));
+            }
+
+            PieChart chart = new PieChart(this);
+            PieDataSet dataset = new PieDataSet(entries, "CO₂");
+
+            chart_container.addView(chart, params);
+            setPieChart(chart, dataset, track_colors);
         }
 
         ////////////////
@@ -272,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
             // set line styles
             chart.setHorizontalScrollBarEnabled(true);
             dataset.setDotsColor( Color.rgb(255,255,255) );
-            dataset.setDotsStrokeColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
+            dataset.setDotsStrokeColor( track_colors[0] );
             dataset.setColor( Color.rgb(44, 133, 193) );
             dataset.setDotsRadius(14f);
             dataset.setDotsStrokeThickness(8f);
@@ -285,8 +317,8 @@ public class MainActivity extends AppCompatActivity {
 
             // set line styles
             dataset.setDotsColor( Color.rgb(255, 255, 255) );
-            dataset.setDotsStrokeColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
-            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+            dataset.setDotsStrokeColor( track_colors[1] );
+            dataset.setColor( track_colors[1] );
             dataset.setDotsRadius(14f);
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
@@ -306,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
 
             chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
-            chart.show(anim);
+            try { chart.show(anim); } catch(Exception e) {}
 
             /////////////////
             //// PIE CHART
@@ -317,34 +349,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
-
-                    ArrayList<PieEntry> entries = new ArrayList<>();
-
-                    // Journey
-                    ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
-                    float total = 0;
-                    if (day_journeys != null) {
-                        for (int i = 0; i < day_journeys.size(); i++) {
-                            total += day_journeys.get(i).getCo2();
-                        }
-                        entries.add(new PieEntry(total, getString(R.string.journey)));
-                    }
-
-                    PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
-                    journeyDataSet.setValueTextSize(16f);
-                    journeyDataSet.setValueTextColor(Color.WHITE);
-
-                    // create chart
-                    PieChart chart = new PieChart(getBaseContext());
-                    chart_container.addView(chart, params);
-
-                    setGeneralPieChartStylings(chart);
-
-                    // set data
-                    PieData data = new PieData(journeyDataSet);
-                    data.setValueFormatter(new PercentFormatter());
-                    chart.setData(data);
-                    chart.invalidate();
                 }
             });
         }
@@ -370,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Double> vals = day_manager.getPast365Days_JourneysCO2(31, 12, year);
             for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
 
-            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
+            dataset.setColor( track_colors[0] );
             chart.addData(dataset);
 
             // UTILITY
@@ -378,13 +382,8 @@ public class MainActivity extends AppCompatActivity {
             vals = day_manager.getPast365Days_UtilityCO2(31, 12, year);
             for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
 
-            dataset.setColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
+            dataset.setColor( track_colors[1] );
             chart.addData(dataset);
-
-            // AVERAGE
-
-
-            // TARGET
 
             // set bar styles
             chart.setBarSpacing(Tools.fromDpToPx(16));
@@ -407,12 +406,16 @@ public class MainActivity extends AppCompatActivity {
 
             chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
-            chart.show(anim);
+            try { chart.show(anim); } catch(Exception e) {}
         }
     }
 
-    // set chart stylings for pie chart
-    private void setGeneralPieChartStylings(final PieChart chart) {
+    // sets the pie chart
+    private void setPieChart(final PieChart chart, final PieDataSet dataset, int[] COLORS) {
+        dataset.setValueTextSize(16f);
+        dataset.setColors( COLORS );
+        dataset.setValueTextColor(Color.WHITE);
+
         chart.setUsePercentValues(true);
         chart.setTouchEnabled(false);
         chart.setHoleRadius(50f);
@@ -425,14 +428,18 @@ public class MainActivity extends AppCompatActivity {
         legend.setTextColor(R.color.colorAccent);
         legend.setTextSize(16f);
         legend.setWordWrapEnabled(true);
+        legend.setEnabled(false);
 
         Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
-        slide_in.setDuration(1800);
+        slide_in.setDuration(1500);
         chart.startAnimation(slide_in);
-        chart.animateY(1500);
+        chart.animateY(1000);
+
+        PieData data = new PieData(dataset);
+        chart.setData(data);
     }
 
-    // set chart stylings for line/stacked bar chart
+    // set chart stylings for a line/stacked bar chart
     private void setGeneralChartStylings(final ChartView chart, final ChartSet set, float national_target) {
         // set general chart styles
         chart.setYAxis(false);
