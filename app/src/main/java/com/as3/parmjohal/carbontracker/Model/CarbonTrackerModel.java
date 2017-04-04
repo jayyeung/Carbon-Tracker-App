@@ -44,6 +44,7 @@ public class CarbonTrackerModel {
     private boolean confirmTrip = true;
     private boolean editJourney = false;
     private boolean editUtility = false;
+    private boolean isTree = true;
     private Transportation transportation;
 
     private CarbonTrackerModel() {
@@ -116,7 +117,7 @@ public class CarbonTrackerModel {
     public TipManager getTipsManager() {
         return tipsManager;
     }
-    //*********************************************************************
+//*********************************************************************
 
 
     public VehicleData getVehicleData()
@@ -179,7 +180,9 @@ public class CarbonTrackerModel {
     }
 
 
-
+    public boolean isTree() {
+        return isTree;
+    }
 
     public boolean isConfirmTrip() {
         return confirmTrip;
@@ -196,12 +199,15 @@ public class CarbonTrackerModel {
 
     public void setEditUtility(boolean editUtility){this.editUtility = editUtility;}
 
-
     public Transportation getTransportation() {
         return transportation;
     }
 
     public void setTransportation(Transportation transportation) {
         this.transportation = transportation;
+    }
+
+    public static double convertCO2_toTrees(double co2) {
+        return co2/20;
     }
 }

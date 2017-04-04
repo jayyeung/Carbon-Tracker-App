@@ -82,8 +82,14 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void populateTextViews(){
         Log.i("TAG", ""+ journey.toString());
-        setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
-        setupTextView(R.id.display_CO2Units, "kg of CO₂");
+        if(model.isTree()) {
+            setupTextView(R.id.display_CO2, String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(journey.getCo2())));
+            setupTextView(R.id.display_CO2Units, " Tree-Years");
+        }
+        else {
+            setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
+            setupTextView(R.id.display_CO2Units, "kg of CO₂");
+        }
         setupTextView(R.id.date, "On " + journey.getDateInfo());
         if(journey.getTransportation()instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus) {
             setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
@@ -173,7 +179,6 @@ public class ConfirmTripActivity extends AppCompatActivity {
             Log.i(getString(R.string.journey), getString(R.string.new_journey));
             Transportation currentTransportation = model.getCurrentTransportation();
             Route currentRoute = model.getCurrentRoute();
-
             Log.i("CO2", currentTransportation.toString());
 
             journey = new Journey(currentTransportation, currentRoute);

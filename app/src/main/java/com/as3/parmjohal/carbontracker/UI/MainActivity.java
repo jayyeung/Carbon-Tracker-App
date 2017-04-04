@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         default_chart.setChecked(true);
     }
 
-    public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
+    public void setGraph(final Chart_options option, final int inp_day, final int inp_month, final int inp_year) {
         final LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
 
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
+        final int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
                                ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
                                ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
         };
@@ -349,6 +349,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
+
+
+
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setGraph(option, inp_day, inp_month, inp_year);
+                        }
+                    });
                 }
             });
         }
@@ -407,6 +416,49 @@ public class MainActivity extends AppCompatActivity {
             chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
             try { chart.show(anim); } catch(Exception e) {}
+
+            /////////////////
+            //// PIE CHART
+            /////////////////
+
+            chart_type.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chart_type.setImageResource(R.drawable.line_chart_icon);
+                    chart_container.removeAllViewsInLayout();
+
+                    ArrayList<PieEntry> entries = new ArrayList<>();
+
+                    // Bus
+                    ArrayList<Double> journeys = day_manager.getPast365Days_JourneysCO2(31, 12, year);
+                    float total = 0;
+                    if (journeys != null) {
+                        for (Double val : journeys) { total += val; }
+                        entries.add(new PieEntry(total, "Bus"));
+                    }
+
+                    // Utility
+                    ArrayList<Double> utilities = day_manager.getPast365Days_UtilityCO2(31, 12, year);
+                    total = 0;
+                    if (journeys != null) {
+                        for (Double val : utilities) { total += val; }
+                        entries.add(new PieEntry(total, getString(R.string.utility)));
+                    }
+
+                    PieChart chart = new PieChart(getBaseContext());
+                    PieDataSet dataset = new PieDataSet(entries, "CO₂");
+
+                    chart_container.addView(chart, params);
+                    setPieChart(chart, dataset, track_colors);
+
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setGraph(option, inp_day, inp_month, inp_year);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -572,8 +624,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
-
+            if(model.isTree())
+            {
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_journey.getCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
+            }
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_journey.getCo2() / totalCo2;
 
@@ -673,7 +730,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
+            if(model.isTree()){
+
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_utility.getTotalCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
+            }
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;
@@ -721,8 +784,6 @@ public class MainActivity extends AppCompatActivity {
                                 model.setEditUtility(true);
                                 Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
                                 startActivityForResult(intent,REQUEST_CODE_UTILITY);
-
-
 
                             }
                             return true;

@@ -48,9 +48,8 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("Utility", " START ");
-        model.getDayManager().getPast365Days_UtilityCO2(24,03,17);
-
+        Log.i("Day", " START ");
+        model.getDayManager().getPieGraphData_Route(31,03,17,28);
 
         DayManager dayManager = new DayManager();
 

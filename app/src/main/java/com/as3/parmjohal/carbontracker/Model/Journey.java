@@ -26,15 +26,13 @@ public class Journey {
     private Date date = new Date();
     private String tip = " ";
 
-    // Transportation Variables
 
+    // Transportation Variables
     private int highwayFuel1 = 0;
     private double cityFuel1 = 0;
     private String fuelType1 = " ";
     private String info = " ";
     private String objectType = " ";
-
-
     //**************************
 
     public Journey(Transportation transportation , Route route) {
