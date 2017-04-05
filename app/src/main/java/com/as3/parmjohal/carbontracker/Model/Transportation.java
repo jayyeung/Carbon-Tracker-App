@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
+
 /**
  * A base class for every object that "is-a" transportation. Ex) Skytrain
  * holds the basic info needed in the jouney class in order to calculate the CO2
@@ -14,12 +16,14 @@ public class Transportation {
     private String fuelType1 = " ";
     private String info = " ";
     private String objectType = " ";
+    private int image = R.drawable.cycle;
 
-    public Transportation(int highwayFuel, int cityFuel, String fuelType, String objectType) {
+    public Transportation(int highwayFuel, int cityFuel, String fuelType, String objectType,int image) {
         this.highwayFuel1 = highwayFuel;
         this.cityFuel1 = cityFuel;
         this.fuelType1 = fuelType;
         this.objectType = objectType;
+        this.image=image;
 
     }
 
@@ -49,6 +53,14 @@ public class Transportation {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public String getObjectType() {

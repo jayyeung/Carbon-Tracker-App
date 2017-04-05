@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
+
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -23,11 +25,12 @@ public class Utility {
 
     private int electricity,gas,persons;
     private boolean isElectricity;
-    private double totalCo2,dailyCo2;
+    private double totalCo2,dailyCo2,co2StartMonth,co2EndMonth;
     private double CO2_Elec_COVERTOR = 9000;
     private double CO2_Gas_COVERTOR = 56.1;
     private Date startDate,endDate;
     private int totalDays;
+    private int uImage= R.drawable.flash;
     private String tip = " ";
 
     public Utility(boolean isElectricity, int amount, int persons, Date startDate, Date endDate){
@@ -40,18 +43,19 @@ public class Utility {
         totalDays= total.getDays();
         if(isElectricity){
             electricity = amount;
-            totalCo2 = (CO2_Elec_COVERTOR * (double)amount)/(double)persons;
+            totalCo2 = (CO2_Elec_COVERTOR * (double)amount)/((double)persons * 1000000);
             dailyCo2 =totalCo2/totalDays;
         }
         else{
             gas = amount;
-
+            uImage=R.drawable.flammable;
             totalCo2 = ((CO2_Gas_COVERTOR * (double)amount))/(double)persons;
             dailyCo2 =totalCo2/totalDays;
         }
 
         Log.i("Test", "" +getTotalDays()+" " + getDailyCo2() + " " +getTotalCo2());
 
+        getMonthlyCo2();
         generateTips();
     }
 
@@ -76,14 +80,18 @@ public class Utility {
                     + gasHelp[rand.nextInt(gasHelp.length)];
         }
 
-        model.getTipsManager().add(tip);
+        model.getTipsManager().addUtilityTip(tip);
     }
     public String getDateInfo(Date date)
     {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         return df.format(date) ;
     }
-
+    public String getDateInfo2()
+    {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(startDate);
+    }
     public double getTotalCo2() {
         return totalCo2;
     }
@@ -105,6 +113,10 @@ public class Utility {
 
     public int getGas() {
         return gas;
+    }
+
+    public int getuImage() {
+        return uImage;
     }
 
     public void setGas(int gas) {
@@ -163,6 +175,34 @@ public class Utility {
         else{
             return "Natural Gas : " +gas+ "Gj " + df.format(startDate)+" to "+df.format(endDate) ;
         }
+    }
+
+    public double getCo2StartMonth() {
+        return co2StartMonth;
+    }
+
+    public double getCo2EndMonth() {
+        return co2EndMonth;
+    }
+
+    public void getMonthlyCo2() {
+        LocalDate startDay = new LocalDate(startDate);
+        LocalDate endDay = new LocalDate(endDate);
+        int endMonth = endDay.getMonthOfYear();
+        int startMonth = startDay.getMonthOfYear();
+        do{
+            co2EndMonth += dailyCo2;
+           endDay= endDay.minusDays(1);
+            Log.i("month1",endDay.toString());
+        }while (endDay.getMonthOfYear() ==endMonth);
+        if(startMonth!=endMonth) {
+            do {
+                co2StartMonth += dailyCo2;
+                startDay=startDay.plusDays(1);
+                Log.i("month2", startDay.toString());
+            } while (startDay.getMonthOfYear() == startMonth);
+        }
+
     }
 }
 

@@ -18,9 +18,11 @@ public class Day {
     private Manager<Utility> utilityManager = new Manager<>();
 
     private ArrayList<Double> allCO2Values = new ArrayList<>();
-    private double totalCO2 = 0;
+    private double totalJourney = 0;
     String tip = " ";
     private double totalUtility = 0;
+    private double totalC02 = 0;
+
 
     private String date;
     private int year = 0;
@@ -64,20 +66,20 @@ public class Day {
     public void addUtility(Utility utility){
         utilityManager.add(utility);
         allCO2Values.add(utility.getDailyCo2());
-        totalCO2  += (utility.getDailyCo2());
+        totalC02  += (utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
     {
-        journeyManager.add(journey);
+       // journeyManager.add(journey);
         allCO2Values.add(journey.getCo2());
-        totalCO2 += journey.getCo2();
+        totalJourney += journey.getCo2();
 
         DecimalFormat df = new DecimalFormat("####0.00");
 
 
         if(journey.getTransportation().getObjectType().equals("car")) {
-            tip = "On " + date + " you used " + df.format(totalCO2) + " kg of CO2 \n"
+            tip = "On " + date + " you used " + df.format(totalJourney) + " kg of CO2 \n"
                     + " Maybe consider taking public transit";
         }
         else if(journey.getTransportation().getObjectType().equals("bike")) {
@@ -98,7 +100,7 @@ public class Day {
     }
 
     public void remove(Journey journey){
-        totalCO2 -= journey.getCo2();
+        totalJourney -= journey.getCo2();
         journeyManager.remove(journey);
     }
 
@@ -114,12 +116,16 @@ public class Day {
         return allCO2Values;
     }
 
-    public double getTotalCO2() {
-        return totalCO2;
+    public double getTotalJourney() {
+        return totalJourney;
+    }
+    public double getTotalC02() {
+        totalC02 =totalJourney+totalUtility;
+        return totalC02;
     }
 
+
     public void setTotalUtility(double totalUtility) {
-        totalCO2 += totalUtility;
         this.totalUtility = totalUtility;
     }
 

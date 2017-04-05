@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.as3.parmjohal.carbontracker.Model.Bike;
@@ -91,6 +92,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
             setupTextView(R.id.display_CO2Units, "kg of CO₂");
         }
         setupTextView(R.id.date, "On " + journey.getDateInfo());
+        ImageView image = (ImageView) findViewById(R.id.imageView);
+        image.setImageDrawable(getDrawable(journey.getImage()));
         if(journey.getTransportation()instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus) {
             setupTextView(R.id.display_CarName, journey.getTransportation().getObjectType());
             setupTextView(R.id.display_MainCar, "");
@@ -160,6 +163,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 break;
             case R.id.delete_id:
                 model.getJourneyManager().remove(journey);
+                model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                 model.setConfirmTrip(true);
                 finish();
                 break;
@@ -170,7 +174,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void addJourney() {
         model.getJourneyManager().add(journey);
-        model.getDayManager().add(journey);
+        model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
+        model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
+        Log.i("test", journey.getDateInfo2());
     }
 
     private void getJourneyData()
@@ -250,6 +256,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     }
                     journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
+                    model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                     Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
                     model.setCurrentTransportation(null);
@@ -269,6 +277,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
                     }
                     journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
+                    model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                     Log.i("test",""+journey.toString());
                     model.setCurrentCar(null);
                     model.setCurrentTransportation(null);
@@ -282,6 +292,8 @@ public class ConfirmTripActivity extends AppCompatActivity {
             case (REQUEST_CODE_DATE):
                 if (resultCode == Activity.RESULT_OK) {
                     model.setEditJourney(false);
+                    model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
+                    model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                     restart();
 
                     break;

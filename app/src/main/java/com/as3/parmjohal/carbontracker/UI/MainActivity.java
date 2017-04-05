@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         model.setEditJourney(false);
         model.setConfirmTrip(true);
+        model.setEditUtility(false);
         journey = model.getJourneyManager().getJourneyCollection();
         utilities = model.getUtilityManager();
         day_manager = model.getDayManager();
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
             month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
             year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
+        final int months = month;
 
         ////////////////
         // DAILY GRAPH
@@ -303,30 +305,23 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
         // MONTHLY GRAPH
         ////////////////
-
         else if (option == option.MONTHLY) {
             final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            Collections.reverse(month_CO2);
-
+            //Collections.reverse(month_CO2);
             if (month_CO2.size() <= 0) { return; }
-
             ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
-            Collections.reverse(journey_CO2);
-
+           // Collections.reverse(journey_CO2);
             ArrayList<Double> utility_CO2 = day_manager.getPast28Days_UtilityCO2(day, month, year);
-            Collections.reverse(utility_CO2);
-
+         //   Collections.reverse(utility_CO2);
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
-
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
-                entries.add(new Entry(counter , (float) day_obj.getTotalCO2()));
+                entries.add(new Entry(counter , (float) day_obj.getTotalC02()));
                 counter++;
             }
-
-            LineDataSet totalDataSet = new LineDataSet(entries, getString(R.string.total_CO2));
+            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
             totalDataSet.setColors(Color.rgb(38, 166, 91));
             totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
@@ -345,8 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 entries.add(new Entry(counter , journey_day.floatValue()));
                 counter++;
             }
-
-            LineDataSet journeyDataSet = new LineDataSet(entries, getString(R.string.journey_co2));
+            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
             journeyDataSet.setColors( Color.rgb(52, 152, 219) );
             journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
@@ -365,8 +359,7 @@ public class MainActivity extends AppCompatActivity {
                 entries.add(new Entry(counter , utility_day.floatValue()));
                 counter++;
             }
-
-            LineDataSet utilityDataSet = new LineDataSet(entries, getString(R.string.ulityli_co2));
+            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
             utilityDataSet.setColors( Color.rgb(230, 126, 34) );
             utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
             utilityDataSet.setDrawCircleHole(false);
@@ -434,17 +427,18 @@ public class MainActivity extends AppCompatActivity {
 
             if (year_CO2.size() <= 0) { return; }
 
-            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year);
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
 
-            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year);
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year,model.getUtilityManager());
 
             List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
 
             // Total
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
-            for (Double month_obj : year_CO2) {
-                entries.add(new Entry(counter , month_obj.floatValue()));
+            for (int i = 0;i<year_CO2.size();i++) {
+                float value = (month_journey_CO2.get(i).floatValue())+ (month_utility_CO2.get(i).floatValue());
+                entries.add(new Entry(counter , value));
                 counter++;
             }
 
@@ -502,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
 
-            chart.setScaleMinima(5f, 1f);
+            chart.setScaleMinima(2.5f, 1f);
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
@@ -520,8 +514,17 @@ public class MainActivity extends AppCompatActivity {
                 public String getFormattedValue(float value, AxisBase axis)
                 {
                     try {
-                        String month = new DateFormatSymbols().getShortMonths()[(int) value];
-                        return month;
+                        if (months - value -1  >=0)
+                        {
+                            String month = new DateFormatSymbols().getShortMonths()[(int) (months - value -1)];
+                            return month;
+                        }
+                        else{
+                            String month = new DateFormatSymbols().getShortMonths()[(int) (12 + (months - value - 1))];
+                            return month;
+
+                        }
+
                     } catch (Exception e) {}
 
                     return "";
@@ -555,7 +558,7 @@ public class MainActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(list);
     }
     public void setUtilities() {
-        ArrayAdapter<Utility> adapter2 = new MyListAdapter2();
+        ArrayAdapter<Utility> adapter2 = new MainActivity.MyListAdapter2();
         ListView list = (ListView) findViewById(R.id.utilities);
         list.setAdapter(adapter2);
 
@@ -580,6 +583,7 @@ public class MainActivity extends AppCompatActivity {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
+                ImageView cardImage = (ImageView) findViewById(R.id.myImage);
             }
 
             Journey cur_journey = journey.get(position);
@@ -590,6 +594,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_day = (TextView) itemView.findViewById(R.id.track_day);
             track_day.setText(date[0]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_journey.getImage()));
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
@@ -632,8 +639,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     model.setCurrentJouney(journey.get(position));
                     model.setConfirmTrip(false);
-
-                    Log.i(getString(R.string.journey)+": ", getString(R.string.clickedjourney) + model.isConfirmTrip());
+                    Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                     startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                 }
@@ -656,7 +662,7 @@ public class MainActivity extends AppCompatActivity {
                             model.setConfirmTrip(false);
 
                             Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                            intent.putExtra(getString(R.string.menuselect), item.getItemId());
+                            intent.putExtra("menu_select", item.getItemId());
                             startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                             return true;
                         }
@@ -699,6 +705,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_utility.getuImage()));
 
             if (!latest_day.equals(date[0])) {
                 latest_day = date[0];
@@ -762,12 +771,18 @@ public class MainActivity extends AppCompatActivity {
 
                             if (item.getItemId() == R.id.delete) {
                                 model.getUtilityManager().remove(position);
+                                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
+                                for(int i = 0;i<model.getUtilityManager().size();i++){
+                                    model.getUtilityManager().get(i).toString();
+                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);
                                 model.setEditUtility(true);
                                 Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
                                 startActivityForResult(intent,REQUEST_CODE_UTILITY);
+
+
 
                             }
                             return true;
@@ -854,12 +869,27 @@ public class MainActivity extends AppCompatActivity {
     public void setTips() {
         CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
         final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
+        String tip = model.getTipsManager().getTip(MainActivity.this);
+        journey_message.setText(tip);
 
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String tip = model.getTipsManager().getTip(MainActivity.this);
                 journey_message.setText(tip);
+                v.startAnimation(pulse);
+            }
+        });
+        CardView utility_tip_module = (CardView) findViewById(R.id.utility_tip_module);
+        final TextView utility_message = (TextView) findViewById(R.id.tip_message_utility);
+        String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+        utility_message.setText(tip2);
+
+        utility_tip_module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+                utility_message.setText(tip2);
                 v.startAnimation(pulse);
             }
         });
@@ -908,6 +938,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             case (REQUEST_CODE_UTILITY):
+                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                 restart();
                 break;
             case(REQUEST_CODE_EDIT):
@@ -923,6 +954,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setOverview();
     }
 
     private void restart()

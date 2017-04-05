@@ -16,8 +16,10 @@ public class Bus extends Transportation{
     private int distance = 0;
     private Route busRoute;
 
+    private int busImage = R.drawable.transportation;
+
     public Bus(String name, int distance) {
-        super(0, 0, " ", "bus");
+        super(0, 0, " ", "bus",0);
         this.name = name;
         this.distance = distance;
         setupSuperClass();
@@ -29,11 +31,13 @@ public class Bus extends Transportation{
         super.setFuelType("Bus");
         super.setCityFuel(0.0087);
         super.setHighwayFuel(0);
+        super.setImage(busImage);
     }
     public Route getRoute()
     {
         return busRoute;
     }
+
     @Override
     public String getInfo() {
         return "Bus Trip: "+name+" .";

@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
+
 /**
  * Holds the information needed to calculate the distance between to stops that the user has entered
  * finds the distance using the information provided by translinkdb.ca
@@ -14,6 +16,8 @@ public class Skytrain extends Transportation{
     private double cityFuel = 0;
     String fuelType = "Skytrain";
     String name = " ";
+
+    private int skytrainImage = R.drawable.train;
 
     Route route;
 
@@ -42,7 +46,7 @@ public class Skytrain extends Transportation{
 
 
     public Skytrain(String startStation, String endStation, String name, String trainType) {
-        super(0,0," ", "skytrain");
+        super(0,0," ", "skytrain",0);
         this.name= name;
         this.startStation = startStation;
         this.endStation = endStation;
@@ -59,6 +63,7 @@ public class Skytrain extends Transportation{
     {
         super.setCityFuel(0.0087);
         super.setFuelType(fuelType);
+        super.setImage(skytrainImage);
     }
 
     public double getHours()
