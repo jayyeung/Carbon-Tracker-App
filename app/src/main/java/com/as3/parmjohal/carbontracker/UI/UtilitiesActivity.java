@@ -97,7 +97,7 @@ public class UtilitiesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 TextView textView = (TextView) findViewById(R.id.gasText);
                 isElectricity=true;
-                textView.setText("Amount of Electricity Used (KWh):");
+                textView.setText(R.string.Amount_of_Electricity_Used);
 
             }
         });
@@ -106,7 +106,7 @@ public class UtilitiesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isElectricity = false;
                 TextView textView = (TextView) findViewById(R.id.gasText);
-                textView.setText("Amount of Natural Gas Used (Gj): ");
+                textView.setText(R.string.Amount_of_Natural_Gas_Used);
 
 
 

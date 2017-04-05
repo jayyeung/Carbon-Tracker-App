@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.R;
@@ -27,13 +28,13 @@ public class SelectTransActivity extends AppCompatActivity {
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
-        setTitle("Select Transportation");
+        setTitle(getString(R.string.Select_Transportation));
 
         setupButtons();
     }
 
     private void setupButtons() {
-        Button car = (Button) findViewById(R.id.carButton);
+        ImageButton car = (ImageButton) findViewById(R.id.imageButton);
         car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +50,7 @@ public class SelectTransActivity extends AppCompatActivity {
                 }
             }
         });
-        Button bus = (Button) findViewById(R.id.busButton);
+        ImageButton bus = (ImageButton) findViewById(R.id.imageButton2);
         bus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +67,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
             }
         });
-        Button skytrain = (Button) findViewById(R.id.trainButton);
+        ImageButton skytrain = (ImageButton) findViewById(R.id.imageButton3);
         skytrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +86,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
             }
         });
-        Button walk= (Button) findViewById(R.id.walkButton);
+        ImageButton walk= (ImageButton) findViewById(R.id.imageButton4);
         walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

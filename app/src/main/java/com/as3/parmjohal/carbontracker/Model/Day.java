@@ -65,8 +65,8 @@ public class Day {
 
     public void addUtility(Utility utility){
         utilityManager.add(utility);
-        //allCO2Values.add(utility.getDailyCo2());
-        //totalCO2  +=(utility.getDailyCo2());
+        allCO2Values.add(utility.getDailyCo2());
+        totalCO2  += (utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
@@ -135,6 +135,10 @@ public class Day {
 
     public double getTotalUtility() {
         return totalUtility;
+    }
+
+    public JourneyManager getJourneyManager() {
+        return journeyManager;
     }
 
     @Override

@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.app_icon_white);
-        setTitle("Dashboard");
+        setTitle(getString(R.string.Dashboard));
 
         SharedPreference.saveCurrentModel(this);
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     chart_status.setText(date);
-                                    chart_type.setText("Daily Carbon Usage");
+                                    chart_type.setText(R.string.Daily_Carbon_Usage);
                                     setGraph(Chart_options.DAILY, day.getDay(), day.getMonth(), day.getYear());
                                     return true;
                                 }
@@ -200,13 +200,13 @@ public class MainActivity extends AppCompatActivity {
                         popup.show(); //showing popup menu
                         break;
                     case R.id.month_radio:
-                        chart_status.setText("Last 28 days (Today)");
-                        chart_type.setText("Monthly Carbon Usage");
+                        chart_status.setText(R.string.Last_28_days);
+                        chart_type.setText(R.string.Monthly_Carbon_Usage);
                         setGraph(Chart_options.MONTHLY, 0,0,0);
                         break;
                     case R.id.year_radio:
-                        chart_status.setText("Last 365 days (Today)");
-                        chart_type.setText("Annual Carbon Usage");
+                        chart_status.setText(R.string.Last_365_days);
+                        chart_type.setText(R.string.Annual_Carbon_Usage);
                         setGraph(Chart_options.YEARLY, 0,0,0);
                         break;
                 }
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < day_journeys.size(); i++) {
                     total += day_journeys.get(i).getCo2();
                 }
-                entries.add(new PieEntry(total, "Journey"));
+                entries.add(new PieEntry(total, getString(R.string.journey)));
             }
 
             // Utility
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < day_utilities.size(); i++) {
                     total += day_utilities.get(i).getTotalCo2();
                 }
-                entries.add(new PieEntry(total, "Utility"));
+                entries.add(new PieEntry(total, getString(R.string.Utility)));
             }
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
@@ -331,9 +331,11 @@ public class MainActivity extends AppCompatActivity {
             totalDataSet.setLineWidth(5f);
             totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(totalDataSet);
+
             // Journey
             entries = new ArrayList<>();
             counter = 0;
+
             for (Double journey_day : journey_CO2) {
                 entries.add(new Entry(counter , journey_day.floatValue()));
                 counter++;
@@ -348,9 +350,11 @@ public class MainActivity extends AppCompatActivity {
             journeyDataSet.setLineWidth(5f);
             journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(journeyDataSet);
+
             // Utility
             entries = new ArrayList<>();
             counter = 0;
+
             for (Double utility_day : utility_CO2) {
                 entries.add(new Entry(counter , utility_day.floatValue()));
                 counter++;
@@ -365,13 +369,17 @@ public class MainActivity extends AppCompatActivity {
             utilityDataSet.setLineWidth(5f);
             utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             lines.add(utilityDataSet);
+
             LineData data = new LineData(lines);
+
             LineChart chart = new LineChart(this);
             chart_container.addView(chart, params);
+
             chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
             chart.setDescription(null);
             chart.getAxisRight().setEnabled(false);
             chart.getAxisLeft().setEnabled(false);
+
             XAxis xval = chart.getXAxis();
             xval.setGranularity(1f);
             xval.setTextSize(16f);
@@ -389,16 +397,20 @@ public class MainActivity extends AppCompatActivity {
                         String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
                         return month + " " + day.getDay();
                     } catch (Exception e) {}
+
                     return "";
                 }
             });
+
             Legend legend = chart.getLegend();
             legend.setTextColor(R.color.colorAccent);
             legend.setTextSize(16f);
             legend.setWordWrapEnabled(true);
+
             Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
             slide_in.setDuration(1800);
             chart.startAnimation(slide_in);
+
             try {
                 chart.setData(data);
                 chart.animateY(1500);
@@ -430,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
+            LineDataSet totalDataSet = new LineDataSet(entries, getString(R.string.total_co2));
             totalDataSet.setColors(Color.rgb(38, 166, 91));
             totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
             totalDataSet.setDrawCircleHole(false);
@@ -449,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
+            LineDataSet journeyDataSet = new LineDataSet(entries, getString(R.string.journey_co2));
             journeyDataSet.setColors( Color.rgb(52, 152, 219) );
             journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
             journeyDataSet.setDrawCircleHole(false);
@@ -468,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
                 counter++;
             }
 
-            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
+            LineDataSet utilityDataSet = new LineDataSet(entries, getString(R.string.utility_CO2));
             utilityDataSet.setColors( Color.rgb(230, 126, 34) );
             utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
             utilityDataSet.setDrawCircleHole(false);
@@ -559,8 +571,6 @@ public class MainActivity extends AppCompatActivity {
         private int datepos = 0;
         private int totalCo2 = 0;
 
-
-
         public MyListAdapter() {
             super(MainActivity.this, R.layout.dashboard_item, journey);
 
@@ -605,8 +615,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_journey.getCo2()) + "kg CO₂");
-
+            if(model.isTree())
+            {
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_journey.getCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_journey.getCo2()) + getString(R.string.kg_co2));
+            }
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_journey.getCo2() / totalCo2;
 
@@ -708,7 +723,13 @@ public class MainActivity extends AppCompatActivity {
 
             // RESULTS
             TextView results = (TextView) itemView.findViewById(R.id.result_value);
-            results.setText(String.format("%.2f", cur_utility.getDailyCo2()) + "kg CO₂");
+            if(model.isTree()){
+
+                results.setText(String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(cur_utility.getTotalCo2())) + " Tree-Years");
+            }
+            else {
+                results.setText(String.format("%.2f", cur_utility.getTotalCo2()) + getString(R.string.kg_co2));
+            }
 
             // change colour black to orange to red depending on usage
             float Co2_usage = (float) cur_utility.getTotalCo2() / totalCo2;

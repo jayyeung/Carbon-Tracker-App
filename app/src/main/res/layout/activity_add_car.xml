@@ -163,7 +163,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="36dp"
-            android:text="Select Car Type"
+            android:text="@string/select_car_type2"
             android:textColor="@color/colorPrimary" />
 
         <ListView

@@ -54,11 +54,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
 
         if(model.isConfirmTrip()) {
-            setTitle("Confirm Trip");
+            setTitle(getString(R.string.confirmtrip));
 
         }
         else {
-            setTitle("Journey Data");
+            setTitle(getString(R.string.Journey_Data));
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,8 +83,14 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void populateTextViews(){
         Log.i("TAG", ""+ journey.toString());
-        setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
-        setupTextView(R.id.display_CO2Units, "kg of CO₂");
+        if(model.isTree()) {
+            setupTextView(R.id.display_CO2, String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(journey.getCo2())));
+            setupTextView(R.id.display_CO2Units, " Tree-Years");
+        }
+        else {
+            setupTextView(R.id.display_CO2, String.format("%.2f", journey.getCo2()));
+            setupTextView(R.id.display_CO2Units, "kg of CO₂");
+        }
         setupTextView(R.id.date, "On " + journey.getDateInfo());
         ImageView image = (ImageView) findViewById(R.id.imageView);
         image.setImageDrawable(getDrawable(journey.getImage()));
@@ -176,10 +182,9 @@ public class ConfirmTripActivity extends AppCompatActivity {
     private void getJourneyData()
     {
         if(model.isConfirmTrip()) {
-            Log.i("Journey: ", "New Journey");
+            Log.i(getString(R.string.journey), getString(R.string.new_journey));
             Transportation currentTransportation = model.getCurrentTransportation();
             Route currentRoute = model.getCurrentRoute();
-
             Log.i("CO2", currentTransportation.toString());
 
             journey = new Journey(currentTransportation, currentRoute);
@@ -187,7 +192,7 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
         }
         else {
-            Log.i("Journey: ", "Clicked Journey");
+            Log.i(getString(R.string.journey)+": ", getString(R.string.clicked_journey));
             journey = model.getCurrentJouney();
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);

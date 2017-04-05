@@ -1,0 +1,157 @@
+<resources>
+    <string name="app_name">"Tracker Carbon"</string>
+
+    <!-- splash -->
+    <string name="continue_to_dashboard">"Continuer au tableau de bord"</string>
+    <string name="start_a_new_journey">"Commencer un nouveau Journey"</string>
+
+    <!-- dashboard -->
+    <string name="dashboard_welcome_message">"Tableau de bord"</string>
+    <string name="carbon_overview">"Vue d'ensemble du carbone"</string>
+    <string name="all_journeys">"Vos derniers Journeys"</string>
+    <string name="all_utilities">"Vos derniers Utilities"</string>
+    <string name="fab_label_utility">"Nouvelle utilité"</string>
+    <string name="fab_label_journey">"Nouveau voyage"</string>
+
+    <string name="chart_type">"Utilisation quotidienne de carbone"</string>
+    <string name="chart_radio_monthly">"Mensuel"</string>
+    <string name="chart_radio_daily">"quotidien, 646"</string>
+    <string name="chart_radio_yearly">"Annuelle"</string>
+
+    <string name="tip_message">"Astuce message Goes Here"</string>
+
+
+    <!-- journeys -->
+    <string name="route_name">"Nom de la route"</string>
+    <string name="distance_on_highway">"Distance sur la route (km)"</string>
+    <string name="distance_in_city">"Distance de la ville (km)"</string>
+
+    <string name="car_name">"Nom de voitures"</string>
+    <string name="car_make">"Car Make"</string>
+    <string name="year">"an"</string>
+    <string name="select_route_hold_to_edit_or_delete">"Sélectionnez l'option de maintien d'itinéraire pour modifier ou supprimer:"</string>
+    <string name="would_you_like_to_save_this_route">"Voulez-vous enregistrer cet itinÃ©raire?"</string>
+    <string name="car_s_name">"Nom de voiture"</string>
+    <string name="make">"Constructeur"</string>
+    <string name="model">"maquette"</string>
+    <string name="select_car_type">"Sélectionner le type de voiture:"</string>
+    <string name="main_car">"Car principal:"</string>
+    <string name="route">"Trajet"</string>
+    <string name="select_car_hold_to_edit">"Sélectionner la prise de voiture pour modifier"</string>
+    <string name="add_transportation">"Ajouter Transport"</string>
+    <string name="transmission">"Transmission"</string>
+    <string name="fuel">"carburant"</string>
+    <string name="engindisplacement">Déplacement du moteur:"</string>
+    <string name="please_name_your_car">"Veuillez indiquer votre voiture"</string>
+    <string name="please_select_your_car">"Veuillez choisir une voiture"</string>
+    <string name="this_car_already_exist">"Cette voiture existe déjà "</string>
+    <string name="car_cliked">"Car Clicked:"</string>
+    <string name="add_route">"Ajouter itinéraire"</string>
+    <string name="destroy">"détruire"</string>
+    <string name="test">"teste"</string>
+    <string name="car_collection">"collection de voitures:"</string>
+    <string name="test2">"teste"</string>
+    <string name="please_complete_info">"Veuillez compléter l'information"</string>
+    <string name="Distance_must_contain_only_numbers">"Distance doit contenir que des chiffres"</string>
+    <string name="This_Route_Already_Exist">"Cette route existe déjà !"</string>
+    <string name="save_route">"Sauvegarde de la route"</string>
+    <string name="dont_save">"Ne pas Sauvegarder"</string>
+    <string name="save">"Enregistrer"</string>
+    <string name="bus_journey">"Voyage d'autobus"</string>
+    <string name="journey">"Voyage (1)"</string>
+    <string name="new_journey">"New Journey"</string>
+    <string name="clicked_journey">"Voyage cliqué"</string>
+    <string name="Transmission">"Transmission"</string>
+    <string name="Edit_Route">"Modifier une route"</string>
+    <string name="Please_complete_info">"Please_complete_info"</string>
+    <string name="Distancemust_contain_only_numbers">"Distancemust contient uniquement des chiffres"</string>
+    <string name="Dashboard">"Tableau de bord"</string>
+    <string name="Daily_Carbon_Usage">"Utilisation quotidienne de carbone"</string>
+    <string name="Last_28_days">"28 derniers jours (aujourd'hui)"</string>
+    <string name="Monthly_Carbon_Usage">"Monthly Usage de carbone"</string>
+    <string name="Last_365_days">"365 derniers jours (aujourd'hui)"</string>
+    <string name="Annual_Carbon_Usage">"Utilisation annuelle de carbone"</string>
+    <string name="Utility">"Service public"</string>
+    <string name="total_CO2">"CO2‚‚ total"</string>
+    <string name="journey_co2">"Journey CO2‚‚"</string>
+    <string name="ulityli_co2">"Utilitaire CO2‚‚"</string>
+    <string name="total_co2">"COâ‚‚ total"</string>
+    <string name="utility_CO2">"Utilitaire CO2‚‚"</string>
+    <string name="kg_co2">"kg COâ‚‚"</string>
+    <string name="clickedjourney">"Voyage cliqué"</string>
+    <string name="menuselect">"MENU_SELECT"</string>
+    <string name="Edit_Journeys_Car">"Car Modifier Journey"</string>
+    <string name="select_car">"Sélectionner la voiture"</string>
+    <string name="DELECTED">"DELECTED"</string>
+    <string name="Edit_Journeys_Route">"Route Modifier Journey"</string>
+    <string name="Select_Route">"Sélectionnez Route"</string>
+    <string name="km_on_Highway">"km sur la route"</string>
+    <string name="km_in_the_City">"km dans la ville"</string>
+    <string name="EDIT">"EDITER"</string>
+    <string name="Select_Transportation">"Sélectionnez Transport"</string>
+    <string name="Select_Track_Type">"Sélectionnez le type de piste"</string>
+    <string name="Transportation">"Transport"</string>
+    <string name="Food">"Repas"</string>
+    <string name="Electricity">"Électricité"</string>
+    <string name="Expo_Line">"Expo Line"</string>
+    <string name="Millennium_Line">"Millennium Line"</string>
+    <string name="Canada_Line">"Canada Line"</string>
+    <string name="Amount_of_Electricity_Used">"Quantité d'électricité utilisée (KWh):"</string>
+    <string name="Amount_of_Natural_Gas_Used">"Quantité de gaz naturel utilisé (Gj):"</string>
+    <string name="WALK">"marche"</string>
+    <string name="bike">"Bicyclette"</string>
+    <string name="car_name2">"Nom de voitures2"</string>
+    <string name="eg_family_car">"Par exemple. Car la famille"</string>
+    <string name="select_car_type2">"Sélectionner le type de voiture 2"</string>
+    <string name="eg_sfu_surrey">"Par exemple. SFU Surrey"</string>
+    <string name="bus_number_name">"Nombre Bus / Nom:"</string>
+    <string name="distance_travelled_km">"Distance parcourue (km):"</string>
+    <string name="select_date">"Sélectionner la date"</string>
+    <string name="save2">"Enregistrer"</string>
+    <string name="transportation_details">"Transport détails"</string>
+    <string name="eg_family_car2">"Par exemple. Car la famille"</string>
+    <string name="eg_sfu_surrey2">"Par exemple. SFU Surrey"</string>
+    <string name="car">"Voiture"</string>
+    <string name="bus">"bus"</string>
+    <string name="walk_bike">"marche / bicyclette"</string>
+    <string name="skytrain">"Skytrain"</string>
+    <string name="start_at_startion">"Commencer à startion:"</string>
+    <string name="end_at_station">"Fin à la station:"</string>
+    <string name="select_billing_type">"Sélectionnez le type de facturation"</string>
+    <string name="electricity">"électricité"</string>
+    <string name="natural_gas">"Gaz naturel"</string>
+    <string name="amount_of_electricty_used_gj">"Montant de Electricty occasion (Gj):"</string>
+    <string name="amount_of_people_in_house">"Nombre de personnes dans la maison:"</string>
+    <string name="from">"De:"</string>
+    <string name="set_date">"Régler la date"</string>
+    <string name="to">"A:"</string>
+    <string name="set_date2">"Fixer la date 2"</string>
+    <string name="description">"La description:"</string>
+    <string name="type_of_transportation">"Type de transport:"</string>
+    <string name="walk">"Marche"</string>
+    <string name="bike2">"Bicyclette2"</string>
+    <string name="distance_travelled">"Distance parcourue :"</string>
+    <string name="car_trip">"Voyage de voiture"</string>
+    <string name="utility_tip">Utilitaire Conseils</string>
+    <string name="journey_tip">Périple pointe</string>
+    <string name="select_transit_line">Sélectionnez la ligne de transit:</string>
+    <string name="add">Ajouter</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Effacer</string>
+    <string name="confirm">Confirmer</string>
+    <string name="decline">Déclin</string>
+    <string name="edit_transportation">Modifier transport</string>
+    <string name="edit_route">Edit Route</string>
+    <string name="edit_date">modifier Date</string>
+    <string name="delete_journey">Supprimer le voyage</string>
+    <string name="confirmtrip">Confirm Trip</string>
+    <string name="Journey_Data">Confirmer le voyage</string>
+    <string name="Edit_Transportation">Modifier le transport</string>
+    <string name="SkyTrain_Journey">Voyage SkyTrain</string>
+    <string name="Walk_Bike_Journey">Randonnée pédestre / vélo
+</string>
+
+
+
+
+</resources>

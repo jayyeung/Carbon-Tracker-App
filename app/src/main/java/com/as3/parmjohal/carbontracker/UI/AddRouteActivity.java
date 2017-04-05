@@ -38,10 +38,10 @@ public class AddRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
-        Log.i("CO2 ", "Add Route");
+        Log.i("CO2 ", getString(R.string.add_route));
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
-        setTitle("Add Route");
+        setTitle(getString(R.string.add_route));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -80,18 +80,18 @@ public class AddRouteActivity extends AppCompatActivity {
 
                 //Error Checker
                 if (route.isEmpty() == true || stringCity.isEmpty() == true || stringHighway.isEmpty() == true) {
-                    Toast.makeText(AddRouteActivity.this, "Please complete info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRouteActivity.this, R.string.please_complete_info, Toast.LENGTH_SHORT).show();
                     return false;
 
                 } else if (containsOnlyNumbers(stringCity) == false || containsOnlyNumbers(stringCity) == false){
-                        Toast.makeText(AddRouteActivity.this, "Distance must contain only numbers", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRouteActivity.this, R.string.Distance_must_contain_only_numbers, Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 highway = Integer.parseInt(stringHighway);
                 city = Integer.parseInt(stringCity);
                 addRoute= new Route(city,highway,route);
                 if (checkDuplicate(addRoute)){
-                    Toast.makeText(AddRouteActivity.this, "This Route Already Exists!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRouteActivity.this, R.string.This_Route_Already_Exist, Toast.LENGTH_SHORT).show();
                 }
                     else {
                     showDialog();
@@ -108,10 +108,10 @@ public class AddRouteActivity extends AppCompatActivity {
         View V = LayoutInflater.from(this)
                 .inflate(R.layout.save_route_message, null);
 
-        b.setTitle("Save Route");
+        b.setTitle(R.string.save_route);
         final TextView msg = new TextView(this);
         b.setView(msg);
-        b.setPositiveButton("Don't Save", new DialogInterface.OnClickListener() {
+        b.setPositiveButton(R.string.dont_save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 model.setCurrentRoute(addRoute);
@@ -121,7 +121,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
             }
         });
-        b.setNegativeButton("Save", new DialogInterface.OnClickListener(){
+        b.setNegativeButton(R.string.save, new DialogInterface.OnClickListener(){
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

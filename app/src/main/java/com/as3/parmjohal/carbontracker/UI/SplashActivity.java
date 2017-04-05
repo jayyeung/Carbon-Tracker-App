@@ -48,9 +48,8 @@ public class SplashActivity extends AppCompatActivity {
 
         // dd/MM/yy
 
-        Log.i("Utility", " START ");
-       // model.getDayManager().getPast365Days_UtilityCO2(24,03,17,model.getUtilityManager());
-
+        Log.i("Day", " START ");
+        model.getDayManager().getPieGraphData_Route(31,03,17,28);
 
         DayManager dayManager = new DayManager();
 
@@ -121,15 +120,15 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Select Track Type");
-        menu.add(0, v.getId(), 0, "Transportation");
-        menu.add(0, v.getId(), 0, "Food");
-        menu.add(0, v.getId(), 0, "Electricity");
+        menu.setHeaderTitle(R.string.Select_Track_Type);
+        menu.add(0, v.getId(), 0, R.string.Transportation);
+        menu.add(0, v.getId(), 0, R.string.Food);
+        menu.add(0, v.getId(), 0, R.string.Electricity);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == "Transportation") {
+        if (item.getTitle() == getString(R.string.Transportation)) {
             startNewJourney();
         }
         return true;

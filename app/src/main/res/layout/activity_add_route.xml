@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="Eg. SFU Surrey"
+                android:hint="@string/eg_sfu_surrey"
                 android:inputType="text"
                 android:textColorHint="@color/colorSubtitle"
                 android:textSize="30sp" />
