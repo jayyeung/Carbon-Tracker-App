@@ -66,7 +66,7 @@ public class Day {
     public void addUtility(Utility utility){
         utilityManager.add(utility);
         allCO2Values.add(utility.getDailyCo2());
-        totalCO2  += (utility.getDailyCo2());
+        totalC02  += (utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
