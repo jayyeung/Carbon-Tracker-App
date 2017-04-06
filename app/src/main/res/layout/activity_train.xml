@@ -8,67 +8,95 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="36dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/titleText"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:text="@string/select_transit_line" />
+                android:layout_alignBaseline="@+id/editName"
+                android:layout_alignBottom="@+id/editName"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+
+                android:text="@string/select_transit_line"
+                android:textColor="@color/colorPrimary" />
 
             <Spinner
                 android:id="@+id/lineSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/editName"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/startText"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_alignStart="@+id/carName"
+                android:layout_below="@+id/carName"
+                android:layout_marginTop="20dp"
+
+                android:layout_weight="1"
                 android:text="@string/start_at_startion"
-                android:textSize="14sp" />
+                android:textColor="@color/colorPrimary" />
 
             <Spinner
                 android:id="@+id/startSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/yearSpinner"
+                android:layout_below="@+id/yearSpinner"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1" />
-
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/endText"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/end_at_station" />
+                android:layout_alignEnd="@+id/carMake"
+                android:layout_below="@+id/yearSpinner"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:text="@string/end_at_station"
+                android:textColor="@color/colorPrimary" />
 
             <Spinner
                 android:id="@+id/endSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/makeSpinner"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>

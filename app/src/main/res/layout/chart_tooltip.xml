@@ -4,7 +4,7 @@
     android:id="@+id/tip"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAverage"
+    android:background="?android:attr/colorPrimaryDark"
     android:gravity="center_horizontal">
 
     <TextView
@@ -24,7 +24,6 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/value"
         android:layout_toRightOf="@+id/value"
-        android:background="@drawable/tree"
         android:elevation="1dp"
-        app:srcCompat="@drawable/tree" />
+        android:visibility="gone" />
 </RelativeLayout>

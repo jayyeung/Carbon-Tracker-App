@@ -138,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
         Collections.reverse(journey);
         Collections.reverse(utilities);
 
+        // set Units
+        setUnits();
+
         // set Overview
         setOverview();
 
@@ -179,6 +182,25 @@ public class MainActivity extends AppCompatActivity {
         Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fade_in.setDuration(2300);
         background_img.startAnimation(fade_in);
+    }
+
+    // Set Units
+    public void setUnits() {
+        RadioGroup units_radio = (RadioGroup) findViewById(R.id.unit_options);
+
+        units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId) {
+                    case R.id.unit_kg:
+                        break;
+                    case R.id.unit_tree:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     // Set Overview
@@ -551,25 +573,9 @@ public class MainActivity extends AppCompatActivity {
 
                 RelativeLayout tip_item = (RelativeLayout) tip.findViewById(R.id.tip);
 
-                switch(setIndex) {
-                    case 3:
-                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorJourney) );
-                        break;
-                    case 2:
-                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorUtility) );
-                        break;
-                    case 1:
-                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorAverage) );
-                        break;
-                    default:
-                        tip_item.setBackgroundColor( ContextCompat.getColor(getBaseContext(), R.color.colorBody) );
-                        break;
-                }
-
-
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1)).setDuration(150);
-                    tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA,0)).setDuration(150);
+                    tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1)).setDuration(200);
+                    tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA,0)).setDuration(200);
                 }
 
                 chart.setTooltips(tip);
