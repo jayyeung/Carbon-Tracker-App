@@ -63,6 +63,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -153,6 +155,20 @@ public class MainActivity extends AppCompatActivity {
 
         // intro animation
         animateDashboard();
+
+        // set about page
+        TextView about_us_link = (TextView) findViewById(R.id.about_us_link);
+
+        String app_version = getResources().getString(R.string.app_version);
+        about_us_link.setText("Version " + app_version + "\nAbout this app ▼");
+
+        about_us_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -487,8 +503,10 @@ public class MainActivity extends AppCompatActivity {
         chart.startAnimation(slide_in);
         chart.animateY(1000);
 
-        PieData data = new PieData(dataset);
-        chart.setData(data);
+        try {
+            PieData data = new PieData(dataset);
+            chart.setData(data);
+        } catch(Exception e) {}
     }
 
     // set chart stylings for a line/stacked bar chart
