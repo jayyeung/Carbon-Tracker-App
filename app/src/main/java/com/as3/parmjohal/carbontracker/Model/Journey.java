@@ -82,19 +82,16 @@ public class Journey {
         DecimalFormat df = new DecimalFormat("####0.00");
 
         if(co2 > 0) {
-            String tip = "You used " + df.format(co2) + " of CO2, Skytrain produces the least amount \n" +
-                    "of CO2 out of all Public Transit";
+            String tip = "You used " + df.format(co2) + " of CO2. Did you know the Skytrain produces the least amount of CO2 out of all Public Transit";
             this.tip = tip;
         }
         else if(!checkElectricity && transportation.getObjectType().equals("car")){
-            String tip = "You used " + df.format(co2) + " of CO2, Need a new Car? \n" +
-                    " Electric cars use less CO2";
+            String tip = "You used " + df.format(co2) + " of CO2, Need a new Car? Electric cars use less CO2";
 
             this.tip = tip;
         }
         else {
-            String tip = "You used " + df.format(co2) + ", You are Saving the Environment. \n " +
-                    "Maybe try another somthing besides " + transportation.getObjectType() + " For More Fun";
+            String tip = "You used " + df.format(co2) + ", You are Saving the Environment. Maybe try another something besides " + transportation.getObjectType() + " For More Fun";
             this.tip = tip;
         }
 
