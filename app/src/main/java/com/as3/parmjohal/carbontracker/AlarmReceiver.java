@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -24,19 +25,21 @@ public class AlarmReceiver extends BroadcastReceiver{
     }
 
     private void creatNotification(Context context) {
+        /*
         PendingIntent notification = PendingIntent .getActivities(context,0,
                 new Intent[]{new Intent(context, MainActivity.class)},0);
+                */
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.alarm)
                         .setContentTitle("My notification")
                         .setTicker("here you go")
-                        .setContentText("Hello World!");
-        mBuilder.setContentIntent(notification);
+                        .setContentText("Hello World!")
+                        //.setContentIntent(notification)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setDefaults(Notification.DEFAULT_LIGHTS)
+                        .setAutoCancel(true);
 
-        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
-        mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
-        mBuilder.setAutoCancel(true);
         NotificationManager mnotificationManager =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         mnotificationManager.notify(1,mBuilder.build());

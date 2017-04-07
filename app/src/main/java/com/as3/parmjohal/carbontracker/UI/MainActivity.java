@@ -163,7 +163,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAlarm() {
 
-        Long alarmetime = new GregorianCalendar().getTimeInMillis()+5*1000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,21);
+        calendar.set(Calendar.MINUTE,0);
+
+
+
+        //Long alarmetime = new GregorianCalendar().getTimeInMillis()+5*1000;
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent notification = PendingIntent .getBroadcast(this,0,alertIntent,0);
 
@@ -171,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
         alartmanager.setRepeating(AlarmManager.RTC_WAKEUP,
-                SystemClock.elapsedRealtime()+3000, 3000,notification );
+                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,notification );
 
         /*
         alartmanager.set(AlarmManager.RTC_WAKEUP,alarmetime,
