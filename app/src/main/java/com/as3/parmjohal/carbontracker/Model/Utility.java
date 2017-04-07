@@ -171,12 +171,12 @@ public class Utility {
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
-        DecimalFormat df2 = new DecimalFormat("####0.0000");
+        DecimalFormat df2 = new DecimalFormat("####0.00##");
         if(isElectricity)
-            return "" +df2.format(dailyCo2)+ "/day " +
+            return "" +df2.format(dailyCo2)+ "kg c02/day " +
                     "from "+ df.format(startDate)+" to "+df.format(endDate) ;
         else{
-            return "" +df2.format(dailyCo2)+ "/day " +
+            return "" +df2.format(dailyCo2)+ "kg c02/day " +
                     "from " + df.format(startDate)+" to "+df.format(endDate) ;
         }
     }

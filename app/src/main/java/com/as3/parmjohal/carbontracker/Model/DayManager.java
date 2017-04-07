@@ -606,6 +606,20 @@ public class DayManager {
         }
         return null;
     }
+    public void removeUtility1(Utility utility) {
+        for(int i =0; i<days.size();i++) {
+            if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
+                days.get(i).setTotalUtility(days.get(i).getTotalUtility()-utility.getDailyCo2());
+                if(utility.isElectricity()){
+                    days.get(i).setElectricUtility(days.get(i).getElectricUtility()-utility.getDailyCo2());
+
+                }
+                else{
+                    days.get(i).setGasUtility(days.get(i).getGasUtility()-utility.getDailyCo2());
+                }
+            }
+        }
+    }
 
 
     public ArrayList<Day> getDays() { return days; }
