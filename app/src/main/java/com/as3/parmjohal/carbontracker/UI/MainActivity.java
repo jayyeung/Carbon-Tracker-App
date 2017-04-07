@@ -194,30 +194,29 @@ public class MainActivity extends AppCompatActivity {
         RadioButton unit_tree = (RadioButton) findViewById(R.id.unit_tree);
 
         units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                boolean is_tree = model.isTree();
+           @Override
+           public void onCheckedChanged(RadioGroup group, int checkedId) {
+               boolean is_tree = model.isTree();
 
-                switch(checkedId) {
-                    case R.id.unit_kg:
-                        if (is_tree) {
-                            model.setisTree(false);
-                            Log.i("UNIT", "Unit change KG");
-                            finish(); startActivity(getIntent());
-                        }
-                        break;
-                    case R.id.unit_tree:
-                        if (!is_tree) {
-                            model.setisTree(true);
-                            Log.i("UNIT", "Unit change TREES");
-                            finish(); startActivity(getIntent());
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+               switch (checkedId) {
+                   case R.id.unit_kg:
+                       if (is_tree) {
+                           model.setisTree(false);
+                           Log.i("UNIT", "Unit change KG");
+                           finish();
+                           startActivity(getIntent());
+                       }
+                       break;
+                   case R.id.unit_tree:
+                       if (!is_tree) {
+                           model.setisTree(true);
+                           Log.i("UNIT", "Unit change TREES");
+                           finish();
+                           startActivity(getIntent());
+                       }
+               }
+           }
+       });
 
         // set default unit on new app open
         if (model.isTree())
@@ -316,35 +315,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (option == option.DAILY) {
             ArrayList<PieEntry> entries = new ArrayList<>();
-            // Journey
-            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
-            float total = 0;
-            if (day_journeys != null) {
-                for (Journey journey : day_journeys) { total += journey.getCo2(); }
-                entries.add(new PieEntry(total, getString(R.string.journey)));
-            }
 
-            // Utility
-            Day day_utilities = day_manager.getDay(day,month,year);
-            float totalElectricity = 0;
-            float totalGas = 0;
+            // Data
+            ArrayList<Double> data = day_manager.getPieGraphData_Mode(day, month, year, 1);
 
-            if (day_utilities != null) {
-                totalElectricity += day_utilities.getElectricUtility();
-                if(totalElectricity!= 0) {
-                    entries.add(new PieEntry(totalElectricity, "Electricity"));
-                }
+            entries.add(new PieEntry(data.get(3).floatValue(), "Skytrain"));
+            entries.add(new PieEntry(data.get(2).floatValue(), "Bus"));
+            entries.add(new PieEntry(data.get(1).floatValue(), "Natural Gas"));
+            entries.add(new PieEntry(data.get(0).floatValue(), "Electricity"));
 
-                totalGas += day_utilities.getGasUtility();
-                if(totalGas!= 0) {
-                    entries.add(new PieEntry(totalGas, "Gas"));
-                }
-            }
+            int[] colors = { track_colors[0], track_colors[0], track_colors[1], track_colors[1] };
 
             PieChart chart = new PieChart(this);
             PieDataSet dataset = new PieDataSet(entries, "CO₂");
             chart_container.addView(chart, params);
-            setPieChart(chart, dataset, track_colors);
+            setPieChart(chart, dataset, colors);
         }
 
         ////////////////
@@ -419,6 +404,28 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
+
+                    ArrayList<PieEntry> entries = new ArrayList<>();
+                    ArrayList<Double> data = day_manager.getPieGraphData_Mode(day, month, year, 28);
+                    entries.add(new PieEntry(data.get(3).floatValue(), "sadsad"));
+                    entries.add(new PieEntry(data.get(2).floatValue(), "Bus"));
+                    entries.add(new PieEntry(data.get(1).floatValue(), "Natural Gas"));
+                    entries.add(new PieEntry(data.get(0).floatValue(), "Electricity"));
+
+                    int[] colors = { track_colors[0], track_colors[0], track_colors[1], track_colors[1] };
+
+                    PieChart chart = new PieChart(getBaseContext());
+                    PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                    setPieChart(chart, dataset, colors);
+
+                    chart.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    chart.performClick();
+
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -553,6 +560,7 @@ public class MainActivity extends AppCompatActivity {
             PieData data = new PieData(dataset);
             data.setValueFormatter(new PercentFormatter());
             chart.setData(data);
+            chart.invalidate();
         } catch(Exception e) {}
     }
 
