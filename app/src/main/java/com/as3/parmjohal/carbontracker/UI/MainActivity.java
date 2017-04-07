@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         model.setConfirmTrip(true);
         model.setEditJourney(false);
+        model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
@@ -248,23 +249,33 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
             float total = 0;
 
-            if (day_journeys != null) {
-                for (int i = 0; i < day_journeys.size(); i++) {
+            if (day_journeys == null){
+                Log.i("test","empty");
+            }
+            else if (day_journeys != null) {
+                for (int i = 0; i<day_journeys.size(); i++) {
+                    Log.i("test",""+day_journeys.get(i).getCo2());
                     total += day_journeys.get(i).getCo2();
                 }
+
                 entries.add(new PieEntry(total, getString(R.string.journey)));
             }
 
-            // Utility
-            ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
-            total = 0;
+             //Utility
+           // ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
+           // total = 0;
 
-            if (day_utilities != null) {
-                for (int i = 0; i < day_utilities.size(); i++) {
-                    total += day_utilities.get(i).getTotalCo2();
-                }
-                entries.add(new PieEntry(total, getString(R.string.Utility)));
-            }
+          //  if (day_utilities == null){
+           //     Log.i("test","empty");
+          //  }
+           // else if (day_utilities != null) {
+           //     Log.i("test","used");
+           //     for (int i = 0; i < day_utilities.size(); i++) {
+           //         Log.i("test","used2");
+           //         total += day_utilities.get(i).getDailyCo2();
+          //     }
+           //     entries.add(new PieEntry(total, getString(R.string.Utility)));
+          //  }
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
 
@@ -695,6 +706,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Utility cur_utility = utilities.get(position);
+
 
             // DATE
             // split the given date in the form "Day Month Year" into an array

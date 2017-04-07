@@ -15,7 +15,9 @@ import java.util.Date;
 public class Day {
 
     private JourneyManager journeyManager = new JourneyManager();
+    private ArrayList<Journey> journeyManager2 = new ArrayList<>();
     private Manager<Utility> utilityManager = new Manager<>();
+    private  ArrayList<Utility> utilityManager2 = new  ArrayList<>();
 
     private ArrayList<Double> allCO2Values = new ArrayList<>();
     private double totalJourney = 0;
@@ -65,13 +67,14 @@ public class Day {
 
     public void addUtility(Utility utility){
         utilityManager.add(utility);
+        utilityManager2.add(utility);
         allCO2Values.add(utility.getDailyCo2());
         totalC02  += (utility.getDailyCo2());
     }
 
     public boolean add(Journey journey)
     {
-       // journeyManager.add(journey);
+        journeyManager2.add(journey);
         allCO2Values.add(journey.getCo2());
         totalJourney += journey.getCo2();
 
@@ -102,14 +105,14 @@ public class Day {
     public void remove(Journey journey){
         totalJourney -= journey.getCo2();
         journeyManager.remove(journey);
+        journeyManager2.remove(journey);
     }
 
     public ArrayList<Journey> getAllJourneys() {
         return journeyManager.getJourneyCollection();
     }
 
-    public ArrayList<Utility> getAllUtilities() {
-        return utilityManager.getRouteCollection();
+    public ArrayList<Utility> getAllUtilities() {return utilityManager2;
     }
 
     public ArrayList<Double> getAllCO2Values() {
@@ -139,6 +142,10 @@ public class Day {
 
     public JourneyManager getJourneyManager() {
         return journeyManager;
+    }
+
+    public ArrayList<Journey> getJourneyManager2() {
+        return journeyManager2;
     }
 
     @Override
