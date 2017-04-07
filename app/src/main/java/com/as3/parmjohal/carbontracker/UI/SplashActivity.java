@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.as3.parmjohal.carbontracker.AlarmReceiver;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
@@ -85,10 +86,10 @@ public class SplashActivity extends AppCompatActivity {
     private void setAlarm() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,21);
-        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.HOUR_OF_DAY,10);
+        calendar.set(Calendar.MINUTE,24);
 
-
+        Toast.makeText(this,"" + calendar.get(Calendar.HOUR_OF_DAY) +" "+ calendar.get(Calendar.MINUTE), Toast.LENGTH_LONG).show();
 
         //Long alarmetime = new GregorianCalendar().getTimeInMillis()+5*1000;
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
@@ -106,7 +107,6 @@ public class SplashActivity extends AppCompatActivity {
                         PendingIntent.FLAG_UPDATE_CURRENT));
                         */
     }
-
 
     // set immersive mode
     // this hides the status and navigation mode
