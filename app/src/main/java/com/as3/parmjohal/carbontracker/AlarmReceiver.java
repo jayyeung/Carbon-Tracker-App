@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.as3.parmjohal.carbontracker.UI.MainActivity;
+import com.as3.parmjohal.carbontracker.UI.SelectCarActivity;
 
 /**
  * Created by wu on 2017-04-06.
@@ -27,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     private void creatNotification(Context context) {
 
         PendingIntent notification = PendingIntent .getActivities(context,0,
-                new Intent[]{new Intent(context, MainActivity.class)},0);//click the alarm to go to MainAcitivity Edit to make it smart
+                new Intent[]{new Intent(context, SelectCarActivity.class)},0);//click the alarm to go to MainAcitivity Edit to make it smart
 
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)

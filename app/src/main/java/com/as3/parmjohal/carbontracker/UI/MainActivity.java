@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setAlarm();
 
 
 
@@ -159,31 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
         // intro animation
         animateDashboard();
-    }
-
-    private void setAlarm() {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,21);
-        calendar.set(Calendar.MINUTE,0);
-
-
-
-        //Long alarmetime = new GregorianCalendar().getTimeInMillis()+5*1000;
-        Intent alertIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent notification = PendingIntent .getBroadcast(this,0,alertIntent,0);
-
-        AlarmManager alartmanager =
-                (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-
-        alartmanager.setRepeating(AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,notification );
-
-        /*
-        alartmanager.set(AlarmManager.RTC_WAKEUP,alarmetime,
-                PendingIntent.getBroadcast(this , 1 , alertIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
-                        */
     }
 
 
