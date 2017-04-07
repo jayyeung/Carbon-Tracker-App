@@ -25,17 +25,17 @@ public class AlarmReceiver extends BroadcastReceiver{
     }
 
     private void creatNotification(Context context) {
-        /*
+
         PendingIntent notification = PendingIntent .getActivities(context,0,
-                new Intent[]{new Intent(context, MainActivity.class)},0);
-                */
+                new Intent[]{new Intent(context, MainActivity.class)},0);//click the alarm to go to MainAcitivity Edit to make it smart
+
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.alarm)
                         .setContentTitle("My notification")
                         .setTicker("here you go")
                         .setContentText("Hello World!")
-                        //.setContentIntent(notification)
+                        .setContentIntent(notification)
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setDefaults(Notification.DEFAULT_LIGHTS)
                         .setAutoCancel(true);
