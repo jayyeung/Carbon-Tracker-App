@@ -254,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (day_journeys != null) {
                 for (int i = 0; i<day_journeys.size(); i++) {
-                    Log.i("test",""+day_journeys.get(i).getCo2());
                     total += day_journeys.get(i).getCo2();
                 }
 
@@ -262,22 +261,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
              //Utility
-           // ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
-           // total = 0;
+            Day day_utilities = day_manager.getDay(day,month,year);
+            float totalElectricity = 0;
+            float totalGas =0;
 
-          //  if (day_utilities == null){
-           //     Log.i("test","empty");
-          //  }
-           // else if (day_utilities != null) {
-           //     Log.i("test","used");
-           //     for (int i = 0; i < day_utilities.size(); i++) {
-           //         Log.i("test","used2");
-           //         total += day_utilities.get(i).getDailyCo2();
-          //     }
-           //     entries.add(new PieEntry(total, getString(R.string.Utility)));
-          //  }
+           if (day_utilities != null) {
+                totalElectricity += day_utilities.getElectricUtility();
+               if(totalElectricity!= 0) {
+                   entries.add(new PieEntry(totalElectricity, "Electricity"));
+               }
+               totalGas += day_utilities.getGasUtility();
+               if(totalGas!= 0) {
 
-            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
+                   entries.add(new PieEntry(totalGas, "Gas"));
+               }
+           }
+
+            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34),Color.rgb(38, 166, 91) };
 
             PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
             journeyDataSet.setValueTextSize(16f);

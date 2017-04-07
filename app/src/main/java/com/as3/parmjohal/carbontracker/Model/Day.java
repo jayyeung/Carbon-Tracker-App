@@ -25,6 +25,10 @@ public class Day {
     private double totalUtility = 0;
     private double totalC02 = 0;
 
+    private double electricUtility = 0;
+    private double gasUtility = 0;
+
+
 
     private String date;
     private int year = 0;
@@ -68,6 +72,14 @@ public class Day {
     public void addUtility(Utility utility){
         utilityManager.add(utility);
         utilityManager2.add(utility);
+
+        if(utility.isElectricity()){
+            electricUtility += utility.getDailyCo2();
+        }
+        else{
+            gasUtility +=utility.getDailyCo2();
+        }
+
         allCO2Values.add(utility.getDailyCo2());
         totalC02  += (utility.getDailyCo2());
     }
@@ -130,6 +142,22 @@ public class Day {
 
     public void setTotalUtility(double totalUtility) {
         this.totalUtility = totalUtility;
+    }
+
+    public double getElectricUtility() {
+        return electricUtility;
+    }
+
+    public void setElectricUtility(double electricUtility) {
+        this.electricUtility = electricUtility;
+    }
+
+    public double getGasUtility() {
+        return gasUtility;
+    }
+
+    public void setGasUtility(double gasUtility) {
+        this.gasUtility = gasUtility;
     }
 
     public Date getRawDate() {
