@@ -8,6 +8,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -170,10 +171,13 @@ public class Utility {
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        DecimalFormat df2 = new DecimalFormat("####0.00##");
         if(isElectricity)
-            return "Electricity : " +electricity+ "KWh from " + df.format(startDate)+" to "+df.format(endDate) ;
+            return "" +df2.format(dailyCo2)+ "kg c02/day " +
+                    "from "+ df.format(startDate)+" to "+df.format(endDate) ;
         else{
-            return "Natural Gas : " +gas+ "Gj " + df.format(startDate)+" to "+df.format(endDate) ;
+            return "" +df2.format(dailyCo2)+ "kg c02/day " +
+                    "from " + df.format(startDate)+" to "+df.format(endDate) ;
         }
     }
 

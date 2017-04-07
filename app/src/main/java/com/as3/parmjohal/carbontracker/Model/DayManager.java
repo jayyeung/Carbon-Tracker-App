@@ -75,6 +75,18 @@ public class DayManager {
 //        }
 //    }
 
+
+    public ArrayList<Double> getCO2Array_toTreeArray(ArrayList<Double> arrayList)
+    {
+        ArrayList<Double> treeValues = new ArrayList<>();
+
+        for(Double num: arrayList)
+        {
+            treeValues.add(CarbonTrackerModel.convertCO2_toTrees(num));
+        }
+        return treeValues;
+    }
+
     // **** PARMS CODE *****
     public void addUtility1(Utility utility) {
         utilityManager.add(utility);
@@ -82,6 +94,17 @@ public class DayManager {
             if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
                 Log.i("Utility", "Added to day " + days.get(i).toString());
                 days.get(i).setTotalUtility(utility.getDailyCo2());
+                if(utility.isElectricity()){
+                    days.get(i).setElectricUtility(utility.getDailyCo2());
+
+                }
+                else{
+                    days.get(i).setGasUtility(utility.getDailyCo2());
+                    Log.i("totalgas",""+days.get(i).getGasUtility());
+                }
+
+                days.get(i).setUtilityCO2_Values(utility);
+                daysUtilities.add(days.get(i));
             }
         }
     }
@@ -93,6 +116,7 @@ public class DayManager {
         for(int i =0; i < utilities.size(); i++){
            // Log.i("test",utilities.get(i).toString());
             addUtility1(utilities.get(i));
+
 
         }
 
@@ -153,6 +177,7 @@ public class DayManager {
         ArrayList<Double> data = new ArrayList<>();
         ArrayList<String> routesAdded = new ArrayList<>();
 
+        Log.i("Route"," IN FUNCTION ");
         if(days == 28)
         {
             pastDays = getPast28Days(day,month,year);
@@ -161,13 +186,12 @@ public class DayManager {
 
         for(Day dayObject: pastDays)
         {
-            allJourneys_365Days.addAll(dayObject.getJourneyManager().getJourneyCollection());
+            allJourneys_365Days.addAll(dayObject.getJourneyManager2());
         }
 
         for(Journey journey: allJourneys_365Days)
         {
             Route route = journey.getRoute();
-
             if(!routesAdded.contains(route.getRouteName()))
             {
                 Log.i("Route","2 "+ route.toString() + journey.getCo2());
@@ -184,9 +208,14 @@ public class DayManager {
         dataNames_Route.clear();
         dataNames_Route.addAll(routesAdded);
 
-        for(String num: dataNames_Route)
+//        for(String num: dataNames_Route)
+//        {
+//            Log.i("Day", "3 " + num);
+//        }
+
+        if(CarbonTrackerModel.getModel().isTree())
         {
-            Log.i("Day", "3 " + num);
+            return getCO2Array_toTreeArray(data);
         }
         return data;
     }
@@ -203,21 +232,24 @@ public class DayManager {
         if(days == 28)
             pastDays = getPast28Days(day,month,year);
 
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<4;i++) {
             data.add(0.0);
         }
         for(Day dayObject: pastDays)
         {
             Log.i("Day", "1 "+dayObject.toString());
-            double utilitiyCO2 = dayObject.getTotalUtility();
+
+            double electricityCO2 = dayObject.getElectricityCO2();
+            double naturalGasCO2 = dayObject.getNaturalGasCO2();
             double busCO2 = dayObject.getJourneyManager().getTotalCO2_Bus();
             double skytrainCO2 = dayObject.getJourneyManager().getTotalCO2_Skytrain();
 
-            data.set(0,data.get(0) + utilitiyCO2);
-            data.set(1,data.get(1) + busCO2);
-            data.set(2,data.get(2) + skytrainCO2);
+            data.set(0,data.get(0) + electricityCO2);
+            data.set(1,data.get(1) + naturalGasCO2);
+            data.set(2,data.get(2) + busCO2);
+            data.set(3,data.get(3) + skytrainCO2);
 
-            allJourneys_365Days.addAll(dayObject.getJourneyManager().getJourneyCollection());
+            allJourneys_365Days.addAll(dayObject.getJourneyManager2());
         }
 
         for(Journey journey: allJourneys_365Days)
@@ -233,17 +265,27 @@ public class DayManager {
                 else {
                     Log.i("Day","2* "+ journey.getTransportationInfo());
                     int index = carsAdded.indexOf(journey.getTransportationInfo());
-                    data.set(index, data.get(index) + journey.getCo2());
+                    data.set(index + 3, data.get(index + 3) + journey.getCo2());
                 }
             }
-
         }
 
         dataNames_Mode.clear();
-        dataNames_Mode.add("Utility");
+        dataNames_Mode.add("Electricity");
+        dataNames_Mode.add("Natural Gas");
         dataNames_Mode.add("Bus");
         dataNames_Mode.add("SkyTrain");
         dataNames_Mode.addAll(carsAdded);
+
+        for(Double num: data)
+        {
+            Log.i("Day", "3 " + num);
+        }
+
+        if(CarbonTrackerModel.getModel().isTree())
+        {
+            return getCO2Array_toTreeArray(data);
+        }
 
         return data;
     }
@@ -268,7 +310,8 @@ public class DayManager {
             Day dayObject = days.get(i);
             if(dayObject.getDay() == day && dayObject.getMonth() == month && dayObject.getYear() == year)
             {
-                return days.get(i).getAllJourneys();
+                Log.i("check if used", "used" );
+                return days.get(i).getJourneyManager2();
             }
         }
         return null;
@@ -283,6 +326,7 @@ public class DayManager {
                 return days.get(i).getAllUtilities();
             }
         }
+        Log.i("utilitylist","empty");
         return null;
     }
 
@@ -312,6 +356,12 @@ public class DayManager {
             totalCO2_perMonth.set(currentMonth, totalCO2_perMonth.get(currentMonth) + dayObject.getTotalC02());
         }
         }
+
+        if(CarbonTrackerModel.getModel().isTree())
+        {
+            return getCO2Array_toTreeArray(totalCO2_perMonth);
+        }
+
         return totalCO2_perMonth;
     }
 
@@ -354,15 +404,10 @@ public class DayManager {
             }
  }
 
-        for(double num: totalUtilityCO2_perMonth2)
+        if(CarbonTrackerModel.getModel().isTree())
         {
-           Log.i("Utility", " " + num);
+            return getCO2Array_toTreeArray(totalUtilityCO2_perMonth);
         }
-        for(double num: totalUtilityCO2_perMonth)
-        {
-            Log.i("Utility", " " + num);
-        }
-
         return totalUtilityCO2_perMonth;
     }
 
@@ -405,6 +450,10 @@ public class DayManager {
             Log.i("Past 365", " " + num);
         }
 
+        if(CarbonTrackerModel.getModel().isTree())
+        {
+            return getCO2Array_toTreeArray(totalJourneyCO2_perMonth);
+        }
         return totalJourneyCO2_perMonth;
     }
 
@@ -479,6 +528,10 @@ public class DayManager {
             totalJourneyCO2_perDay.add(day1.getTotalJourney());
         }
 
+        if(CarbonTrackerModel.getModel().isTree())
+        {
+            return getCO2Array_toTreeArray(totalJourneyCO2_perDay);
+        }
         return totalJourneyCO2_perDay;
     }
 
@@ -490,6 +543,11 @@ public class DayManager {
         for(Day dayObject: past28Days)
         {
             totalUtilityCO2_perDay.add(dayObject.getTotalUtility());
+        }
+
+        if(CarbonTrackerModel.getModel().isTree())
+        {
+            return getCO2Array_toTreeArray(totalUtilityCO2_perDay);
         }
 
         return totalUtilityCO2_perDay;
@@ -539,6 +597,30 @@ public class DayManager {
         }
         return days1;
     }
+
+    public Day getDay(int day, int month, int year){
+        for (int i=0;i<days.size();i++){
+            if(days.get(i).getDay()==day &&days.get(i).getMonth()==month&&days.get(i).getYear()==year){
+                return days.get(i);
+            }
+        }
+        return null;
+    }
+    public void removeUtility1(Utility utility) {
+        for(int i =0; i<days.size();i++) {
+            if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
+                days.get(i).setTotalUtility(days.get(i).getTotalUtility()-utility.getDailyCo2());
+                if(utility.isElectricity()){
+                    days.get(i).setElectricUtility(days.get(i).getElectricUtility()-utility.getDailyCo2());
+
+                }
+                else{
+                    days.get(i).setGasUtility(days.get(i).getGasUtility()-utility.getDailyCo2());
+                }
+            }
+        }
+    }
+
 
     public ArrayList<Day> getDays() { return days; }
 }

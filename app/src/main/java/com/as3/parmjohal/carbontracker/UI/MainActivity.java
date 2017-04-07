@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         model.setConfirmTrip(true);
         model.setEditJourney(false);
+        model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
@@ -255,25 +256,36 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
             float total = 0;
 
-            if (day_journeys != null) {
-                for (int i = 0; i < day_journeys.size(); i++) {
+
+            if (day_journeys == null){
+                Log.i("test","empty");
+            }
+            else if (day_journeys != null) {
+                for (int i = 0; i<day_journeys.size(); i++) {
                     total += day_journeys.get(i).getCo2();
                 }
+
                 entries.add(new PieEntry(total, getString(R.string.journey)));
             }
 
-            // Utility
-            ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
-            total = 0;
+             //Utility
+            Day day_utilities = day_manager.getDay(day,month,year);
+            float totalElectricity = 0;
+            float totalGas =0;
 
-            if (day_utilities != null) {
-                for (int i = 0; i < day_utilities.size(); i++) {
-                    total += day_utilities.get(i).getTotalCo2();
-                }
-                entries.add(new PieEntry(total, getString(R.string.Utility)));
-            }
+                if (day_utilities != null) {
+                        totalElectricity += day_utilities.getElectricUtility();
+                        if (totalElectricity != 0) {
+                            entries.add(new PieEntry(totalElectricity, "Electricity"));
+                        }
+                             totalGas += day_utilities.getGasUtility();
+                        if (totalGas != 0) {
+                            entries.add(new PieEntry(totalGas, "Gas"));
+                    }
+                    }
 
-            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34) };
+
+            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34),Color.rgb(38, 166, 91) };
 
             PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
             journeyDataSet.setValueTextSize(16f);
@@ -325,7 +337,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
-                entries.add(new Entry(counter , (float) day_obj.getTotalC02()));
+                if(CarbonTrackerModel.getModel().isTree()) {
+                    entries.add(new Entry(counter, (float) CarbonTrackerModel.convertCO2_toTrees(day_obj.getTotalC02())));
+                }
+                else {
+                    entries.add(new Entry(counter, (float) day_obj.getTotalC02()));
+                }
                 counter++;
             }
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
@@ -703,6 +720,7 @@ public class MainActivity extends AppCompatActivity {
 
             Utility cur_utility = utilities.get(position);
 
+
             // DATE
             // split the given date in the form "Day Month Year" into an array
             String[] date = cur_utility.getDateInfo(cur_utility.getStartDate()).split("\\s+");
@@ -777,11 +795,9 @@ public class MainActivity extends AppCompatActivity {
                         public boolean onMenuItemClick(MenuItem item) {
 
                             if (item.getItemId() == R.id.delete) {
+                                model.getDayManager().removeUtility1(model.getUtilityManager().get(position));
                                 model.getUtilityManager().remove(position);
                                 model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
-                                for(int i = 0;i<model.getUtilityManager().size();i++){
-                                    model.getUtilityManager().get(i).toString();
-                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);
