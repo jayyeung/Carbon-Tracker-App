@@ -194,30 +194,29 @@ public class MainActivity extends AppCompatActivity {
         RadioButton unit_tree = (RadioButton) findViewById(R.id.unit_tree);
 
         units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                boolean is_tree = model.isTree();
+           @Override
+           public void onCheckedChanged(RadioGroup group, int checkedId) {
+               boolean is_tree = model.isTree();
 
-                switch(checkedId) {
-                    case R.id.unit_kg:
-                        if (is_tree) {
-                            model.setisTree(false);
-                            Log.i("UNIT", "Unit change KG");
-                            finish(); startActivity(getIntent());
-                        }
-                        break;
-                    case R.id.unit_tree:
-                        if (!is_tree) {
-                            model.setisTree(true);
-                            Log.i("UNIT", "Unit change TREES");
-                            finish(); startActivity(getIntent());
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+               switch (checkedId) {
+                   case R.id.unit_kg:
+                       if (is_tree) {
+                           model.setisTree(false);
+                           Log.i("UNIT", "Unit change KG");
+                           finish();
+                           startActivity(getIntent());
+                       }
+                       break;
+                   case R.id.unit_tree:
+                       if (!is_tree) {
+                           model.setisTree(true);
+                           Log.i("UNIT", "Unit change TREES");
+                           finish();
+                           startActivity(getIntent());
+                       }
+               }
+           }
+       });
 
         // set default unit on new app open
         if (model.isTree())

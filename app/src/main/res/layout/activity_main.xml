@@ -330,6 +330,7 @@
 
             </android.support.constraint.ConstraintLayout>
 
+<<<<<<< HEAD
             <RelativeLayout
                 android:id="@+id/target_module"
                 android:layout_width="match_parent"
@@ -368,11 +369,17 @@
                     android:textColor="@color/cardview_light_background" />
             </RelativeLayout>
 
+=======
+>>>>>>> 8c3996e2192103069417ee84e16dc15fcd99d80b
             <RadioGroup
                 android:id="@+id/unit_options"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+<<<<<<< HEAD
                 android:layout_marginTop="16dp"
+=======
+                android:layout_marginTop="26dp"
+>>>>>>> 8c3996e2192103069417ee84e16dc15fcd99d80b
                 android:elevation="1dp"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
