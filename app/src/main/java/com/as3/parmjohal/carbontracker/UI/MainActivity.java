@@ -265,17 +265,17 @@ public class MainActivity extends AppCompatActivity {
             float totalElectricity = 0;
             float totalGas =0;
 
-           if (day_utilities != null) {
-                totalElectricity += day_utilities.getElectricUtility();
-               if(totalElectricity!= 0) {
-                   entries.add(new PieEntry(totalElectricity, "Electricity"));
-               }
-               totalGas += day_utilities.getGasUtility();
-               if(totalGas!= 0) {
+                if (day_utilities != null) {
+                        totalElectricity += day_utilities.getElectricUtility();
+                        if (totalElectricity != 0) {
+                            entries.add(new PieEntry(totalElectricity, "Electricity"));
+                        }
+                             totalGas += day_utilities.getGasUtility();
+                        if (totalGas != 0) {
+                            entries.add(new PieEntry(totalGas, "Gas"));
+                    }
+                    }
 
-                   entries.add(new PieEntry(totalGas, "Gas"));
-               }
-           }
 
             int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34),Color.rgb(38, 166, 91) };
 
@@ -782,11 +782,9 @@ public class MainActivity extends AppCompatActivity {
                         public boolean onMenuItemClick(MenuItem item) {
 
                             if (item.getItemId() == R.id.delete) {
+                                model.getDayManager().removeUtility1(model.getUtilityManager().get(position));
                                 model.getUtilityManager().remove(position);
                                 model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
-                                for(int i = 0;i<model.getUtilityManager().size();i++){
-                                    model.getUtilityManager().get(i).toString();
-                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);

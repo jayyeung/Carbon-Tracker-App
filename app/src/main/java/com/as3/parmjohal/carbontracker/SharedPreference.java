@@ -22,7 +22,7 @@ public class SharedPreference {
         Gson gson = new Gson();
         String json = gson.toJson(CarbonTrackerModel.getCarbonTrackerModel(context));
 
-        prefsEditor.putString("CarbonTrackerModel11", json);
+        prefsEditor.putString("CarbonTrackerModel14", json);
         prefsEditor.commit();
     }
 
@@ -30,7 +30,7 @@ public class SharedPreference {
     {
         SharedPreferences mPrefs = context.getSharedPreferences("saved model",0);
         Gson gson = new Gson();
-        String json = mPrefs.getString("CarbonTrackerModel11", " ");
+        String json = mPrefs.getString("CarbonTrackerModel14", " ");
         CarbonTrackerModel obj = gson.fromJson(json, CarbonTrackerModel.class);
 
         return obj;
