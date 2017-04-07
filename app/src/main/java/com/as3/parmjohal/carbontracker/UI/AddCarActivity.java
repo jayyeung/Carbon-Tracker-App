@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,10 +36,12 @@ import java.util.ArrayList;
  */
 
 public class AddCarActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_IMAGE = 909;
     private CarbonTrackerModel model ;
     private String make;
     private String carModel;
     private Integer year;
+    private int image =R.drawable.car1;
     private ArrayList<Car> carList = new ArrayList<>();
     private String carNameString;
     private Car carClicked = new Car();
@@ -57,6 +60,8 @@ public class AddCarActivity extends AppCompatActivity {
         //adjust layout position when keyboard is out
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        setCarImageButton();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -64,6 +69,19 @@ public class AddCarActivity extends AppCompatActivity {
 
          editName = (EditText) findViewById(R.id.editName);
 
+    }
+
+    private void setCarImageButton() {
+        Button car = (Button) findViewById(R.id.carButton);
+        car.setBackground((getDrawable(image)));
+        car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SelectCarImageActivity.makeIntent(AddCarActivity.this);
+                startActivityForResult(intent,REQUEST_CODE_IMAGE);
+
+            }
+        });
     }
 
     @Override
@@ -261,6 +279,7 @@ public class AddCarActivity extends AppCompatActivity {
                 else{
                     Log.i("CO2", getString(R.string.car_cliked) + carClicked.toString());
                     carClicked.setName(carNameString);
+                    carClicked.setCarImage(image);
 
                     model.setCurrentTransportation( model.getCarManager().add(carClicked));
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
@@ -290,6 +309,22 @@ public class AddCarActivity extends AppCompatActivity {
 
 
         return false;
+
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_IMAGE):
+                if (resultCode == Activity.RESULT_OK) {
+                    image = data.getIntExtra("image",R.drawable.car1);
+                    setCarImageButton();
+                    break;
+                }
+
+
+            default:
+                break;
+
+        }
 
     }
 

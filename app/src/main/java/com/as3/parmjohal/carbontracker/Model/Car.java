@@ -2,6 +2,8 @@ package com.as3.parmjohal.carbontracker.Model;
 
 import android.util.Log;
 
+import com.as3.parmjohal.carbontracker.R;
+
 /**
  * A class designed to make a Car object that holds multiple variables needed to keep track of cars
  *
@@ -20,16 +22,17 @@ public class Car extends Transportation{
     private int numCylinders = 0;
     private int highwayFuel = 0;
     private int cityFuel = 0;
+    private int carImage  = R.drawable.car1;
 
     private double engineDisplacment = 0;
 
     public Car() {
-        super(0,0," ", "car");
+        super(0,0," ", "car",0);
     }
 
     //    public Transportation(int highwayFuel, int cityFuel, String fuelType) {
     public Car(String name, String make, String model, int year, String tranyType, double engineDisplacment) {
-        super(0,0," ","car");
+        super(0,0," ","car",0);
         this.make = make;
         this.model = model;
         this.year = year;
@@ -91,6 +94,15 @@ public class Car extends Transportation{
 
     public double getEngineDisplacment() {
         return engineDisplacment;
+    }
+
+    public int getCarImage() {
+        return carImage;
+    }
+
+    public void setCarImage(int carImage) {
+        super.setImage(carImage);
+        this.carImage = carImage;
     }
 
     public void setEngineDisplacment(double engineDisplacment) {

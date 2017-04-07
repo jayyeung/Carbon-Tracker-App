@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         model.setEditJourney(false);
         model.setConfirmTrip(true);
+        model.setEditUtility(false);
         journey = model.getJourneyManager().getJourneyCollection();
         utilities = model.getUtilityManager();
         day_manager = model.getDayManager();
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         model.setConfirmTrip(true);
         model.setEditJourney(false);
+        model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
 
         // we reverse all track types so the latest track is on top
         Collections.reverse(journey);
@@ -262,9 +264,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setGraph(final Chart_options option, final int inp_day, final int inp_month, final int inp_year) {
+
         final LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
-
         final ImageButton chart_type = (ImageButton) findViewById(R.id.chart_type_button);
         chart_type.setImageResource(R.drawable.pie_chart_icon);
         chart_type.setVisibility(View.INVISIBLE);
@@ -274,8 +276,8 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
         final int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
-                               ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
-                               ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
+                ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
+                ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
         };
 
         // Get Current Date
@@ -284,8 +286,8 @@ public class MainActivity extends AppCompatActivity {
 
         // if no input day, month, and year is given, default current day, month, year
         final int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
-            month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
-            year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
+                month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
+                year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
 
         ////////////////
         // DAILY GRAPH
@@ -293,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (option == option.DAILY) {
             ArrayList<PieEntry> entries = new ArrayList<>();
-
             // Journey
             ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
             float total = 0;
@@ -301,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 for (Journey journey : day_journeys) { total += journey.getCo2(); }
                 entries.add(new PieEntry(total, getString(R.string.journey)));
             }
-
             // Utility
             ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
             total = 0;
@@ -309,10 +309,8 @@ public class MainActivity extends AppCompatActivity {
                 for (Utility utility : day_utilities) { total += utility.getTotalCo2(); }
                 entries.add(new PieEntry(total, getString(R.string.Utility)));
             }
-
             PieChart chart = new PieChart(this);
             PieDataSet dataset = new PieDataSet(entries, "CO₂");
-
             chart_container.addView(chart, params);
             setPieChart(chart, dataset, track_colors);
         }
@@ -329,7 +327,6 @@ public class MainActivity extends AppCompatActivity {
             /////////////////
 
             final LineChartView chart = new LineChartView(getBaseContext());
-
             //// TOTAL
             ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
             if (month_CO2.size() <= 0) { return; }
@@ -348,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
-
             setGeneralChartStylings(chart, dataset, 0);
 
             //// UTILITY
@@ -361,21 +357,19 @@ public class MainActivity extends AppCompatActivity {
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
-
             setGeneralChartStylings(chart, dataset, 4f);
 
             // sexy animation
             int entry_size = dataset.getEntries().size();
             int[] order = new int[entry_size];
             for (int i = 0; i < entry_size; i++) { order[i] = i; }
-
             com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
             anim.setEasing(new DecelerateInterpolator());
             anim.setAlpha(2);
             anim.setOverlap(0.5f, order);
-
             chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
+
             try { chart.show(anim); } catch(Exception e) {}
 
             /////////////////
@@ -387,9 +381,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
-
-
-
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -412,30 +403,30 @@ public class MainActivity extends AppCompatActivity {
             /////////////////
 
             final StackBarChartView chart = new StackBarChartView(getBaseContext());
-
             String[] labels = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
             float[][] stacked_values;
 
+            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            if (year_CO2.size() <= 0) { return; }
+
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year,model.getUtilityManager());
+
             //// JOURNEY
             BarSet dataset = new BarSet();
-            ArrayList<Double> vals = day_manager.getPast365Days_JourneysCO2(31, 12, year);
-            for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
-
+            for (int i=0; i < month_journey_CO2.size(); i++) { dataset.addBar(new Bar(labels[i], month_journey_CO2.get(i).floatValue())); }
             dataset.setColor( track_colors[0] );
             chart.addData(dataset);
 
             // UTILITY
             dataset = new BarSet();
-            vals = day_manager.getPast365Days_UtilityCO2(31, 12, year);
-            for (int i=0; i < vals.size(); i++) { dataset.addBar(new Bar(labels[i], vals.get(i).floatValue())); }
-
+            for (int i=0; i < month_utility_CO2.size(); i++) { dataset.addBar(new Bar(labels[i], month_utility_CO2.get(i).floatValue())); }
             dataset.setColor( track_colors[1] );
             chart.addData(dataset);
 
             // set bar styles
             chart.setBarSpacing(Tools.fromDpToPx(16));
             chart.setRoundCorners(Tools.fromDpToPx(50));
-
             setGeneralChartStylings(chart, dataset, 35f);
             chart.setAxisLabelsSpacing(24f);
             chart.setFontSize(18);
@@ -445,12 +436,10 @@ public class MainActivity extends AppCompatActivity {
             int entry_size = dataset.getEntries().size();
             int[] order = new int[entry_size];
             for (int i = 0; i < entry_size; i++) { order[i] = i; }
-
             com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
             anim.setEasing(new DecelerateInterpolator());
             anim.setAlpha(2);
             anim.setOverlap(0.5f, order);
-
             chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
             try { chart.show(anim); } catch(Exception e) {}
@@ -464,9 +453,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
-
                     ArrayList<PieEntry> entries = new ArrayList<>();
-
                     // Bus
                     ArrayList<Double> journeys = day_manager.getPast365Days_JourneysCO2(31, 12, year);
                     float total = 0;
@@ -474,7 +461,6 @@ public class MainActivity extends AppCompatActivity {
                         for (Double val : journeys) { total += val; }
                         entries.add(new PieEntry(total, "Bus"));
                     }
-
                     // Utility
                     ArrayList<Double> utilities = day_manager.getPast365Days_UtilityCO2(31, 12, year);
                     total = 0;
@@ -482,13 +468,10 @@ public class MainActivity extends AppCompatActivity {
                         for (Double val : utilities) { total += val; }
                         entries.add(new PieEntry(total, getString(R.string.utility)));
                     }
-
                     PieChart chart = new PieChart(getBaseContext());
                     PieDataSet dataset = new PieDataSet(entries, "CO₂");
-
                     chart_container.addView(chart, params);
                     setPieChart(chart, dataset, track_colors);
-
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -595,7 +578,7 @@ public class MainActivity extends AppCompatActivity {
         setListViewHeightBasedOnChildren(list);
     }
     public void setUtilities() {
-        ArrayAdapter<Utility> adapter2 = new MyListAdapter2();
+        ArrayAdapter<Utility> adapter2 = new MainActivity.MyListAdapter2();
         ListView list = (ListView) findViewById(R.id.utilities);
         list.setAdapter(adapter2);
 
@@ -620,6 +603,7 @@ public class MainActivity extends AppCompatActivity {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.dashboard_item, parent, false);
+                ImageView cardImage = (ImageView) findViewById(R.id.myImage);
             }
 
             Journey cur_journey = journey.get(position);
@@ -630,6 +614,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_day = (TextView) itemView.findViewById(R.id.track_day);
             track_day.setText(date[0]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_journey.getImage()));
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
@@ -672,8 +659,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     model.setCurrentJouney(journey.get(position));
                     model.setConfirmTrip(false);
-
-                    Log.i(getString(R.string.journey)+": ", getString(R.string.clickedjourney) + model.isConfirmTrip());
+                    Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
                     Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
                     startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                 }
@@ -696,7 +682,7 @@ public class MainActivity extends AppCompatActivity {
                             model.setConfirmTrip(false);
 
                             Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-                            intent.putExtra(getString(R.string.menuselect), item.getItemId());
+                            intent.putExtra("menu_select", item.getItemId());
                             startActivityForResult(intent,REQUEST_CODE_JOURNEY);
                             return true;
                         }
@@ -730,6 +716,7 @@ public class MainActivity extends AppCompatActivity {
 
             Utility cur_utility = utilities.get(position);
 
+
             // DATE
             // split the given date in the form "Day Month Year" into an array
             String[] date = cur_utility.getDateInfo(cur_utility.getStartDate()).split("\\s+");
@@ -739,6 +726,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView track_month_year = (TextView) itemView.findViewById(R.id.track_month_year);
             track_month_year.setText(date[1] + " " + date[2]);
+
+            ImageView cardImage = (ImageView) itemView.findViewById(R.id.myImage);
+            cardImage.setImageDrawable(getDrawable(cur_utility.getuImage()));
 
             if (!latest_day.equals(date[0])) {
                 latest_day = date[0];
@@ -802,12 +792,18 @@ public class MainActivity extends AppCompatActivity {
 
                             if (item.getItemId() == R.id.delete) {
                                 model.getUtilityManager().remove(position);
+                                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
+                                for(int i = 0;i<model.getUtilityManager().size();i++){
+                                    model.getUtilityManager().get(i).toString();
+                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);
                                 model.setEditUtility(true);
                                 Intent intent = UtilitiesActivity.makeIntent(MainActivity.this);
                                 startActivityForResult(intent,REQUEST_CODE_UTILITY);
+
+
 
                             }
                             return true;
@@ -894,12 +890,27 @@ public class MainActivity extends AppCompatActivity {
     public void setTips() {
         CardView journey_tip_module = (CardView) findViewById(R.id.journey_tip_module);
         final TextView journey_message = (TextView) findViewById(R.id.tip_message_journey);
+        String tip = model.getTipsManager().getTip(MainActivity.this);
+        journey_message.setText(tip);
 
         journey_tip_module.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String tip = model.getTipsManager().getTip(MainActivity.this);
                 journey_message.setText(tip);
+                v.startAnimation(pulse);
+            }
+        });
+        CardView utility_tip_module = (CardView) findViewById(R.id.utility_tip_module);
+        final TextView utility_message = (TextView) findViewById(R.id.tip_message_utility);
+        String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+        utility_message.setText(tip2);
+
+        utility_tip_module.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tip2 = model.getTipsManager().getUtilityTip(MainActivity.this);
+                utility_message.setText(tip2);
                 v.startAnimation(pulse);
             }
         });
@@ -948,6 +959,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             case (REQUEST_CODE_UTILITY):
+                model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
                 restart();
                 break;
             case(REQUEST_CODE_EDIT):
@@ -963,6 +975,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setOverview();
     }
 
     private void restart()

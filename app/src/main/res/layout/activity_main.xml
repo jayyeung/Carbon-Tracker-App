@@ -773,11 +773,12 @@
         android:id="@+id/fab_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:alpha="0.8"
         android:clickable="false"
         android:elevation="1dp"
-        android:visibility="gone"
-        app:srcCompat="@color/fadedBackground" />
+        android:visibility="invisible"
+        app:srcCompat="@color/fadedBackground"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
