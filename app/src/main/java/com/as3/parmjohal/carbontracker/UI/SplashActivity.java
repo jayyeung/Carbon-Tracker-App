@@ -1,5 +1,7 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.as3.parmjohal.carbontracker.AlarmReceiver;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
@@ -74,7 +77,36 @@ public class SplashActivity extends AppCompatActivity {
         registerForContextMenu(new_journey);
 
         playAnimations();
+        setAlarm();
     }
+
+
+
+    private void setAlarm() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,21);
+        calendar.set(Calendar.MINUTE,0);
+
+
+
+        //Long alarmetime = new GregorianCalendar().getTimeInMillis()+5*1000;
+        Intent alertIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent notification = PendingIntent .getBroadcast(this,0,alertIntent,0);
+
+        AlarmManager alartmanager =
+                (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+        alartmanager.setRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,notification );
+
+        /*
+        alartmanager.set(AlarmManager.RTC_WAKEUP,alarmetime,
+                PendingIntent.getBroadcast(this , 1 , alertIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT));
+                        */
+    }
+
 
     // set immersive mode
     // this hides the status and navigation mode
