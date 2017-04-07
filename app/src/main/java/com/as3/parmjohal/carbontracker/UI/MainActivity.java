@@ -1,7 +1,10 @@
 package com.as3.parmjohal.carbontracker.UI;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.as3.parmjohal.carbontracker.AlarmReceiver;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
@@ -68,6 +72,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 /**
@@ -102,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();
