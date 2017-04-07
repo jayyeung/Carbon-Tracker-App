@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
             float total = 0;
 
+
             if (day_journeys == null){
                 Log.i("test","empty");
             }
@@ -329,7 +330,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Entry> entries = new ArrayList<>();
             int counter = 0;
             for (Day day_obj : month_CO2) {
-                entries.add(new Entry(counter , (float) day_obj.getTotalC02()));
+                if(CarbonTrackerModel.getModel().isTree()) {
+                    entries.add(new Entry(counter, (float) CarbonTrackerModel.convertCO2_toTrees(day_obj.getTotalC02())));
+                }
+                else {
+                    entries.add(new Entry(counter, (float) day_obj.getTotalC02()));
+                }
                 counter++;
             }
             LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");

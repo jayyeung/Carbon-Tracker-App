@@ -23,6 +23,10 @@ public class Day {
     private double totalJourney = 0;
     String tip = " ";
     private double totalUtility = 0;
+
+    private double electricityCO2 = 0;
+    private double naturalGasCO2 = 0;
+
     private double totalC02 = 0;
 
     private double electricUtility = 0;
@@ -141,8 +145,29 @@ public class Day {
 
 
     public void setTotalUtility(double totalUtility) {
+
         this.totalUtility = totalUtility;
     }
+
+    public void setUtilityCO2_Values(Utility utility) {
+
+        if(utility.isElectricity())
+        {
+            electricityCO2 = utility.getDailyCo2();
+        }
+        else {
+            naturalGasCO2 = utility.getDailyCo2();
+        }
+    }
+
+    public double getElectricityCO2() {
+        return electricityCO2;
+    }
+
+    public double getNaturalGasCO2() {
+        return naturalGasCO2;
+    }
+
 
     public double getElectricUtility() {
         return electricUtility;
@@ -159,7 +184,6 @@ public class Day {
     public void setGasUtility(double gasUtility) {
         this.gasUtility = gasUtility;
     }
-
     public Date getRawDate() {
         return rawDate;
     }
