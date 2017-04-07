@@ -82,6 +82,7 @@ public class DayManager {
             if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
                 Log.i("Utility", "Added to day " + days.get(i).toString());
                 days.get(i).setTotalUtility(utility.getDailyCo2());
+                daysUtilities.add(days.get(i));
             }
         }
     }
@@ -93,6 +94,7 @@ public class DayManager {
         for(int i =0; i < utilities.size(); i++){
            // Log.i("test",utilities.get(i).toString());
             addUtility1(utilities.get(i));
+
 
         }
 
@@ -268,7 +270,8 @@ public class DayManager {
             Day dayObject = days.get(i);
             if(dayObject.getDay() == day && dayObject.getMonth() == month && dayObject.getYear() == year)
             {
-                return days.get(i).getAllJourneys();
+                Log.i("check if used", "used" );
+                return days.get(i).getJourneyManager2();
             }
         }
         return null;
@@ -283,6 +286,7 @@ public class DayManager {
                 return days.get(i).getAllUtilities();
             }
         }
+        Log.i("utilitylist","empty");
         return null;
     }
 
