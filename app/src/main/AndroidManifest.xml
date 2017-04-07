@@ -70,7 +70,6 @@
             android:name=".UI.CalenderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopBackground" />
-
         <activity android:name=".UI.CreditsActivity"></activity>
 
         <activity android:name=".UI.SelectCarImageActivity"

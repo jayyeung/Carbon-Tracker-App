@@ -190,19 +190,40 @@ public class MainActivity extends AppCompatActivity {
     public void setUnits() {
         RadioGroup units_radio = (RadioGroup) findViewById(R.id.unit_options);
 
+        RadioButton unit_kg = (RadioButton) findViewById(R.id.unit_kg);
+        RadioButton unit_tree = (RadioButton) findViewById(R.id.unit_tree);
+
         units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                boolean is_tree = model.isTree();
+
                 switch(checkedId) {
                     case R.id.unit_kg:
+                        if (is_tree) {
+                            model.setisTree(false);
+                            Log.i("UNIT", "Unit change KG");
+                            finish(); startActivity(getIntent());
+                        }
                         break;
                     case R.id.unit_tree:
+                        if (!is_tree) {
+                            model.setisTree(true);
+                            Log.i("UNIT", "Unit change TREES");
+                            finish(); startActivity(getIntent());
+                        }
                         break;
                     default:
                         break;
                 }
             }
         });
+
+        // set default unit on new app open
+        if (model.isTree())
+            unit_tree.setChecked(true);
+        else
+            unit_kg.setChecked(true);
     }
 
     // Set Overview
@@ -302,13 +323,24 @@ public class MainActivity extends AppCompatActivity {
                 for (Journey journey : day_journeys) { total += journey.getCo2(); }
                 entries.add(new PieEntry(total, getString(R.string.journey)));
             }
+
             // Utility
-            ArrayList<Utility> day_utilities = day_manager.getDay_Utilities(day, month, year);
-            total = 0;
+            Day day_utilities = day_manager.getDay(day,month,year);
+            float totalElectricity = 0;
+            float totalGas = 0;
+
             if (day_utilities != null) {
-                for (Utility utility : day_utilities) { total += utility.getTotalCo2(); }
-                entries.add(new PieEntry(total, getString(R.string.Utility)));
+                totalElectricity += day_utilities.getElectricUtility();
+                if(totalElectricity!= 0) {
+                    entries.add(new PieEntry(totalElectricity, "Electricity"));
+                }
+
+                totalGas += day_utilities.getGasUtility();
+                if(totalGas!= 0) {
+                    entries.add(new PieEntry(totalGas, "Gas"));
+                }
             }
+
             PieChart chart = new PieChart(this);
             PieDataSet dataset = new PieDataSet(entries, "CO₂");
             chart_container.addView(chart, params);
@@ -326,15 +358,18 @@ public class MainActivity extends AppCompatActivity {
             //// LINE CHART
             /////////////////
 
+            Calendar calendar = Calendar.getInstance();
+            int numDays = calendar.getActualMaximum(Calendar.MONTH);
+
             final LineChartView chart = new LineChartView(getBaseContext());
-            //// TOTAL
-            ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
+
+            ArrayList<Day> month_CO2 = day_manager.getPast28Days(numDays, month, year);
             if (month_CO2.size() <= 0) { return; }
 
             //// JOURNEY
             LineSet dataset = new LineSet();
-            ArrayList<Journey> vals = day_manager.getPast28Days_Journeys(day, month, year);
-            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point(vals.get(i).getDateInfo(), (float) vals.get(i).getCo2())); }
+            ArrayList<Double> vals = day_manager.getPast28Days_JourneysCO2(numDays, month, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point("Day " + (i+1), vals.get(i).floatValue())); }
 
             // set line styles
             chart.setHorizontalScrollBarEnabled(true);
@@ -345,9 +380,12 @@ public class MainActivity extends AppCompatActivity {
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
-            setGeneralChartStylings(chart, dataset, 0);
+            setGeneralChartStylings(chart, dataset, 0, 0);
 
             //// UTILITY
+            dataset = new LineSet();
+            vals = day_manager.getPast28Days_UtilityCO2(numDays, month, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point("Day " + (i+1), vals.get(i).floatValue())); }
 
             // set line styles
             dataset.setDotsColor( Color.rgb(255, 255, 255) );
@@ -357,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
-            setGeneralChartStylings(chart, dataset, 4f);
+            setGeneralChartStylings(chart, dataset,  40f, 35f);
 
             // sexy animation
             int entry_size = dataset.getEntries().size();
@@ -406,11 +444,11 @@ public class MainActivity extends AppCompatActivity {
             String[] labels = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
             float[][] stacked_values;
 
-            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(31, 12, year);
             if (year_CO2.size() <= 0) { return; }
 
-            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
-            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year,model.getUtilityManager());
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(31, 12, year, model.getJourneyManager().getJourneyCollection());
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(31, 12, year, model.getUtilityManager());
 
             //// JOURNEY
             BarSet dataset = new BarSet();
@@ -427,9 +465,10 @@ public class MainActivity extends AppCompatActivity {
             // set bar styles
             chart.setBarSpacing(Tools.fromDpToPx(16));
             chart.setRoundCorners(Tools.fromDpToPx(50));
-            setGeneralChartStylings(chart, dataset, 35f);
+            setGeneralChartStylings(chart, dataset, 40f, 35f);
             chart.setAxisLabelsSpacing(24f);
             chart.setFontSize(18);
+            chart.setStep(50);
             // chart.setYLabels(AxisRenderer.LabelPosition.NONE);
 
             // sexy animation
@@ -455,6 +494,7 @@ public class MainActivity extends AppCompatActivity {
                     chart_container.removeAllViewsInLayout();
                     ArrayList<PieEntry> entries = new ArrayList<>();
                     // Bus
+                    /*
                     ArrayList<Double> journeys = day_manager.getPast365Days_JourneysCO2(31, 12, year);
                     float total = 0;
                     if (journeys != null) {
@@ -478,6 +518,7 @@ public class MainActivity extends AppCompatActivity {
                             setGraph(option, inp_day, inp_month, inp_year);
                         }
                     });
+                    */
                 }
             });
         }
@@ -510,12 +551,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             PieData data = new PieData(dataset);
+            data.setValueFormatter(new PercentFormatter());
             chart.setData(data);
         } catch(Exception e) {}
     }
 
     // set chart stylings for a line/stacked bar chart
-    private void setGeneralChartStylings(final ChartView chart, final ChartSet set, float national_target) {
+    private void setGeneralChartStylings(final ChartView chart, final ChartSet set, float national_average, float national_target) {
         // set general chart styles
         chart.setYAxis(false);
         chart.setXAxis(false);
@@ -524,16 +566,19 @@ public class MainActivity extends AppCompatActivity {
         chart.setFontSize(27);
         chart.setLabelsColor( Color.rgb(255,255,255) );
 
-        // set national target line if needed
-        if (national_target > 0) {
-            // national average
-            Paint paint = new Paint();
-            paint.setColor(Color.parseColor("#95a5a6"));
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setAntiAlias(true);
-            paint.setStrokeWidth(Tools.fromDpToPx(2f));
-            paint.setPathEffect(new DashPathEffect(new float[]{15.0f, 5.0f}, 0));
-            chart.setValueThreshold(national_target, national_target, paint);
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(Tools.fromDpToPx(2f));
+        paint.setPathEffect(new DashPathEffect(new float[]{15.0f, 5.0f}, 0));
+
+        // set national average/target line if needed
+        float[] points = {national_average, national_target};
+
+        if (national_average > 0) {
+            // national target
+            paint.setColor(ContextCompat.getColor(getBaseContext(), R.color.colorAverage));
+            chart.setValueThreshold(points, points, paint);
         }
 
         // set click listeners for tool tips

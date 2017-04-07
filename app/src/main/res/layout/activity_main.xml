@@ -303,36 +303,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Nat. Average"
+                                android:text="National Average &amp; Target"
                                 android:textColor="@color/colorAverage"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/legend_item"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingRight="4dp"
-                            app:layout_constraintLeft_toLeftOf="@+id/chart_container"
-                            app:layout_constraintRight_toRightOf="@+id/chart_container"
-                            app:layout_constraintTop_toBottomOf="@+id/chart_container">
-
-                            <ImageView
-                                android:id="@+id/colour"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_marginRight="8dp"
-                                android:layout_weight="1"
-                                app:srcCompat="@color/colorTarget" />
-
-                            <TextView
-                                android:id="@+id/textView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Target"
-                                android:textColor="@color/colorTarget"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -358,11 +330,49 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <RelativeLayout
+                android:id="@+id/target_module"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/solid_button"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/target" />
+
+                <TextView
+                    android:id="@+id/target_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageView6"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:text="The Canadian Target that was proposed in Paris is currently 26"
+                    android:textColor="@color/cardview_light_background" />
+            </RelativeLayout>
+
             <RadioGroup
                 android:id="@+id/unit_options"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="16dp"
                 android:elevation="1dp"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
@@ -773,12 +783,11 @@
         android:id="@+id/fab_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
         android:alpha="0.8"
         android:clickable="false"
         android:elevation="1dp"
-        android:visibility="invisible"
-        app:srcCompat="@color/fadedBackground"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:visibility="gone"
+        app:srcCompat="@color/fadedBackground" />
 
 </RelativeLayout>

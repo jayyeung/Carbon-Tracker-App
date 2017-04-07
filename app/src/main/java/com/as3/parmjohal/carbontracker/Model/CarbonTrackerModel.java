@@ -44,7 +44,7 @@ public class CarbonTrackerModel {
     private boolean confirmTrip = true;
     private boolean editJourney = false;
     private boolean editUtility = false;
-    private boolean isTree = true;
+    private boolean isTree = false;
     private Transportation transportation;
 
     private CarbonTrackerModel() {
@@ -179,10 +179,11 @@ public class CarbonTrackerModel {
         this.currentDate = currentDate;
     }
 
-
     public boolean isTree() {
         return isTree;
     }
+
+    public void setisTree(boolean value) { isTree = value; }
 
     public boolean isConfirmTrip() {
         return confirmTrip;
