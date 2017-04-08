@@ -163,5 +163,7 @@
     <string name="tooooo">to</string>
     <string name="electro">Electricity</string>
     <string name="gasssss">Natural Gas</string>
+    <string name="editcontext">edit</string>
+    <string name="deletecontext">delete</string>
 
 </resources>
