@@ -20,7 +20,7 @@ import com.as3.parmjohal.carbontracker.Model.Route;
  * Proceeds back to SelectRouteActivity
  */
 public class EditRouteActivity extends AppCompatActivity {
-    private CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(this);
+    private CarbonTrackerModel model;
     private EditText routeName;
     private EditText distanceHighway;
     private EditText distanceCity;
@@ -30,7 +30,7 @@ public class EditRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_route);
-
+        model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setTitle(getString(R.string.Edit_Route));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

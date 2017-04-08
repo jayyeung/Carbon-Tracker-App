@@ -168,6 +168,18 @@ public class Journey {
 
     public void setTransportation(Transportation trans){
         this.transportation = trans;
+        this.highwayFuel1 = transportation.getHighwayFuel();
+        this.cityFuel1 = transportation.getCityFuel();
+        this.fuelType1 = transportation.getFuelType();
+        this.info = transportation.getInfo();
+        this.objectType = transportation.getObjectType();
+        this.image = transportation.getImage();
+
+        calculateCO2();
+    }
+
+    public String getFuelType1() {
+        return fuelType1;
     }
 
     @Override

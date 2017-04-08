@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +89,8 @@ public class WalkActivity extends AppCompatActivity {
             case R.id.action_confirm:
                 name = editName.getText().toString();
                 distance=editDistance.getText().toString();
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
 
                 if (distance.isEmpty()==true||name.isEmpty()==true) {
                     Toast.makeText(WalkActivity.this, getString(R.string.please_complete_info), Toast.LENGTH_SHORT).show();
@@ -95,9 +98,8 @@ public class WalkActivity extends AppCompatActivity {
                 }
                 else {
                     intDistance = Integer.parseInt(distance);
-                    if (type.equals(getString(R.string.WALK))) {
-
-
+                    if (type.equals("Walk"))//dont String id these freddy lol
+                    {
                         Walk newWalk = new Walk(name, intDistance);
                         model.getWalkManager().add(newWalk);
                         model.setCurrentTransportation(newWalk);
@@ -108,13 +110,14 @@ public class WalkActivity extends AppCompatActivity {
                         if(model.isEditJourney()){
                             finish();
                         }
-
-                        Intent intent = ConfirmTripActivity.makeIntent(WalkActivity.this);
-                        finish();
-                        startActivity(intent);//go to dashboard
+                        else {
+                            Intent intent2 = ConfirmTripActivity.makeIntent(WalkActivity.this);
+                            finish();
+                            startActivity(intent2);//go to dashboard
+                        }
                         break;
 
-                    } else if (type.equals(getString(R.string.bike))) {
+                    }else if(type.equals("Bike")) {
 
                         Bike newBike = new Bike(name, intDistance);
                         model.getBikeManager().add(newBike);
@@ -126,9 +129,9 @@ public class WalkActivity extends AppCompatActivity {
                             finish();
                         }
                         else {
-                            Intent intent = ConfirmTripActivity.makeIntent(WalkActivity.this);
+                            Intent intent3 = ConfirmTripActivity.makeIntent(WalkActivity.this);
                             finish();
-                            startActivity(intent);//go to dashboard
+                            startActivity(intent3);//go to dashboard
                             break;
                         }
 

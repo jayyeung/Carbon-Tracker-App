@@ -1,5 +1,6 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +72,8 @@ public class BusActivity extends AppCompatActivity {
                 model.setCurrentTransportation(newBus);
                 model.setCurrentRoute(route);
                 if(model.isEditJourney()){
+                    Intent intent = new Intent();
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
                 else {
