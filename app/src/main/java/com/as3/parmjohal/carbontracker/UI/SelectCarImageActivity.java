@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.as3.parmjohal.carbontracker.R;
+/**
+        * --SelectCarImageActivity--
+        * a Diaglog menu that lets the user
+        * choose an image for their car
+        */
 
 public class SelectCarImageActivity extends AppCompatActivity {
     private int image;

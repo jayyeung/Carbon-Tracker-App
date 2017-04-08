@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.as3.parmjohal.carbontracker.R;
+/**
+        * --CreditsActivity--
+        * Shows Details about app and links/cites
+        * the data/images that were used
+        */
 
 public class CreditsActivity extends AppCompatActivity {
 

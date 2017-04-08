@@ -16,6 +16,11 @@ import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.R;
 
 import org.w3c.dom.Text;
+/**
+        * --UtilityDetailsActivity--
+        * Shows further details of the utility that was clicked.
+
+ */
 
 public class UtilityDetailsActivity extends AppCompatActivity {
     public static CarbonTrackerModel model;
