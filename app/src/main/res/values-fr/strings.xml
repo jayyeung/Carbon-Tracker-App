@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"Tracker Carbon"</string>
+    <string name="app_name">Ecotrax</string>
 
     <!-- splash -->
     <string name="continue_to_dashboard">"Continuer au tableau de bord"</string>
