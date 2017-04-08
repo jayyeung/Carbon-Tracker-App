@@ -65,25 +65,31 @@ public class SplashActivity extends AppCompatActivity {
         model.getDayManager().getPieGraphData_Mode(9,04,17,28);
 
 
-        final Button new_journey = (Button) findViewById(R.id.new_journey_btn),
+        final Button new_track = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
 
         // continue to dashboard
         to_dash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDashBoard();
+                v.setEnabled(false);
+                new_track.setEnabled(false);
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out);
+                v.startAnimation(anim);
+                v.postDelayed(new Runnable() { @Override public void run() { openDashBoard(); } }, 400);
             }
         });
 
-        // create a new journey
-        new_journey.setOnClickListener(new View.OnClickListener() {
+        // create a new track item
+        new_track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new_journey.performLongClick();
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pop_out);
+                v.startAnimation(anim);
+                v.performLongClick();
             }
         });
-        registerForContextMenu(new_journey);
+        registerForContextMenu(new_track);
 
         playAnimations();
         setAlarm();
@@ -160,15 +166,18 @@ public class SplashActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle(R.string.Select_Track_Type);
-        menu.add(0, v.getId(), 0, R.string.Transportation);
-        menu.add(0, v.getId(), 0, R.string.Food);
-        menu.add(0, v.getId(), 0, R.string.Electricity);
+        menu.add(0, v.getId(), 0, R.string.journey);
+        menu.add(0, v.getId(), 0, R.string.utility);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == getString(R.string.Transportation)) {
-            startNewJourney();
+        if (item.getTitle() == getString(R.string.journey)) {
+            Intent intent = SelectTransActivity.makeIntent(getBaseContext());
+            startActivity(intent);
+        }
+        else if (item.getTitle() == getString(R.string.utility)) {
+            // start new utility here
         }
         return true;
     }
@@ -177,11 +186,6 @@ public class SplashActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context) {
         Intent intent = new Intent(context, SplashActivity.class);
         return intent;
-    }
-
-    private void startNewJourney() {
-        Intent intent = SelectTransActivity.makeIntent(SplashActivity.this);
-        startActivity(intent);
     }
 
     private void openDashBoard()

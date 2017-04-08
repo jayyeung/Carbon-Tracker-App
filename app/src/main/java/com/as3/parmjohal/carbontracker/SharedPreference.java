@@ -31,6 +31,7 @@ public class SharedPreference {
         SharedPreferences mPrefs = context.getSharedPreferences("saved model",0);
         Gson gson = new Gson();
         String json = mPrefs.getString("CarbonTrackerModel17", " ");
+
         CarbonTrackerModel obj = gson.fromJson(json, CarbonTrackerModel.class);
 
         return obj;

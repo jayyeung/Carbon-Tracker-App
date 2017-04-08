@@ -34,7 +34,7 @@ public class SelectTransActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        ImageButton car = (ImageButton) findViewById(R.id.imageButton);
+        Button car = (Button) findViewById(R.id.carButton);
         car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class SelectTransActivity extends AppCompatActivity {
                 }
             }
         });
-        ImageButton bus = (ImageButton) findViewById(R.id.imageButton2);
+        Button bus = (Button) findViewById(R.id.busButton);
         bus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
             }
         });
-        ImageButton skytrain = (ImageButton) findViewById(R.id.imageButton3);
+        Button skytrain = (Button) findViewById(R.id.trainButton);
         skytrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ public class SelectTransActivity extends AppCompatActivity {
 
             }
         });
-        ImageButton walk= (ImageButton) findViewById(R.id.imageButton4);
+        Button walk= (Button) findViewById(R.id.walkButton);
         walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

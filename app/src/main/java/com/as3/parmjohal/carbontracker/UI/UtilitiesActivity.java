@@ -191,8 +191,6 @@ public class UtilitiesActivity extends AppCompatActivity {
 
                     model.setCurrentDate(null);
                     break;
-
-
                 }
 
         }

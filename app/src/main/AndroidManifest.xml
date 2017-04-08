@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.as3.parmjohal.carbontracker">
+    package="com.as3.parmjohal.carbontracker"
+    android:versionName="@string/app_version">
 
     <application
         android:allowBackup="true"
@@ -64,15 +65,20 @@
         <activity
             android:name=".UI.UtilitiesActivity"
             android:screenOrientation="portrait" />
+
         <!-- Utility -->
         <activity
             android:name=".UI.CalenderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopBackground" />
+        <activity android:name=".UI.CreditsActivity"></activity>
+
         <activity android:name=".UI.SelectCarImageActivity"
             android:theme="@style/Theme.AppCompat.Dialog"
             ></activity>
+
         <receiver android:name=".AlarmReceiver" />
+
     </application>
 
 </manifest>

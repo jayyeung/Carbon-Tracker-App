@@ -6,9 +6,11 @@
     <color name="colorPrimaryDark">#36c171</color>
     <color name="colorAccent">#1abc9c</color>
 
-    <!-- journey colours -->
+    <!-- track colours -->
     <color name="colorJourney">#3498db</color>
     <color name="colorUtility">#e67e22</color>
+    <color name="colorAverage">#e74c3c</color>
+    <color name="colorTarget">#7f8c8d</color>
 
     <!-- text colours -->
     <color name="colorHeading">#7b7b7b</color>
