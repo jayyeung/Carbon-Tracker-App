@@ -208,16 +208,20 @@ public class ConfirmTripActivity extends AppCompatActivity {
 
     private void editRoute(){
         model.setEditJourney(true);
+        boolean checkBus1 = journey.getFuelType1().equals("Bus");
+        boolean checkSkyTrain1 = journey.getFuelType1().equals("Skytrain");
+        boolean checkWalk1 = journey.getFuelType1().equals("Walk");
+        boolean checkBike1 = journey.getFuelType1().equals("Bike");
         Intent intent;
-        if(model.getCurrentJouney().getTransportation() instanceof Bike == true ||model.getCurrentJouney().getTransportation() instanceof Walk == true){
+        if(checkBike1 == true ||checkWalk1 == true){
             intent = WalkActivity.makeIntent(ConfirmTripActivity.this);
             startActivityForResult(intent,REQUEST_CODE_ROUTE);
         }
-        else if (model.getCurrentJouney().getTransportation() instanceof Skytrain == true){
+        else if (checkSkyTrain1 == true){
             intent = TrainActivity.makeIntent(ConfirmTripActivity.this);
             startActivityForResult(intent,REQUEST_CODE_ROUTE);
         }
-        else if (model.getCurrentJouney().getTransportation() instanceof Bus == true){
+        else if (checkBus1 == true){
             intent = BusActivity.makeIntent(ConfirmTripActivity.this);
             startActivityForResult(intent,REQUEST_CODE_ROUTE);
         }
@@ -250,10 +254,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
             case (REQUEST_CODE_CAR):
                 if (resultCode == Activity.RESULT_OK) {
                     Log.i("test",""+journey.getTransportationType());
-                    if(journey.getTransportationType().equals("Car")==false){
+                   // if(journey.getTransportation() instanceof Bike ||journey.getTransportation()instanceof Walk|| journey.getTransportation()instanceof Skytrain ||journey.getTransportation()instanceof Bus){
                         Log.i("true",""+journey.getTransportationType());
                     journey.setRoute(model.getCurrentRoute());
-                    }
+                  //  }
+
                     journey.setTransportation(model.getCurrentTransportation());
                     journey.calculateCO2();
                     model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
@@ -271,11 +276,11 @@ public class ConfirmTripActivity extends AppCompatActivity {
                 }
             case (REQUEST_CODE_ROUTE):
                 if(resultCode == Activity.RESULT_OK){
-                    if(journey.getTransportationType().equals("Car")==false){
-                        Log.i("true",""+journey.getTransportationType());
-                        journey.setRoute(model.getCurrentRoute());
+                    if(journey.getTransportationType().equals("Car")==true){
+                        journey.setTransportation(model.getCurrentTransportation());
+
                     }
-                    journey.setTransportation(model.getCurrentTransportation());
+                    journey.setRoute(model.getCurrentRoute());
                     journey.calculateCO2();
                     model.getDayManager().recalculateDays(model.getJourneyManager().getJourneyCollection());
                     model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());

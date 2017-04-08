@@ -15,6 +15,7 @@ import com.as3.parmjohal.carbontracker.UI.SelectCarActivity;
 import com.as3.parmjohal.carbontracker.UI.SelectTransActivity;
 import com.as3.parmjohal.carbontracker.UI.UtilitiesActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -35,28 +36,30 @@ public class AlarmReceiver extends BroadcastReceiver{
         PendingIntent notification = PendingIntent.getActivities(context,0,
                 new Intent[]{new Intent(context, SelectCarActivity.class)},0);//click the alarm to go to MainAcitivity Edit to make it smart
 
-        String[] outputMessages = {"You Entered No Journey's Today.\n Would you Like to Enter One?"
-                , "You Entered no Bills This Month.\n Would you Like to Enter One?"
-                , "You Entered no Electricity Bill This Month.\n Would you Like to Enter One?"
-                ,"You Entered no Natural Gas Bill This Month.\n Would you Like to Enter One?"
+        String[] outputMessages = {"You Entered No Journey's Today. Would you Like to Enter One?"
+                , "You Entered no Bills This Month. Would you Like to Enter One?"
+                , "You Entered no Electricity Bill This Month. Would you Like to Enter One?"
+                ,"You Entered no Natural Gas Bill This Month. Would you Like to Enter One?"
         ,"Did you Have Anymore Journey's Today?"
         };
 
-        String notificationMessage = "BITCH";
+        String notificationMessage = " ";
 
         Calendar calendar = Calendar.getInstance();
         int day= calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        int numberOfJourneys_today = 0;
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR) - 2000;
+        double numberOfJourneys_today = 0;
 
         try {
-            numberOfJourneys_today = CarbonTrackerModel.getModel().getDayManager().getDay_Journeys(day, month, year).size();
+            ArrayList<Double> data = CarbonTrackerModel.getModel().getDayManager().getPieGraphData_Mode(day,month,year,1);
+            numberOfJourneys_today = data.size() - 3;
         }
         catch (java.lang.NullPointerException e)
         {
-
+            System.out.println("KNJNDKJNDKJ");
         }
+
         double numberOfElectricityBills_PastMonth = CarbonTrackerModel.getModel().getDayManager().getPieGraphData_Mode(day,month,year,28).get(0);
         double numberOfGasBills_PastMonth = CarbonTrackerModel.getModel().getDayManager().getPieGraphData_Mode(day,month,year,28).get(1);
 

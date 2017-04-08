@@ -199,12 +199,14 @@ public class Utility {
            endDay= endDay.minusDays(1);
             Log.i("month1",endDay.toString());
         }while (endDay.getMonthOfYear() ==endMonth);
+        co2EndMonth -= dailyCo2;
         if(startMonth!=endMonth) {
             do {
                 co2StartMonth += dailyCo2;
                 startDay=startDay.plusDays(1);
                 Log.i("month2", startDay.toString());
             } while (startDay.getMonthOfYear() == startMonth);
+
         }
 
     }

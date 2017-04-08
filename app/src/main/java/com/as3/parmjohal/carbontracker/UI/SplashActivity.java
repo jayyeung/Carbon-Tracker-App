@@ -29,6 +29,7 @@ import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 /**
@@ -37,6 +38,12 @@ import java.util.Date;
  * User can also create new journey right away
  * or continue to Dashboard.
  */
+
+
+// TO CHANGE THE ALARMS DATE, GO TO setAlarm() AND CHANGE
+
+//         calendar.set(Calendar.HOUR_OF_DAY, 21);  SET TO 9pm RIGHT NOW
+//                 calendar.set(Calendar.MINUTE,0);
 
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;
@@ -53,9 +60,10 @@ public class SplashActivity extends AppCompatActivity {
         // dd/MM/yy
 
         Log.i("Day", " START ");
-        model.getDayManager().getPieGraphData_Mode(07,04,17,1);
+        model.getDayManager().getPieGraphData_Route(9,04,17,28);
+        Log.i("Day", " ************************** ");
+        model.getDayManager().getPieGraphData_Mode(9,04,17,28);
 
-        DayManager dayManager = new DayManager();
 
         final Button new_track = (Button) findViewById(R.id.new_journey_btn),
                 to_dash = (Button) findViewById(R.id.continue_dashboard);
@@ -85,13 +93,14 @@ public class SplashActivity extends AppCompatActivity {
 
         playAnimations();
         setAlarm();
+
     }
 
     private void setAlarm() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,10);
-        calendar.set(Calendar.MINUTE,24);
+        calendar.set(Calendar.HOUR_OF_DAY,21);
+        calendar.set(Calendar.MINUTE,0);
 
         Toast.makeText(this,"" + calendar.get(Calendar.HOUR_OF_DAY) +" "+ calendar.get(Calendar.MINUTE), Toast.LENGTH_LONG).show();
 

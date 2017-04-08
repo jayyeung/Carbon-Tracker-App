@@ -21,9 +21,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.as3.parmjohal.carbontracker.Model.Bike;
+import com.as3.parmjohal.carbontracker.Model.Bus;
 import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Route;
+import com.as3.parmjohal.carbontracker.Model.Skytrain;
+import com.as3.parmjohal.carbontracker.Model.Transportation;
+import com.as3.parmjohal.carbontracker.Model.Walk;
 import com.as3.parmjohal.carbontracker.R;
 import com.as3.parmjohal.carbontracker.SharedPreference;
 
@@ -110,7 +115,9 @@ public class SelectCarActivity extends AppCompatActivity {
                     if (model.isEditJourney()){
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
-                        if(model.getCurrentJouney().getTransportation() instanceof Car == false){
+                        Transportation test = model.getCurrentJouney().getTransportation();
+                        if(test instanceof Skytrain == true ||test instanceof Bus == true || test instanceof Walk== true ||
+                                test instanceof Bike == true ){
                             Intent intent2 = SelectRouteActivity.makeIntent(SelectCarActivity.this);
                             startActivity(intent2);
                         }
