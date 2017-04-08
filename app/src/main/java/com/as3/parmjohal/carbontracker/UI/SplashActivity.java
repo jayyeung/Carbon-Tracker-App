@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         // dd/MM/yy
 
         Log.i("Day", " START ");
-        model.getDayManager().getPieGraphData_Mode(10,04,17,28);
+        model.getDayManager().getPieGraphData_Mode(07,04,17,1);
 
         DayManager dayManager = new DayManager();
 
@@ -80,8 +80,6 @@ public class SplashActivity extends AppCompatActivity {
         playAnimations();
         setAlarm();
     }
-
-
 
     private void setAlarm() {
 

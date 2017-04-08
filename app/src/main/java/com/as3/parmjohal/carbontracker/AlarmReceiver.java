@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.UI.MainActivity;
 import com.as3.parmjohal.carbontracker.UI.SelectCarActivity;
+import com.as3.parmjohal.carbontracker.UI.SelectTransActivity;
 import com.as3.parmjohal.carbontracker.UI.UtilitiesActivity;
 
 import java.util.Calendar;
@@ -63,7 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         {
             notificationMessage = outputMessages[0];
             notification = PendingIntent.getActivities(context,0,
-                    new Intent[]{new Intent(context, SelectCarActivity.class)},0);
+                    new Intent[]{new Intent(context, SelectTransActivity.class)},0);
         }
         else if(numberOfElectricityBills_PastMonth + numberOfGasBills_PastMonth == 0)
         {
@@ -87,7 +88,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         else {
             notificationMessage = outputMessages[4] + " You Entered " + numberOfJourneys_today + " Journey's Today";
             notification = PendingIntent.getActivities(context,0,
-                    new Intent[]{new Intent(context, SelectCarActivity.class)},0);
+                    new Intent[]{new Intent(context, SelectTransActivity.class)},0);
         }
 
         NotificationCompat.Builder mBuilder =

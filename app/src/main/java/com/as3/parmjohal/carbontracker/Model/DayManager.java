@@ -182,6 +182,13 @@ public class DayManager {
         {
             pastDays = getPast28Days(day,month,year);
         }
+        if(days == 1)
+        {
+            ArrayList<Day> days1 = new ArrayList<Day>();
+            days1.add(getDay(day,month,year));
+            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            pastDays = days1;
+        }
         ArrayList<Journey> allJourneys_365Days = new ArrayList<>();
 
         for(Day dayObject: pastDays)
@@ -208,10 +215,10 @@ public class DayManager {
         dataNames_Route.clear();
         dataNames_Route.addAll(routesAdded);
 
-//        for(String num: dataNames_Route)
-//        {
-//            Log.i("Day", "3 " + num);
-//        }
+        for(String num: dataNames_Route)
+        {
+            Log.i("Day", "3 " + num);
+        }
 
         if(CarbonTrackerModel.getModel().isTree())
         {
@@ -231,6 +238,14 @@ public class DayManager {
 
         if(days == 28)
             pastDays = getPast28Days(day,month,year);
+
+        if(days == 1)
+        {
+            ArrayList<Day> days1 = new ArrayList<Day>();
+            days1.add(getDay(day,month,year));
+            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            pastDays = days1;
+        }
 
         for(int i=0;i<4;i++) {
             data.add(0.0);
