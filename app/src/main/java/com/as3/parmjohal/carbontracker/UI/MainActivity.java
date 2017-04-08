@@ -430,7 +430,13 @@ public class MainActivity extends AppCompatActivity {
             dataset.setThickness(12f);
             dataset.setSmooth(true);
 
-            setGeneralChartStylings(chart, dataset,  1125f, 997.5f);
+            if(model.isTree())
+            {
+                setGeneralChartStylings(chart, dataset,  1125f/20, 997.5f/20);
+            }
+            else {
+                setGeneralChartStylings(chart, dataset,  1125f, 997.5f);
+            }
             chart.setStep(1125);
 
             // sexy animation
@@ -552,7 +558,13 @@ public class MainActivity extends AppCompatActivity {
             // set bar styles
             chart.setBarSpacing(Tools.fromDpToPx(16));
             chart.setRoundCorners(Tools.fromDpToPx(50));
-            setGeneralChartStylings(chart, dataset, 13500f, 11970f);
+            if(model.isTree())
+            {
+                setGeneralChartStylings(chart, dataset, 13500f/20, 11970f/20);
+            }
+            else {
+                setGeneralChartStylings(chart, dataset, 13500f, 11970f);
+            }
             chart.setAxisLabelsSpacing(24f);
             chart.setFontSize(18);
             chart.setStep(13500);
