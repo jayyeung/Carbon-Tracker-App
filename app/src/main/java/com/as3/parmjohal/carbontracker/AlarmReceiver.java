@@ -36,10 +36,10 @@ public class AlarmReceiver extends BroadcastReceiver{
         PendingIntent notification = PendingIntent.getActivities(context,0,
                 new Intent[]{new Intent(context, SelectCarActivity.class)},0);//click the alarm to go to MainAcitivity Edit to make it smart
 
-        String[] outputMessages = {"You Entered No Journey's Today.\n Would you Like to Enter One?"
-                , "You Entered no Bills This Month.\n Would you Like to Enter One?"
-                , "You Entered no Electricity Bill This Month.\n Would you Like to Enter One?"
-                ,"You Entered no Natural Gas Bill This Month.\n Would you Like to Enter One?"
+        String[] outputMessages = {"You Entered No Journey's Today. Would you Like to Enter One?"
+                , "You Entered no Bills This Month. Would you Like to Enter One?"
+                , "You Entered no Electricity Bill This Month. Would you Like to Enter One?"
+                ,"You Entered no Natural Gas Bill This Month. Would you Like to Enter One?"
         ,"Did you Have Anymore Journey's Today?"
         };
 
