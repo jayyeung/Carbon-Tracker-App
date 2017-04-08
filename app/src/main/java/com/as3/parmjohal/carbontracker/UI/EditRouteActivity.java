@@ -24,6 +24,8 @@ public class EditRouteActivity extends AppCompatActivity {
     private EditText routeName;
     private EditText distanceHighway;
     private EditText distanceCity;
+    private int highway;
+    private int city;
 
 
     @Override
@@ -58,29 +60,48 @@ public class EditRouteActivity extends AppCompatActivity {
             case R.id.action_confirm:
 
                 String route = routeName.getText().toString();
-                String highway = distanceHighway.getText().toString();
-                String city = distanceCity.getText().toString();
+                String stringHighway = distanceHighway.getText().toString();
+                String stringCity = distanceCity.getText().toString();
 
                 //Error Checker
-                if (route.isEmpty() == true || city.isEmpty() == true || highway.isEmpty() == true) {
+                if (route.isEmpty() == true || (stringCity.isEmpty() == true && stringHighway.isEmpty() == true)) {
                     Toast.makeText(EditRouteActivity.this, R.string.Please_complete_info, Toast.LENGTH_SHORT).show();
+                    return false;
 
                 } else {
-                    if (containsOnlyNumbers(city) == false || containsOnlyNumbers(highway) == false) {
+                    if (containsOnlyNumbers(stringCity) == false && containsOnlyNumbers(stringHighway) == false) {
                         Toast.makeText(EditRouteActivity.this, R.string.Distancemust_contain_only_numbers, Toast.LENGTH_SHORT).show();
+                        return false;}
+
+                        else if(containsOnlyNumbers(stringCity) == false || containsOnlyNumbers(stringHighway) == false){
+                            Toast.makeText(EditRouteActivity.this, R.string.Distance_must_contain_only_numbers, Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        else if( stringCity.isEmpty() == false && stringHighway.isEmpty() == true){
+                            city = Integer.parseInt(stringCity);
+                            highway=0;
+                            model.getCurrentRoute().setRouteName(route);
+                            model.getCurrentRoute().setHwyDistance(highway);
+                            model.getCurrentRoute().setCityDistance(city);
 
 
+                        }
+                        else if( stringCity.isEmpty() == true&& stringHighway.isEmpty() == false){
+                            city =0;
+                            highway=Integer.parseInt(stringHighway);
+                            model.getCurrentRoute().setRouteName(route);
+                            model.getCurrentRoute().setHwyDistance(highway);
+                            model.getCurrentRoute().setCityDistance(city);
 
+                        }
+                        else {
+                            highway = Integer.parseInt(stringHighway);
+                            city = Integer.parseInt(stringCity);
+                            model.getCurrentRoute().setRouteName(route);
+                            model.getCurrentRoute().setHwyDistance(highway);
+                            model.getCurrentRoute().setCityDistance(city);
                     }
-                    else {
-                        //add Name, and distance to new route
-                        //add route to collection
-                        int intHighway = Integer.parseInt(highway);
-                        int  intCity = Integer.parseInt(city);
 
-                        model.getCurrentRoute().setRouteName(route);
-                        model.getCurrentRoute().setHwyDistance(intHighway);
-                        model.getCurrentRoute().setCityDistance(intCity);
 
                         model.setCurrentRoute(null);
                         Intent intent = new Intent();
@@ -90,7 +111,7 @@ public class EditRouteActivity extends AppCompatActivity {
                     }
 
 
-                }
+
 
 
 

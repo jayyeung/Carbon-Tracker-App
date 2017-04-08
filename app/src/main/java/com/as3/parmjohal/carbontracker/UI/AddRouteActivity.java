@@ -79,17 +79,32 @@ public class AddRouteActivity extends AppCompatActivity {
 
 
                 //Error Checker
-                if (route.isEmpty() == true || stringCity.isEmpty() == true || stringHighway.isEmpty() == true) {
+                if (route.isEmpty() == true ||(stringCity.isEmpty() == true && stringHighway.isEmpty() == true)) {
                     Toast.makeText(AddRouteActivity.this, R.string.please_complete_info, Toast.LENGTH_SHORT).show();
                     return false;
-
-                } else if (containsOnlyNumbers(stringCity) == false || containsOnlyNumbers(stringCity) == false){
-                        Toast.makeText(AddRouteActivity.this, R.string.Distance_must_contain_only_numbers, Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                highway = Integer.parseInt(stringHighway);
+                }
+                else if(containsOnlyNumbers(stringCity) == false || containsOnlyNumbers(stringCity) == false){
+                    Toast.makeText(AddRouteActivity.this, R.string.Distance_must_contain_only_numbers, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                else if( stringCity.isEmpty() == false && stringHighway.isEmpty() == true){
                 city = Integer.parseInt(stringCity);
-                addRoute= new Route(city,highway,route);
+                highway=0;
+                    addRoute= new Route(city,highway,route);
+
+            }
+             else if( stringCity.isEmpty() == true&& stringHighway.isEmpty() == false){
+                city =0;
+                highway=Integer.parseInt(stringHighway);
+                    addRoute= new Route(city,highway,route);
+
+            }
+            else {
+                    highway = Integer.parseInt(stringHighway);
+                    city = Integer.parseInt(stringCity);
+                    addRoute= new Route(city,highway,route);
+                }
+
                 if (checkDuplicate(addRoute)){
                     Toast.makeText(AddRouteActivity.this, R.string.This_Route_Already_Exist, Toast.LENGTH_SHORT).show();
                 }
