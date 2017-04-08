@@ -93,6 +93,10 @@ public class Utility {
         DateFormat df = new SimpleDateFormat("dd/MM/yy");
         return df.format(startDate);
     }
+    public String getEndDateInfo(){
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        return df.format(endDate);
+    }
     public double getTotalCo2() {
         return totalCo2;
     }

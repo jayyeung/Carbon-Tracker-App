@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,7 +32,10 @@ public class SelectTransActivity extends AppCompatActivity {
         setTitle(getString(R.string.Select_Transportation));
 
         setupButtons();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
+
 
     private void setupButtons() {
         ImageButton car = (ImageButton) findViewById(R.id.imageButton);
@@ -103,6 +107,18 @@ public class SelectTransActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        OptionSelect(item.getItemId());
+        return true;
+
+    }
+    public void OptionSelect(int id) {
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
     }
     public static Intent makeIntent(Context context) {
         Intent intent= new Intent(context, SelectTransActivity.class);

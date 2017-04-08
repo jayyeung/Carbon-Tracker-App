@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_JOURNEY= 2020;
     public static final int REQUEST_CODE_UTILITY= 2021;
     private static final int REQUEST_CODE_EDIT = 2022;
+    private static final int REQUEST_CODE_DETAILS =2023 ;
     public static final int GET_DATE_FOR_CHART = 0;
 
 
@@ -766,19 +767,17 @@ public class MainActivity extends AppCompatActivity {
 
             results.setTextColor(Color.HSVToColor(HSV));
 
-            // on track/item click
-            // CardView track = (CardView) itemView.findViewById(R.id.track);
-            // track.setOnClickListener(new View.OnClickListener() {
-            //     @Override
-            //      public void onClick(View v) {
-            //         model.setCurrentJouney(journey.get(position));
-            //         model.setConfirmTrip(false);
+             //on track/item click
+             CardView track = (CardView) itemView.findViewById(R.id.track);
+             track.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                  public void onClick(View v) {
+                     model.setCurrentUtility(utilities.get(position));
 
-            //        Log.i("Journey: ", "Clicked Journey " + model.isConfirmTrip());
-            //        Intent intent = ConfirmTripActivity.makeIntent(MainActivity.this);
-            //        startActivityForResult(intent,REQUEST_CODE_JOURNEY);
-            //      }
-            //   });
+                    Intent intent = UtilityDetailsActivity.makeIntent(MainActivity.this);
+                    startActivityForResult(intent,REQUEST_CODE_DETAILS);
+                  }
+               });
 
             // on Overflow click
             ImageButton overflow = (ImageButton) itemView.findViewById(R.id.overflow);
@@ -969,6 +968,11 @@ public class MainActivity extends AppCompatActivity {
                     model.setCurrentUtility(null);
                     model.setEditUtility(false);
                     restart();
+                    break;
+                }
+            case(REQUEST_CODE_DETAILS):
+                if (resultCode == Activity.RESULT_OK) {
+                    model.setCurrentUtility(null);
                     break;
                 }
 

@@ -61,6 +61,8 @@ public class SelectCarActivity extends AppCompatActivity {
         }
 
         populateListView();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void populateListView() {
@@ -222,11 +224,13 @@ public class SelectCarActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.action_add:
                 Intent intent = AddCarActivity.makeIntent(SelectCarActivity.this);
                 startActivityForResult(intent,REQUEST_CODE_ADD);
                 return true;
-
 
             default:
                 return super.onOptionsItemSelected(item);

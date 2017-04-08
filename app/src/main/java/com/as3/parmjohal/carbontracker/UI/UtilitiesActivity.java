@@ -61,8 +61,10 @@ public class UtilitiesActivity extends AppCompatActivity {
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         setupButtons();
         createRadioButtonListener();
+        setTitle("Utilities");
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
@@ -128,7 +130,6 @@ public class UtilitiesActivity extends AppCompatActivity {
     public void OptionSelect(int id) {
         switch (id) {
             case android.R.id.home:
-
                 finish();
                 break;
             case R.id.action_confirm:

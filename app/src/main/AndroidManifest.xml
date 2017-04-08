@@ -69,10 +69,13 @@
             android:name=".UI.CalenderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PopBackground" />
-        <activity android:name=".UI.SelectCarImageActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            ></activity>
+        <activity
+            android:name=".UI.SelectCarImageActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+
         <receiver android:name=".AlarmReceiver" />
+
+        <activity android:name=".UI.UtilityDetailsActivity"></activity>
     </application>
 
 </manifest>
