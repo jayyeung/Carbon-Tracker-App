@@ -39,6 +39,12 @@ import java.util.Date;
  * or continue to Dashboard.
  */
 
+
+// TO CHANGE THE ALARMS DATE, GO TO setAlarm() AND CHANGE
+
+//         calendar.set(Calendar.HOUR_OF_DAY, 21);  SET TO 9pm RIGHT NOW
+//                 calendar.set(Calendar.MINUTE,0);
+
 public class SplashActivity extends AppCompatActivity {
     CarbonTrackerModel model;
 
@@ -81,26 +87,13 @@ public class SplashActivity extends AppCompatActivity {
         playAnimations();
         setAlarm();
 
-
-//        Calendar calendar = Calendar.getInstance();
-//        int day= calendar.get(Calendar.DAY_OF_MONTH);
-//        int month = calendar.get(Calendar.MONTH) + 1;
-//        int year = calendar.get(Calendar.YEAR) - 2000;
-//        double numberOfJourneys_today = 0;
-//
-//        System.out.println("******* " + day +" " + month +" "+year);
-//        ArrayList<Double> data = model.getDayManager().getPieGraphData_Mode(day,month,year,1);
-//        numberOfJourneys_today = data.size() - 3;
-//        System.out.println("******* " + numberOfJourneys_today);
-//
-
     }
 
     private void setAlarm() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,17);
-        calendar.set(Calendar.MINUTE,36);
+        calendar.set(Calendar.HOUR_OF_DAY,21);
+        calendar.set(Calendar.MINUTE,0);
 
         Toast.makeText(this,"" + calendar.get(Calendar.HOUR_OF_DAY) +" "+ calendar.get(Calendar.MINUTE), Toast.LENGTH_LONG).show();
 
