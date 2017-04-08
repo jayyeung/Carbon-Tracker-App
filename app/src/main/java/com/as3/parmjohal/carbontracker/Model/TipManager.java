@@ -30,7 +30,7 @@ public class TipManager {
 
     private String getLargestCO2_tip(Context context)
     {
-        String largestCO2_Tip = "Tips will appear as you add entries.";
+        String largestCO2_Tip = "Tips will appear as your add entries";
         CarbonTrackerModel model = CarbonTrackerModel.getCarbonTrackerModel(context);
         JourneyManager journeyManager = model.getJourneyManager();
         tips = new ArrayList<>();

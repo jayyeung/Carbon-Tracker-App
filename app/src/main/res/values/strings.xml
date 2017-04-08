@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Carbon Tracker</string>
+    <string name="app_version">1.0.0</string>
 
     <!-- splash -->
     <string name="continue_to_dashboard">Continue to dashboard</string>
@@ -58,7 +59,8 @@
     <string name="dont_save">Don\'t Save</string>
     <string name="save">Save</string>
     <string name="bus_journey">Bus Journey</string>
-    <string name="journey">Journey:</string>
+    <string name="journey">Journey</string>
+    <string name="utility">Utility</string>
     <string name="new_journey">New Journey</string>
     <string name="clicked_journey">Clicked Journey</string>
     <string name="Transmission">Transmission</string>
@@ -67,9 +69,9 @@
     <string name="Distancemust_contain_only_numbers">Distancemust contain only numbers</string>
     <string name="Dashboard">Dashboard</string>
     <string name="Daily_Carbon_Usage">Daily Carbon Usage</string>
-    <string name="Last_28_days">Last 28 days (Today)</string>
+    <string name="Last_28_days">This Month</string>
     <string name="Monthly_Carbon_Usage">Monthly Carbon Usage</string>
-    <string name="Last_365_days">Last 365 days (Today)</string>
+    <string name="Last_365_days">This Year</string>
     <string name="Annual_Carbon_Usage">Annual Carbon Usage</string>
     <string name="Utility">Utility</string>
     <string name="total_CO2">Total CO₂</string>
@@ -132,8 +134,8 @@
     <string name="bike2">bike</string>
     <string name="distance_travelled">Distance Travelled:</string>
     <string name="car_trip">Car Trip</string>
-    <string name="utility_tip">Utility Tip</string>
-    <string name="journey_tip">journey_tip</string>
+    <string name="utility_tip">Utility Tip!</string>
+    <string name="journey_tip">Journey Tip!</string>
     <string name="select_transit_line">Select Transit Line:</string>
     <string name="add">add</string>
     <string name="edit">Edit</string>
@@ -149,5 +151,13 @@
     <string name="Edit_Transportation">Edit Transportation</string>
     <string name="SkyTrain_Journey">SkyTrain Journey</string>
     <string name="Walk_Bike_Journey">Walk/Bike Journey</string>
+
+    <string name="about_us_link">Version X.X.X \nAbout this app ►</string>
+    <string name="about_us_info">This app was created in 2017 for CMPT 276 (Denim) at Simon Fraser University.</string>
+
+    <string name="target">The Canadian Target needed to meet the Paris Accord is currently</string>
+    <string name="target_day">32.79 kg of CO₂ per day</string>
+    <string name="target_month">997.5 kg of CO₂ per month</string>
+    <string name="target_year">11970 kg of CO₂ per year</string>
 
 </resources>

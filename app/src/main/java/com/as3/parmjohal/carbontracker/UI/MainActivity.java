@@ -1,11 +1,17 @@
 package com.as3.parmjohal.carbontracker.UI;
 
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,11 +20,11 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,47 +40,49 @@ import com.as3.parmjohal.carbontracker.Model.DayManager;
 import com.as3.parmjohal.carbontracker.Model.Journey;
 import com.as3.parmjohal.carbontracker.Model.Utility;
 import com.as3.parmjohal.carbontracker.R;
-import com.github.mikephil.charting.charts.LineChart;
+import com.db.chart.Tools;
+import com.db.chart.listener.OnEntryClickListener;
+import com.db.chart.model.Bar;
+import com.db.chart.model.BarSet;
+import com.db.chart.model.ChartSet;
+import com.db.chart.model.LineSet;
+import com.db.chart.model.Point;
+import com.db.chart.renderer.AxisRenderer;
+import com.db.chart.tooltip.Tooltip;
+import com.db.chart.view.ChartView;
+import com.db.chart.view.LineChartView;
 import com.as3.parmjohal.carbontracker.SharedPreference;
+import com.db.chart.view.StackBarChartView;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
+
 /**
  * --MainActivity--
  *The Dashboard with selectable graphs
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out, pulse;
 
     private enum Chart_options { DAILY, MONTHLY, YEARLY };
+    private boolean is_mode = true;
 
     CarbonTrackerModel model;
     DayManager day_manager;
@@ -143,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         Collections.reverse(journey);
         Collections.reverse(utilities);
 
+        // set Units
+        setUnits();
+
         // set Overview
         setOverview();
 
@@ -160,6 +172,20 @@ public class MainActivity extends AppCompatActivity {
 
         // intro animation
         animateDashboard();
+
+        // set about page
+        TextView about_us_link = (TextView) findViewById(R.id.about_us_link);
+
+        String app_version = getResources().getString(R.string.app_version);
+        about_us_link.setText("Version " + app_version + "\nAbout this app ▼");
+
+        about_us_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -170,6 +196,45 @@ public class MainActivity extends AppCompatActivity {
         Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fade_in.setDuration(2300);
         background_img.startAnimation(fade_in);
+    }
+
+    // Set Units
+    public void setUnits() {
+        RadioGroup units_radio = (RadioGroup) findViewById(R.id.unit_options);
+
+        RadioButton unit_kg = (RadioButton) findViewById(R.id.unit_kg);
+        RadioButton unit_tree = (RadioButton) findViewById(R.id.unit_tree);
+
+        units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(RadioGroup group, int checkedId) {
+               boolean is_tree = model.isTree();
+
+               switch (checkedId) {
+                   case R.id.unit_kg:
+                       if (is_tree) {
+                           model.setisTree(false);
+                           Log.i("UNIT", "Unit change KG");
+                           finish();
+                           startActivity(getIntent());
+                       }
+                       break;
+                   case R.id.unit_tree:
+                       if (!is_tree) {
+                           model.setisTree(true);
+                           Log.i("UNIT", "Unit change TREES");
+                           finish();
+                           startActivity(getIntent());
+                       }
+               }
+           }
+       });
+
+        // set default unit on new app open
+        if (model.isTree())
+            unit_tree.setChecked(true);
+        else
+            unit_kg.setChecked(true);
     }
 
     // Set Overview
@@ -193,7 +258,9 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < days.size(); i++) {
                             final Day day = days.get(i);
 
-                            final String date = day.getDay() + "/" + day.getMonth() + "/" + day.getYear();
+                            String month = new DateFormatSymbols().getMonths()[day.getMonth()-1];
+                            final String date = day.getDay() + " " + month + " " + day.getYear();
+
                             MenuItem item = menu.add(date);
                             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 @Override
@@ -228,219 +295,231 @@ public class MainActivity extends AppCompatActivity {
         default_chart.setChecked(true);
     }
 
-    public void setGraph(Chart_options option, int inp_day, int inp_month, int inp_year) {
-        LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
+    public void setGraph(final Chart_options option, final int inp_day, final int inp_month, final int inp_year) {
+        final LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
+        chart_container.setOnClickListener(null);
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+        final ImageButton chart_type = (ImageButton) findViewById(R.id.chart_type_button);
+        chart_type.setImageResource(R.drawable.pie_chart_icon);
+        chart_type.setVisibility(View.INVISIBLE);
+
+        final ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+
+        final int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
+                ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
+                ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
+        };
+
+        TextView target_module_text = (TextView) findViewById(R.id.target_module_text);
+        String intro = getResources().getString(R.string.target);
 
         // Get Current Date
         DateFormat df = new SimpleDateFormat("dd MM yy");
         String[] date = (df.format(new Date())).split("\\s+");
 
         // if no input day, month, and year is given, default current day, month, year
-        int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
-            month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
-            year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
-        final int months = month;
+        final int day = (inp_day != 0) ? inp_day : Integer.parseInt(date[0]),
+                month = (inp_month != 0) ? inp_month : Integer.parseInt(date[1]),
+                year = (inp_year != 0) ? inp_year : Integer.parseInt(date[2]);
 
         ////////////////
         // DAILY GRAPH
         ////////////////
 
         if (option == option.DAILY) {
-            ArrayList<PieEntry> entries = new ArrayList<>();
+            is_mode = true;
+            target_module_text.setText(intro + " " +  getResources().getString(R.string.target_day));
 
-            // Journey
-            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
-            float total = 0;
+            chart_container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chart_container.removeAllViewsInLayout();
+                    ArrayList<PieEntry> entries = new ArrayList<>();
 
+                    int color = track_colors[0];
 
-            if (day_journeys == null){
-                Log.i("test","empty");
-            }
-            else if (day_journeys != null) {
-                for (int i = 0; i<day_journeys.size(); i++) {
-                    total += day_journeys.get(i).getCo2();
-                }
+                    if (is_mode) {
+                        // MODE
+                        ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 1);
+                        ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
-                entries.add(new PieEntry(total, getString(R.string.journey)));
-            }
+                        for (int i = 0; i < data_vals.size(); i++) {
+                            if (data_vals.get(i) > 0) {
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-             //Utility
-            Day day_utilities = day_manager.getDay(day,month,year);
-            float totalElectricity = 0;
-            float totalGas =0;
-
-                if (day_utilities != null) {
-                        totalElectricity += day_utilities.getElectricUtility();
-                        if (totalElectricity != 0) {
-                            entries.add(new PieEntry(totalElectricity, "Electricity"));
+                                if (i <= 1) { color = track_colors[1]; }
+                                else { color = track_colors[0]; }
+                            }
                         }
-                             totalGas += day_utilities.getGasUtility();
-                        if (totalGas != 0) {
-                            entries.add(new PieEntry(totalGas, "Gas"));
+                        is_mode = false;
                     }
+                    else {
+                        // ROUTE
+                        ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 1);
+                        ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                        for (int i = 0; i < data_vals.size(); i++) {
+                            if (data_vals.get(i) > 0) {
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                if (i <= 1) { color = track_colors[1]; }
+                                else { color = track_colors[0]; }
+                            }
+                        }
+                        is_mode = true;
                     }
 
-
-            int[] COLORS = { Color.rgb(52, 152, 219) , Color.rgb(230, 126, 34),Color.rgb(38, 166, 91) };
-
-            PieDataSet journeyDataSet = new PieDataSet(entries, "CO₂");
-            journeyDataSet.setValueTextSize(16f);
-            journeyDataSet.setColors( COLORS );
-            journeyDataSet.setValueTextColor(Color.WHITE);
-
-            // create chart
-            PieChart chart = new PieChart(this);
-            chart_container.addView(chart, params);
-
-            chart.setUsePercentValues(true);
-            chart.setTouchEnabled(false);
-            chart.setHoleRadius(50f);
-            chart.setTransparentCircleRadius(20f);
-            chart.setHoleColor(Color.TRANSPARENT);
-            chart.setDescription(null);
-
-            Legend legend = chart.getLegend();
-            legend.setXOffset(16);
-            legend.setTextColor(R.color.colorAccent);
-            legend.setTextSize(16f);
-            legend.setWordWrapEnabled(true);
-
-            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
-            slide_in.setDuration(1800);
-            chart.startAnimation(slide_in);
-            chart.animateY(1500);
-
-            // set data
-            PieData data = new PieData(journeyDataSet);
-            data.setValueFormatter(new PercentFormatter());
-            chart.setData(data);
-            chart.invalidate();
+                    final PieChart chart = new PieChart(getBaseContext());
+                    PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                    chart_container.addView(chart, params);
+                    setPieChart(chart, dataset, color);
+                }
+            });
+            chart_container.performClick();
         }
 
         ////////////////
         // MONTHLY GRAPH
         ////////////////
+
         else if (option == option.MONTHLY) {
-            final ArrayList<Day> month_CO2 = day_manager.getPast28Days(day, month, year);
-            //Collections.reverse(month_CO2);
+            chart_type.setVisibility(View.VISIBLE);
+            target_module_text.setText(intro + " " + getResources().getString(R.string.target_month));
+
+            /////////////////
+            //// LINE CHART
+            /////////////////
+
+            Calendar calendar = Calendar.getInstance();
+            int numDays = calendar.getActualMaximum(Calendar.MONTH);
+
+            final LineChartView chart = new LineChartView(getBaseContext());
+
+            ArrayList<Day> month_CO2 = day_manager.getPast28Days(numDays, month, year);
             if (month_CO2.size() <= 0) { return; }
-            ArrayList<Double> journey_CO2 = day_manager.getPast28Days_JourneysCO2(day, month, year);
-           // Collections.reverse(journey_CO2);
-            ArrayList<Double> utility_CO2 = day_manager.getPast28Days_UtilityCO2(day, month, year);
-         //   Collections.reverse(utility_CO2);
-            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
-            // Total
-            ArrayList<Entry> entries = new ArrayList<>();
-            int counter = 0;
-            for (Day day_obj : month_CO2) {
-                if(CarbonTrackerModel.getModel().isTree()) {
-                    entries.add(new Entry(counter, (float) CarbonTrackerModel.convertCO2_toTrees(day_obj.getTotalC02())));
-                }
-                else {
-                    entries.add(new Entry(counter, (float) day_obj.getTotalC02()));
-                }
-                counter++;
+
+            //// JOURNEY
+            LineSet dataset = new LineSet();
+            ArrayList<Double> vals = day_manager.getPast28Days_JourneysCO2(numDays, month, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point("Day " + (i+1), vals.get(i).floatValue())); }
+
+            // set line styles
+            chart.setHorizontalScrollBarEnabled(true);
+            dataset.setDotsColor( Color.rgb(255,255,255) );
+            dataset.setDotsStrokeColor( track_colors[0] );
+            dataset.setColor( Color.rgb(44, 133, 193) );
+            dataset.setDotsRadius(14f);
+            dataset.setDotsStrokeThickness(8f);
+            dataset.setThickness(12f);
+            dataset.setSmooth(true);
+            setGeneralChartStylings(chart, dataset, 0, 0);
+
+            //// UTILITY
+            dataset = new LineSet();
+            vals = day_manager.getPast28Days_UtilityCO2(numDays, month, year);
+            for (int i=0; i < vals.size(); i++) { dataset.addPoint(new Point("Day " + (i+1), vals.get(i).floatValue())); }
+
+            // set line styles
+            dataset.setDotsColor( Color.rgb(255, 255, 255) );
+            dataset.setDotsStrokeColor( track_colors[1] );
+            dataset.setColor( track_colors[1] );
+            dataset.setDotsRadius(14f);
+            dataset.setDotsStrokeThickness(8f);
+            dataset.setThickness(12f);
+            dataset.setSmooth(true);
+
+            if(model.isTree())
+            {
+                setGeneralChartStylings(chart, dataset,  1125f/20, 997.5f/20);
             }
-            LineDataSet totalDataSet = new LineDataSet(entries, "Total CO₂");
-            totalDataSet.setColors(Color.rgb(38, 166, 91));
-            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
-            totalDataSet.setDrawCircleHole(false);
-            totalDataSet.setValueTextColor(Color.WHITE);
-            totalDataSet.setValueTextSize(16f);
-            totalDataSet.setCircleRadius(8f);
-            totalDataSet.setLineWidth(5f);
-            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(totalDataSet);
-
-            // Journey
-            entries = new ArrayList<>();
-            counter = 0;
-
-            for (Double journey_day : journey_CO2) {
-                entries.add(new Entry(counter , journey_day.floatValue()));
-                counter++;
+            else {
+                setGeneralChartStylings(chart, dataset,  1125f, 997.5f);
             }
-            LineDataSet journeyDataSet = new LineDataSet(entries, "Journey CO₂");
-            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
-            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
-            journeyDataSet.setDrawCircleHole(false);
-            journeyDataSet.setValueTextColor(Color.WHITE);
-            journeyDataSet.setValueTextSize(16f);
-            journeyDataSet.setCircleRadius(8f);
-            journeyDataSet.setLineWidth(5f);
-            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(journeyDataSet);
+            chart.setStep(1125);
 
-            // Utility
-            entries = new ArrayList<>();
-            counter = 0;
-
-            for (Double utility_day : utility_CO2) {
-                entries.add(new Entry(counter , utility_day.floatValue()));
-                counter++;
-            }
-            LineDataSet utilityDataSet = new LineDataSet(entries, "Utility CO₂");
-            utilityDataSet.setColors( Color.rgb(230, 126, 34) );
-            utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
-            utilityDataSet.setDrawCircleHole(false);
-            utilityDataSet.setValueTextColor(Color.WHITE);
-            utilityDataSet.setValueTextSize(16f);
-            utilityDataSet.setCircleRadius(8f);
-            utilityDataSet.setLineWidth(5f);
-            utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(utilityDataSet);
-
-            LineData data = new LineData(lines);
-
-            LineChart chart = new LineChart(this);
+            // sexy animation
+            int entry_size = dataset.getEntries().size();
+            int[] order = new int[entry_size];
+            for (int i = 0; i < entry_size; i++) { order[i] = i; }
+            com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
+            anim.setEasing(new DecelerateInterpolator());
+            anim.setAlpha(2);
+            anim.setOverlap(0.5f, order);
+            chart.setPadding(35,36,45,12);
             chart_container.addView(chart, params);
 
-            chart.setScaleMinima((5/28)*(month_CO2.size()), 1f); // widen the gaps between points depending on number of points
-            chart.setDescription(null);
-            chart.getAxisRight().setEnabled(false);
-            chart.getAxisLeft().setEnabled(false);
+            try { chart.show(anim); } catch(Exception e) {}
 
-            XAxis xval = chart.getXAxis();
-            xval.setGranularity(1f);
-            xval.setTextSize(16f);
-            xval.setTextColor(Color.WHITE);
-            xval.setDrawAxisLine(false);
-            xval.setDrawGridLines(false);
-            xval.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xval.setValueFormatter(new IAxisValueFormatter()
-            {
+            /////////////////
+            //// PIE CHART
+            /////////////////
+
+            chart_type.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public String getFormattedValue(float value, AxisBase axis)
-                {
-                    try {
-                        Day day = month_CO2.get((int) value);
-                        String month = new DateFormatSymbols().getShortMonths()[day.getMonth() - 1];
-                        return month + " " + day.getDay();
-                    } catch (Exception e) {}
+                public void onClick(final View v) {
+                    chart_type.setImageResource(R.drawable.line_chart_icon);
+                    chart_container.removeAllViewsInLayout();
 
-                    return "";
+                    is_mode = true;
+
+                    chart_container.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chart_container.removeAllViewsInLayout();
+                            ArrayList<PieEntry> entries = new ArrayList<>();
+
+                            int color = track_colors[0];
+
+                            if (is_mode) {
+                                // MODE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 28);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Mode();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0) {
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
+                                }
+                                is_mode = false;
+                            }
+                            else {
+                                // ROUTE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 28);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0) {
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
+                                }
+                                is_mode = true;
+                            }
+
+                            final PieChart chart = new PieChart(getBaseContext());
+                            PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                            chart_container.addView(chart, params);
+                            setPieChart(chart, dataset, color);
+                        }
+                    });
+                    chart_container.performClick();
+
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setGraph(option, inp_day, inp_month, inp_year);
+                        }
+                    });
                 }
             });
-
-            Legend legend = chart.getLegend();
-            legend.setTextColor(R.color.colorAccent);
-            legend.setTextSize(16f);
-            legend.setWordWrapEnabled(true);
-
-            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
-            slide_in.setDuration(1800);
-            chart.startAnimation(slide_in);
-
-            try {
-                chart.setData(data);
-                chart.animateY(1500);
-                chart.invalidate();
-            } catch (Exception e) {}
         }
 
         ////////////////
@@ -448,129 +527,219 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         else if (option == option.YEARLY) {
-            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(day, month, year);
+            chart_type.setVisibility(View.VISIBLE);
+            target_module_text.setText(intro + " " +  getResources().getString(R.string.target_year));
 
+            /////////////////
+            //// STACKED BAR CHART
+            /////////////////
+
+            final StackBarChartView chart = new StackBarChartView(getBaseContext());
+            String[] labels = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+            float[][] stacked_values;
+
+            final ArrayList<Double> year_CO2 = day_manager.getPast_12MonthsCO2(31, 12, year);
             if (year_CO2.size() <= 0) { return; }
 
-            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(day, month, year,model.getJourneyManager().getJourneyCollection());
+            ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(31, 12, year, model.getJourneyManager().getJourneyCollection());
+            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(31, 12, year, model.getUtilityManager());
 
-            ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(day, month, year,model.getUtilityManager());
+            //// JOURNEY
+            BarSet dataset = new BarSet();
+            for (int i=0; i < month_journey_CO2.size(); i++) { dataset.addBar(new Bar(labels[i], month_journey_CO2.get(i).floatValue())); }
+            dataset.setColor( track_colors[0] );
+            chart.addData(dataset);
 
-            List<ILineDataSet> lines = new ArrayList<ILineDataSet>();
+            // UTILITY
+            dataset = new BarSet();
+            for (int i=0; i < month_utility_CO2.size(); i++) { dataset.addBar(new Bar(labels[i], month_utility_CO2.get(i).floatValue())); }
+            dataset.setColor( track_colors[1] );
+            chart.addData(dataset);
 
-            // Total
-            ArrayList<Entry> entries = new ArrayList<>();
-            int counter = 0;
-            for (int i = 0;i<year_CO2.size();i++) {
-                float value = (month_journey_CO2.get(i).floatValue())+ (month_utility_CO2.get(i).floatValue());
-                entries.add(new Entry(counter , value));
-                counter++;
-            }
-
-            LineDataSet totalDataSet = new LineDataSet(entries, getString(R.string.total_co2));
-            totalDataSet.setColors(Color.rgb(38, 166, 91));
-            totalDataSet.setCircleColor( Color.rgb(38, 166, 91) );
-            totalDataSet.setDrawCircleHole(false);
-            totalDataSet.setValueTextColor(Color.WHITE);
-            totalDataSet.setValueTextSize(16f);
-            totalDataSet.setCircleRadius(8f);
-            totalDataSet.setLineWidth(5f);
-            totalDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(totalDataSet);
-
-            // Journey
-            entries = new ArrayList<>();
-            counter = 0;
-            for (Double journey_obj : month_journey_CO2) {
-                entries.add(new Entry(counter , journey_obj.floatValue()));
-                counter++;
-            }
-
-            LineDataSet journeyDataSet = new LineDataSet(entries, getString(R.string.journey_co2));
-            journeyDataSet.setColors( Color.rgb(52, 152, 219) );
-            journeyDataSet.setCircleColor( Color.rgb(52, 152, 219) );
-            journeyDataSet.setDrawCircleHole(false);
-            journeyDataSet.setValueTextColor(Color.WHITE);
-            journeyDataSet.setValueTextSize(16f);
-            journeyDataSet.setCircleRadius(8f);
-            journeyDataSet.setLineWidth(5f);
-            journeyDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(journeyDataSet);
-
-            // Utility
-            entries = new ArrayList<>();
-            counter = 0;
-            for (Double utility_obj : month_utility_CO2) {
-                entries.add(new Entry(counter , utility_obj.floatValue()));
-                counter++;
-            }
-
-            LineDataSet utilityDataSet = new LineDataSet(entries, getString(R.string.utility_CO2));
-            utilityDataSet.setColors( Color.rgb(230, 126, 34) );
-            utilityDataSet.setCircleColor( Color.rgb(230, 126, 34) );
-            utilityDataSet.setDrawCircleHole(false);
-            utilityDataSet.setValueTextColor(Color.WHITE);
-            utilityDataSet.setValueTextSize(16f);
-            utilityDataSet.setCircleRadius(8f);
-            utilityDataSet.setLineWidth(5f);
-            utilityDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-            lines.add(utilityDataSet);
-
-            LineData data = new LineData(lines);
-
-            LineChart chart = new LineChart(this);
-            chart_container.addView(chart, params);
-
-            chart.setScaleMinima(2.5f, 1f);
-            chart.setDescription(null);
-            chart.getAxisRight().setEnabled(false);
-            chart.getAxisLeft().setEnabled(false);
-
-            XAxis xval = chart.getXAxis();
-            xval.setGranularity(1f);
-            xval.setTextSize(16f);
-            xval.setTextColor(Color.WHITE);
-            xval.setDrawAxisLine(false);
-            xval.setDrawGridLines(false);
-            xval.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xval.setValueFormatter(new IAxisValueFormatter()
+            // set bar styles
+            chart.setBarSpacing(Tools.fromDpToPx(16));
+            chart.setRoundCorners(Tools.fromDpToPx(50));
+            if(model.isTree())
             {
+                setGeneralChartStylings(chart, dataset, 13500f/20, 11970f/20);
+            }
+            else {
+                setGeneralChartStylings(chart, dataset, 13500f, 11970f);
+            }
+            chart.setAxisLabelsSpacing(24f);
+            chart.setFontSize(18);
+            chart.setStep(13500);
+            // chart.setYLabels(AxisRenderer.LabelPosition.NONE);
+
+            // sexy animation
+            int entry_size = dataset.getEntries().size();
+            int[] order = new int[entry_size];
+            for (int i = 0; i < entry_size; i++) { order[i] = i; }
+            com.db.chart.animation.Animation anim = new com.db.chart.animation.Animation(900);
+            anim.setEasing(new DecelerateInterpolator());
+            anim.setAlpha(2);
+            anim.setOverlap(0.5f, order);
+            chart.setPadding(35,36,45,12);
+            chart_container.addView(chart, params);
+            try { chart.show(anim); } catch(Exception e) {}
+
+            /////////////////
+            //// PIE CHART
+            /////////////////
+
+            chart_type.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public String getFormattedValue(float value, AxisBase axis)
-                {
-                    try {
-                        if (months - value -1  >=0)
-                        {
-                            String month = new DateFormatSymbols().getShortMonths()[(int) (months - value -1)];
-                            return month;
+                public void onClick(final View v) {
+                    chart_type.setImageResource(R.drawable.line_chart_icon);
+                    chart_container.removeAllViewsInLayout();
+
+                    is_mode = true;
+
+                    chart_container.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chart_container.removeAllViewsInLayout();
+                            ArrayList<PieEntry> entries = new ArrayList<>();
+
+                            int color = track_colors[0];
+
+                            if (is_mode) {
+                                // MODE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 365);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Mode();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0) {
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
+                                }
+                                is_mode = false;
+                            }
+                            else {
+                                // ROUTE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 365);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0) {
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
+                                }
+                                is_mode = true;
+                            }
+
+                            final PieChart chart = new PieChart(getBaseContext());
+                            PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                            chart_container.addView(chart, params);
+                            setPieChart(chart, dataset, color);
                         }
-                        else{
-                            String month = new DateFormatSymbols().getShortMonths()[(int) (12 + (months - value - 1))];
-                            return month;
+                    });
+                    chart_container.performClick();
 
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setGraph(option, inp_day, inp_month, inp_year);
                         }
-
-                    } catch (Exception e) {}
-
-                    return "";
+                    });
                 }
             });
-
-            Legend legend = chart.getLegend();
-            legend.setTextColor(R.color.colorAccent);
-            legend.setTextSize(16f);
-            legend.setWordWrapEnabled(true);
-
-            Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
-            slide_in.setDuration(1800);
-            chart.startAnimation(slide_in);
-
-            try {
-                chart.setData(data);
-                chart.animateY(1500);
-                chart.invalidate();
-            } catch (Exception e) {}
         }
+    }
+
+    // sets the pie chart
+    private void setPieChart(final PieChart chart, final PieDataSet dataset, int color) {
+        dataset.setValueTextSize(16f);
+        dataset.setColors( color );
+        dataset.setValueTextColor(Color.WHITE);
+
+        chart.setUsePercentValues(true);
+        chart.setTouchEnabled(false);
+        chart.setHoleRadius(50f);
+        chart.setTransparentCircleRadius(20f);
+        chart.setHoleColor(Color.TRANSPARENT);
+        chart.setDescription(null);
+
+        Legend legend = chart.getLegend();
+        legend.setXOffset(16);
+        legend.setTextColor(R.color.colorAccent);
+        legend.setTextSize(16f);
+        legend.setWordWrapEnabled(true);
+        legend.setEnabled(false);
+
+        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in);
+        slide_in.setDuration(1500);
+        chart.startAnimation(slide_in);
+        chart.animateY(1000);
+
+        try {
+            PieData data = new PieData(dataset);
+            data.setValueFormatter(new PercentFormatter());
+            chart.setData(data);
+        } catch(Exception e) {}
+    }
+
+    // set chart stylings for a line/stacked bar chart
+    private void setGeneralChartStylings(final ChartView chart, final ChartSet set, float national_average, float national_target) {
+        // set general chart styles
+        chart.setYAxis(false);
+        chart.setXAxis(false);
+        chart.setYLabels(AxisRenderer.LabelPosition.OUTSIDE);
+        chart.setAxisLabelsSpacing(36f);
+        chart.setFontSize(27);
+        chart.setLabelsColor( Color.rgb(255,255,255) );
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(Tools.fromDpToPx(2f));
+        paint.setPathEffect(new DashPathEffect(new float[]{15.0f, 5.0f}, 0));
+
+        // set national average/target line if needed
+        float[] points = {national_average, national_target};
+
+        if (national_average > 0) {
+            // national target
+            paint.setColor(ContextCompat.getColor(getBaseContext(), R.color.colorAverage));
+            chart.setValueThreshold(points, points, paint);
+        }
+
+        // set click listeners for tool tips
+        chart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chart.dismissAllTooltips();
+            }
+        });
+
+        chart.setOnEntryClickListener(new OnEntryClickListener() {
+            @Override
+            public void onClick(int setIndex, int entryIndex, Rect rect) {
+                chart.dismissAllTooltips();
+
+                // Tooltip
+                Tooltip tip = new Tooltip(getBaseContext(), R.layout.chart_tooltip, R.id.value);
+                tip.setVerticalAlignment(Tooltip.Alignment.BOTTOM_TOP);
+                tip.setDimensions((int) Tools.fromDpToPx(58), (int) Tools.fromDpToPx(26));
+
+                RelativeLayout tip_item = (RelativeLayout) tip.findViewById(R.id.tip);
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1)).setDuration(200);
+                    tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA,0)).setDuration(200);
+                }
+
+                chart.setTooltips(tip);
+            }
+        });
+
+        chart.addData(set);
     }
 
     // set Journeys

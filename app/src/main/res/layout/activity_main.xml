@@ -10,7 +10,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:id="@+id/module_list"
@@ -29,6 +31,34 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/journeys">
+
+                <ImageView
+                    android:id="@+id/background"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:alpha="0.8"
+                    android:cropToPadding="false"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/dashboard" />
+
+                <ImageView
+                    android:id="@+id/background_overlay"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:alpha="0.3"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/chart_type"
@@ -69,9 +99,24 @@
                     app:layout_constraintLeft_toLeftOf="@+id/chart_type"
                     app:layout_constraintTop_toTopOf="@+id/background_overlay" />
 
+                <ImageButton
+                    android:id="@+id/chart_type_button"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/circle_button"
+                    android:elevation="1dp"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:clickable="false"
+                    app:layout_constraintRight_toRightOf="@+id/background_overlay"
+                    app:layout_constraintTop_toTopOf="@+id/chart_container"
+                    app:srcCompat="@drawable/pie_chart_icon" />
+
                 <RadioGroup
                     android:id="@+id/chart_options"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="12dp"
@@ -97,6 +142,7 @@
                         android:paddingRight="9dp"
                         android:paddingTop="6dp"
                         android:text="@string/chart_radio_daily"
+                        android:textAlignment="center"
                         android:textAllCaps="true"
                         android:textColor="@drawable/radio_ghost_button_text"
                         android:textSize="12sp"
@@ -116,6 +162,7 @@
                         android:paddingRight="9dp"
                         android:paddingTop="6dp"
                         android:text="@string/chart_radio_monthly"
+                        android:textAlignment="center"
                         android:textAllCaps="true"
                         android:textColor="@drawable/radio_ghost_button_text"
                         android:textSize="12sp"
@@ -135,6 +182,7 @@
                         android:paddingRight="9dp"
                         android:paddingTop="6dp"
                         android:text="@string/chart_radio_yearly"
+                        android:textAlignment="center"
                         android:textAllCaps="true"
                         android:textColor="@drawable/radio_ghost_button_text"
                         android:textSize="12sp"
@@ -143,53 +191,220 @@
                 </RadioGroup>
 
                 <LinearLayout
-                    android:id="@+id/chart_container"
+                    android:id="@+id/chart_legend"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/title"
-                    android:layout_marginTop="24dp"
-                    android:clipToPadding="false"
-                    android:elevation="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:elevation="1dp"
                     android:orientation="vertical"
-                    app:layout_constraintLeft_toLeftOf="@+id/background_overlay"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chart_options"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintBottom_toBottomOf="@+id/background_overlay"
-                    android:layout_marginBottom="52dp">
+                    app:layout_constraintTop_toBottomOf="@+id/chart_options">
+
+                    <LinearLayout
+                        android:id="@+id/chart_legend_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="1dp"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/chart_options">
+
+                        <LinearLayout
+                            android:id="@+id/legend_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal"
+                            android:paddingRight="4dp"
+                            app:layout_constraintLeft_toLeftOf="@+id/chart_container"
+                            app:layout_constraintRight_toRightOf="@+id/chart_container"
+                            app:layout_constraintTop_toBottomOf="@+id/chart_container">
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                app:srcCompat="@color/colorJourney" />
+
+                            <TextView
+                                android:id="@+id/textView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:elevation="1dp"
+                                android:text="Journey"
+                                android:textColor="@color/colorJourney"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/legend_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal"
+                            android:paddingRight="4dp"
+                            app:layout_constraintLeft_toLeftOf="@+id/chart_container"
+                            app:layout_constraintRight_toRightOf="@+id/chart_container"
+                            app:layout_constraintTop_toBottomOf="@+id/chart_container">
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                app:srcCompat="@color/colorUtility" />
+
+                            <TextView
+                                android:id="@+id/textView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Utility"
+                                android:textColor="@color/colorUtility"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/legend_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal"
+                            android:paddingRight="4dp"
+                            app:layout_constraintLeft_toLeftOf="@+id/chart_container"
+                            app:layout_constraintRight_toRightOf="@+id/chart_container"
+                            app:layout_constraintTop_toBottomOf="@+id/chart_container">
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                app:srcCompat="@color/colorAverage" />
+
+                            <TextView
+                                android:id="@+id/textView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="National Average &amp; Target"
+                                android:textColor="@color/colorAverage"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/background"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:alpha="0.8"
-                    android:cropToPadding="false"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/dashboard" />
-
-                <ImageView
-                    android:id="@+id/background_overlay"
+                <LinearLayout
+                    android:id="@+id/chart_container"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:alpha="0.3"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/background"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_below="@+id/title"
+                    android:layout_marginBottom="52dp"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="true"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/background_overlay"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="@+id/background_overlay"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@color/colorPrimary" />
+                    app:layout_constraintTop_toBottomOf="@+id/chart_legend"
+                    app:layout_constraintVertical_bias="0.0"></LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/target_module"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/solid_button"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/target" />
+
+                <TextView
+                    android:id="@+id/target_module_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageView6"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:text="The Canadian Target that was proposed in Paris is currently 26"
+                    android:textColor="@color/cardview_light_background" />
+            </RelativeLayout>
+
+            <RadioGroup
+                android:id="@+id/unit_options"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/chart_type"
+                app:layout_constraintRight_toRightOf="@+id/chart_type"
+                app:layout_constraintTop_toBottomOf="@+id/chart_type">
+
+                <RadioButton
+                    android:id="@+id/unit_kg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:text="Kg CO2"
+                    android:textColor="@drawable/radio_ghost_button_units_text"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/unit_tree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:text="Tree Years"
+                    android:textColor="@drawable/radio_ghost_button_units_text"
+                    android:textSize="14sp" />
+            </RadioGroup>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/journey_module"
@@ -197,7 +412,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/journeys">
@@ -302,17 +516,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/tip_message"
-                            android:textColor="#d0d0d0" />
+                            android:textColor="@color/cardview_light_background" />
 
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/tip_img"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
                         android:alpha="0.8"
+                        android:scaleType="fitEnd"
                         app:srcCompat="@drawable/car" />
 
                 </RelativeLayout>
@@ -426,22 +641,38 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/tip_message"
-                            android:textColor="#d0d0d0" />
+                            android:textColor="@color/cardview_light_background" />
 
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/tip_img"
-                        android:layout_width="45dp"
+                        android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
                         android:alpha="0.8"
+                        android:scaleType="fitEnd"
                         app:srcCompat="@drawable/lightbulb" />
 
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/about_us_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/about_us_link"
+                android:textAlignment="center"
+                android:autoLink="web"
+                android:textColor="@color/colorSubtitle" />
 
         </LinearLayout>
     </ScrollView>
@@ -554,12 +785,11 @@
         android:id="@+id/fab_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
         android:alpha="0.8"
         android:clickable="false"
         android:elevation="1dp"
-        android:visibility="invisible"
-        app:srcCompat="@color/fadedBackground"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:visibility="gone"
+        app:srcCompat="@color/fadedBackground" />
 
 </RelativeLayout>
