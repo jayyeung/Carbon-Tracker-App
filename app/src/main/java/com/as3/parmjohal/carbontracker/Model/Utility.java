@@ -200,11 +200,13 @@ public class Utility {
             Log.i("month1",endDay.toString());
         }while (endDay.getMonthOfYear() ==endMonth);
         if(startMonth!=endMonth) {
+            co2EndMonth -= dailyCo2;
             do {
                 co2StartMonth += dailyCo2;
                 startDay=startDay.plusDays(1);
                 Log.i("month2", startDay.toString());
             } while (startDay.getMonthOfYear() == startMonth);
+
         }
 
     }
