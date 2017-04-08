@@ -194,6 +194,9 @@ public class Journey {
         return transportation.getObjectType();
     }
 
+    public String getObjectType() {
+        return objectType;
+    }
 
     @Override
     public boolean equals(Object obj) {

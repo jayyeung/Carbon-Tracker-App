@@ -60,9 +60,9 @@ public class SplashActivity extends AppCompatActivity {
         // dd/MM/yy
 
         Log.i("Day", " START ");
-        model.getDayManager().getPieGraphData_Route(9,04,17,28);
+        model.getDayManager().getPieGraphData_Route(7,04,17,28);
         Log.i("Day", " ************************** ");
-        model.getDayManager().getPieGraphData_Mode(9,04,17,28);
+        model.getDayManager().getPieGraphData_Mode(7,04,17,28);
 
 
         final Button new_track = (Button) findViewById(R.id.new_journey_btn),

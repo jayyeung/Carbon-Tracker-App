@@ -38,6 +38,7 @@ public class JourneyManager {
                     totalCO2_Car += journey.getCo2();
                     break;
                 case "bus":
+                    System.out.println("******************" + journey.getCo2());
                     totalCO2_Bus += journey.getCo2();
                     break;
                 case "skytrain":

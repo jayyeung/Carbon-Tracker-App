@@ -280,11 +280,13 @@ public class DayManager {
         }
         for(Day dayObject: pastDays)
         {
-
             double electricityCO2 = dayObject.getElectricityCO2();
             double naturalGasCO2 = dayObject.getNaturalGasCO2();
             double busCO2 = dayObject.getJourneyManager().getTotalCO2_Bus();
             double skytrainCO2 = dayObject.getJourneyManager().getTotalCO2_Skytrain();
+
+            busCO2 = getCO2(dayObject.getJourneyManager2(),"bus");
+            skytrainCO2 = getCO2(dayObject.getJourneyManager2(),"skytrain");
 
             data.set(0,data.get(0) + electricityCO2);
             data.set(1,data.get(1) + naturalGasCO2);
@@ -330,6 +332,20 @@ public class DayManager {
         }
 
         return data;
+    }
+
+    public double getCO2(ArrayList<Journey> journeys, String type)
+    {
+        double co2 = 0;
+
+        for (Journey journey : journeys)
+        {
+            if(journey.getObjectType().equals(type))
+            {
+                co2+= journey.getCo2();
+            }
+        }
+        return co2;
     }
 
     public ArrayList<String> getDataNames_Mode() {
