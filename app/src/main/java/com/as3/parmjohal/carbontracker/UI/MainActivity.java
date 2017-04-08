@@ -98,18 +98,21 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fab_overlay;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out, pulse;
 
-    private enum Chart_options { DAILY, MONTHLY, YEARLY };
+    private enum Chart_options {DAILY, MONTHLY, YEARLY}
+
+    ;
     private boolean is_mode = true;
+    ArrayList<Integer> track_colors2 = new ArrayList<Integer>();
 
     CarbonTrackerModel model;
     DayManager day_manager;
 
     private ArrayList<Journey> journey;
     private ArrayList<Utility> utilities;
-    public static final int REQUEST_CODE_JOURNEY= 2020;
-    public static final int REQUEST_CODE_UTILITY= 2021;
+    public static final int REQUEST_CODE_JOURNEY = 2020;
+    public static final int REQUEST_CODE_UTILITY = 2021;
     private static final int REQUEST_CODE_EDIT = 2022;
-    private static final int REQUEST_CODE_DETAILS =2023 ;
+    private static final int REQUEST_CODE_DETAILS = 2023;
     public static final int GET_DATE_FOR_CHART = 0;
 
 
@@ -117,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         // add icon to dashboard action bar
@@ -206,29 +208,29 @@ public class MainActivity extends AppCompatActivity {
         RadioButton unit_tree = (RadioButton) findViewById(R.id.unit_tree);
 
         units_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(RadioGroup group, int checkedId) {
-               boolean is_tree = model.isTree();
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                boolean is_tree = model.isTree();
 
-               switch (checkedId) {
-                   case R.id.unit_kg:
-                       if (is_tree) {
-                           model.setisTree(false);
-                           Log.i("UNIT", "Unit change KG");
-                           finish();
-                           startActivity(getIntent());
-                       }
-                       break;
-                   case R.id.unit_tree:
-                       if (!is_tree) {
-                           model.setisTree(true);
-                           Log.i("UNIT", "Unit change TREES");
-                           finish();
-                           startActivity(getIntent());
-                       }
-               }
-           }
-       });
+                switch (checkedId) {
+                    case R.id.unit_kg:
+                        if (is_tree) {
+                            model.setisTree(false);
+                            Log.i("UNIT", "Unit change KG");
+                            finish();
+                            startActivity(getIntent());
+                        }
+                        break;
+                    case R.id.unit_tree:
+                        if (!is_tree) {
+                            model.setisTree(true);
+                            Log.i("UNIT", "Unit change TREES");
+                            finish();
+                            startActivity(getIntent());
+                        }
+                }
+            }
+        });
 
         // set default unit on new app open
         if (model.isTree())
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         chart_radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId) {
+                switch (checkedId) {
                     case R.id.day_radio:
                         RadioButton radio = (RadioButton) findViewById(R.id.day_radio);
                         PopupMenu popup = new PopupMenu(MainActivity.this, radio);
@@ -258,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < days.size(); i++) {
                             final Day day = days.get(i);
 
-                            String month = new DateFormatSymbols().getMonths()[day.getMonth()-1];
+                            String month = new DateFormatSymbols().getMonths()[day.getMonth() - 1];
                             final String date = day.getDay() + " " + month + " " + day.getYear();
 
                             MenuItem item = menu.add(date);
@@ -278,12 +280,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.month_radio:
                         chart_status.setText(R.string.Last_28_days);
                         chart_type.setText(R.string.Monthly_Carbon_Usage);
-                        setGraph(Chart_options.MONTHLY, 0,0,0);
+                        setGraph(Chart_options.MONTHLY, 0, 0, 0);
                         break;
                     case R.id.year_radio:
                         chart_status.setText(R.string.Last_365_days);
                         chart_type.setText(R.string.Annual_Carbon_Usage);
-                        setGraph(Chart_options.YEARLY, 0,0,0);
+                        setGraph(Chart_options.YEARLY, 0, 0, 0);
                         break;
                 }
 
@@ -308,10 +310,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        final int[] track_colors = { ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
+        final int[] track_colors = {ContextCompat.getColor(getBaseContext(), R.color.colorJourney),
                 ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
                 ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
         };
+        track_colors2=new ArrayList<>();
+        track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorUtility));
+        track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorUtility));
+        track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+
+
 
         TextView target_module_text = (TextView) findViewById(R.id.target_module_text);
         String intro = getResources().getString(R.string.target);
@@ -350,8 +358,10 @@ public class MainActivity extends AppCompatActivity {
                             if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                if (i <= 1) { color = track_colors[1]; }
-                                else { color = track_colors[0]; }
+                                if (i>track_colors2.size())
+                                {
+                                    track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                }
                             }
                         }
                         is_mode = false;
@@ -365,8 +375,10 @@ public class MainActivity extends AppCompatActivity {
                             if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                if (i <= 1) { color = track_colors[1]; }
-                                else { color = track_colors[0]; }
+                                if (i>track_colors2.size())
+                                {
+                                    track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                }
                             }
                         }
                         is_mode = true;
@@ -376,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
                     PieDataSet dataset = new PieDataSet(entries, "CO₂");
                     chart_container.addView(chart, params);
                     setPieChart(chart, dataset, color);
+                    dataset.setColors(track_colors2);
                 }
             });
             chart_container.performClick();
@@ -484,8 +497,10 @@ public class MainActivity extends AppCompatActivity {
                                     if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                        if (i <= 1) { color = track_colors[1]; }
-                                        else { color = track_colors[0]; }
+                                        if (i>track_colors2.size())
+                                        {
+                                            track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                        }
                                     }
                                 }
                                 is_mode = false;
@@ -499,8 +514,10 @@ public class MainActivity extends AppCompatActivity {
                                     if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                        if (i <= 1) { color = track_colors[1]; }
-                                        else { color = track_colors[0]; }
+                                        if (i>track_colors2.size())
+                                        {
+                                            track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                        }
                                     }
                                 }
                                 is_mode = true;
@@ -510,6 +527,8 @@ public class MainActivity extends AppCompatActivity {
                             PieDataSet dataset = new PieDataSet(entries, "CO₂");
                             chart_container.addView(chart, params);
                             setPieChart(chart, dataset, color);
+                            dataset.setColors(track_colors2);
+
                         }
                     });
                     chart_container.performClick();
@@ -617,8 +636,10 @@ public class MainActivity extends AppCompatActivity {
                                     if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                        if (i <= 1) { color = track_colors[1]; }
-                                        else { color = track_colors[0]; }
+                                        if (i>track_colors2.size())
+                                        {
+                                           track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                        }
                                     }
                                 }
                                 is_mode = false;
@@ -632,8 +653,10 @@ public class MainActivity extends AppCompatActivity {
                                     if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                        if (i <= 1) { color = track_colors[1]; }
-                                        else { color = track_colors[0]; }
+                                        if (i>track_colors2.size())
+                                        {
+                                            track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
+                                        }
                                     }
                                 }
                                 is_mode = true;
@@ -642,7 +665,8 @@ public class MainActivity extends AppCompatActivity {
                             final PieChart chart = new PieChart(getBaseContext());
                             PieDataSet dataset = new PieDataSet(entries, "CO₂");
                             chart_container.addView(chart, params);
-                            setPieChart(chart, dataset, color);
+                            setPieChart(chart, dataset,color);
+                            dataset.setColors(track_colors2);
                         }
                     });
                     chart_container.performClick();
