@@ -30,13 +30,13 @@
         android:layout_alignParentStart="true" />
 
     <ImageView
-        app:srcCompat="@drawable/app_title"
         android:id="@+id/title"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="21dp"
+        app:srcCompat="@drawable/app_title"
         android:layout_below="@+id/icon"
-        android:layout_centerHorizontal="true"
-        android:layout_width="300dp" />
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         app:srcCompat="@mipmap/app_icon"
