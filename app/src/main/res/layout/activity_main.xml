@@ -109,6 +109,7 @@
                     android:elevation="1dp"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
+                    android:clickable="false"
                     app:layout_constraintRight_toRightOf="@+id/background_overlay"
                     app:layout_constraintTop_toTopOf="@+id/chart_container"
                     app:srcCompat="@drawable/pie_chart_icon" />
@@ -356,7 +357,7 @@
                     app:srcCompat="@drawable/target" />
 
                 <TextView
-                    android:id="@+id/target_module"
+                    android:id="@+id/target_module_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

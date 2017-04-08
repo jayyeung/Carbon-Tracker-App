@@ -155,4 +155,9 @@
     <string name="about_us_link">Version X.X.X \nAbout this app ►</string>
     <string name="about_us_info">This app was created in 2017 for CMPT 276 (Denim) at Simon Fraser University.</string>
 
+    <string name="target">The Canadian Target needed to meet the Paris Accord is currently</string>
+    <string name="target_day">32.79 kg of CO₂ per day</string>
+    <string name="target_month">997.5 kg of CO₂ per month</string>
+    <string name="target_year">11970 kg of CO₂ per year</string>
+
 </resources>

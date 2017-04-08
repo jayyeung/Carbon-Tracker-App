@@ -295,9 +295,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setGraph(final Chart_options option, final int inp_day, final int inp_month, final int inp_year) {
-
         final LinearLayout chart_container = (LinearLayout) findViewById(R.id.chart_container);
         chart_container.removeAllViewsInLayout();
+        chart_container.setOnClickListener(null);
+
         final ImageButton chart_type = (ImageButton) findViewById(R.id.chart_type_button);
         chart_type.setImageResource(R.drawable.pie_chart_icon);
         chart_type.setVisibility(View.INVISIBLE);
@@ -310,6 +311,9 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(getBaseContext(), R.color.colorUtility),
                 ContextCompat.getColor(getBaseContext(), R.color.colorAverage)
         };
+
+        TextView target_module_text = (TextView) findViewById(R.id.target_module_text);
+        String intro = getResources().getString(R.string.target);
 
         // Get Current Date
         DateFormat df = new SimpleDateFormat("dd MM yy");
@@ -326,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (option == option.DAILY) {
             is_mode = true;
+            target_module_text.setText(intro + " " +  getResources().getString(R.string.target_day));
 
             chart_container.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -333,14 +338,20 @@ public class MainActivity extends AppCompatActivity {
                     chart_container.removeAllViewsInLayout();
                     ArrayList<PieEntry> entries = new ArrayList<>();
 
+                    int color = track_colors[0];
+
                     if (is_mode) {
                         // MODE
                         ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 1);
                         ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                         for (int i = 0; i < data_vals.size(); i++) {
-                            if (data_vals.get(i) > 0)
+                            if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                if (i <= 1) { color = track_colors[1]; }
+                                else { color = track_colors[0]; }
+                            }
                         }
                         is_mode = false;
                     }
@@ -350,8 +361,12 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                         for (int i = 0; i < data_vals.size(); i++) {
-                            if (data_vals.get(i) > 0)
+                            if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                if (i <= 1) { color = track_colors[1]; }
+                                else { color = track_colors[0]; }
+                            }
                         }
                         is_mode = true;
                     }
@@ -359,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                     final PieChart chart = new PieChart(getBaseContext());
                     PieDataSet dataset = new PieDataSet(entries, "CO₂");
                     chart_container.addView(chart, params);
-                    setPieChart(chart, dataset, track_colors);
+                    setPieChart(chart, dataset, color);
                 }
             });
             chart_container.performClick();
@@ -371,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.MONTHLY) {
             chart_type.setVisibility(View.VISIBLE);
+            target_module_text.setText(intro + " " + getResources().getString(R.string.target_month));
 
             /////////////////
             //// LINE CHART
@@ -413,7 +429,9 @@ public class MainActivity extends AppCompatActivity {
             dataset.setDotsStrokeThickness(8f);
             dataset.setThickness(12f);
             dataset.setSmooth(true);
-            setGeneralChartStylings(chart, dataset,  40f, 35f);
+
+            setGeneralChartStylings(chart, dataset,  1125f, 997.5f);
+            chart.setStep(1125);
 
             // sexy animation
             int entry_size = dataset.getEntries().size();
@@ -446,14 +464,20 @@ public class MainActivity extends AppCompatActivity {
                             chart_container.removeAllViewsInLayout();
                             ArrayList<PieEntry> entries = new ArrayList<>();
 
+                            int color = track_colors[0];
+
                             if (is_mode) {
                                 // MODE
                                 ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 28);
                                 ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0)
+                                    if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
                                 }
                                 is_mode = false;
                             }
@@ -463,8 +487,12 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0)
+                                    if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
                                 }
                                 is_mode = true;
                             }
@@ -472,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
                             final PieChart chart = new PieChart(getBaseContext());
                             PieDataSet dataset = new PieDataSet(entries, "CO₂");
                             chart_container.addView(chart, params);
-                            setPieChart(chart, dataset, track_colors);
+                            setPieChart(chart, dataset, color);
                         }
                     });
                     chart_container.performClick();
@@ -493,6 +521,7 @@ public class MainActivity extends AppCompatActivity {
 
         else if (option == option.YEARLY) {
             chart_type.setVisibility(View.VISIBLE);
+            target_module_text.setText(intro + " " +  getResources().getString(R.string.target_year));
 
             /////////////////
             //// STACKED BAR CHART
@@ -523,10 +552,10 @@ public class MainActivity extends AppCompatActivity {
             // set bar styles
             chart.setBarSpacing(Tools.fromDpToPx(16));
             chart.setRoundCorners(Tools.fromDpToPx(50));
-            setGeneralChartStylings(chart, dataset, 40f, 35f);
+            setGeneralChartStylings(chart, dataset, 13500f, 11970f);
             chart.setAxisLabelsSpacing(24f);
             chart.setFontSize(18);
-            chart.setStep(50);
+            chart.setStep(13500);
             // chart.setYLabels(AxisRenderer.LabelPosition.NONE);
 
             // sexy animation
@@ -559,14 +588,20 @@ public class MainActivity extends AppCompatActivity {
                             chart_container.removeAllViewsInLayout();
                             ArrayList<PieEntry> entries = new ArrayList<>();
 
+                            int color = track_colors[0];
+
                             if (is_mode) {
                                 // MODE
                                 ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 365);
                                 ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0)
+                                    if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
                                 }
                                 is_mode = false;
                             }
@@ -576,8 +611,12 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0)
+                                    if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+
+                                        if (i <= 1) { color = track_colors[1]; }
+                                        else { color = track_colors[0]; }
+                                    }
                                 }
                                 is_mode = true;
                             }
@@ -585,7 +624,7 @@ public class MainActivity extends AppCompatActivity {
                             final PieChart chart = new PieChart(getBaseContext());
                             PieDataSet dataset = new PieDataSet(entries, "CO₂");
                             chart_container.addView(chart, params);
-                            setPieChart(chart, dataset, track_colors);
+                            setPieChart(chart, dataset, color);
                         }
                     });
                     chart_container.performClick();
@@ -602,9 +641,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // sets the pie chart
-    private void setPieChart(final PieChart chart, final PieDataSet dataset, int[] COLORS) {
+    private void setPieChart(final PieChart chart, final PieDataSet dataset, int color) {
         dataset.setValueTextSize(16f);
-        dataset.setColors( COLORS );
+        dataset.setColors( color );
         dataset.setValueTextColor(Color.WHITE);
 
         chart.setUsePercentValues(true);
