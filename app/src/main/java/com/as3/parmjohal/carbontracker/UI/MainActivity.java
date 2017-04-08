@@ -355,13 +355,17 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                         for (int i = 0; i < data_vals.size(); i++) {
-                            if (data_vals.get(i) > 0) {
+                            if(i<2){
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                            }
+                            else if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
-                                if (i>track_colors2.size())
-                                {
-                                    track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
-                                }
+
+                            }
+                            if (i>track_colors2.size())
+                            {
+                                track_colors2.add(ContextCompat.getColor(getBaseContext(), R.color.colorJourney));
                             }
                         }
                         is_mode = false;
@@ -372,7 +376,10 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                         for (int i = 0; i < data_vals.size(); i++) {
-                            if (data_vals.get(i) > 0) {
+                            if(i<2){
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                            }
+                            else if (data_vals.get(i) > 0) {
                                 entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
                                 if (i>track_colors2.size())
@@ -494,7 +501,10 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0) {
+                                    if(i<2){
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                    }
+                                    else  if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
                                         if (i>track_colors2.size())
@@ -511,7 +521,10 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0) {
+                                    if(i<2){
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                    }
+                                    else  if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
                                         if (i>track_colors2.size())
@@ -633,7 +646,10 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Mode();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0) {
+                                    if(i<2){
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                    }
+                                   else if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
                                         if (i>track_colors2.size())
@@ -650,7 +666,10 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> data_labels = day_manager.getDataNames_Route();
 
                                 for (int i = 0; i < data_vals.size(); i++) {
-                                    if (data_vals.get(i) > 0) {
+                                    if(i<2){
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                    }
+                                   else if (data_vals.get(i) > 0) {
                                         entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
 
                                         if (i>track_colors2.size())
@@ -1190,8 +1209,8 @@ public class MainActivity extends AppCompatActivity {
     private void restart()
     {
         Intent intent = getIntent();
-        finish();
         startActivity(intent);
+        finish();
     }
 }
 
