@@ -207,6 +207,10 @@ public class CarbonTrackerModel {
         this.transportation = transportation;
     }
 
+    public void setTree(boolean tree) {
+        isTree = tree;
+    }
+
     public static double convertCO2_toTrees(double co2) {
         return co2/20;
     }

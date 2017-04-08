@@ -121,7 +121,6 @@ public class DayManager {
         }
 
     }
-
     private boolean checkDayExists(Date day, Date startDate, Date endDate) {
         LocalDate min = new LocalDate(startDate);
         LocalDate max = new LocalDate(endDate);   // assume these are set to something
@@ -185,10 +184,29 @@ public class DayManager {
         if(days == 1)
         {
             ArrayList<Day> days1 = new ArrayList<Day>();
-            days1.add(getDay(day,month,year));
-            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            try{
+                getDay(day,month,year).toString();
+                days1.add(getDay(day,month,year));
+            }
+            catch (java.lang.NullPointerException e)
+            {
+            }
             pastDays = days1;
+
         }
+        int count  =0;
+        if(CarbonTrackerModel.getModel().isTree()) {
+            count++;
+            CarbonTrackerModel.getModel().setTree(false);
+        }
+        ArrayList<Double> data1 = getPieGraphData_Mode(day,month,year,days);
+        data.add(data1.get(0));
+        data.add(data1.get(1));
+
+        if(count == 1) {
+            CarbonTrackerModel.getModel().setTree(true);
+        }
+
         ArrayList<Journey> allJourneys_365Days = new ArrayList<>();
 
         for(Day dayObject: pastDays)
@@ -208,16 +226,20 @@ public class DayManager {
             else {
                 Log.i("Route","2* "+ route.toString() + journey.getCo2());
                 int index = routesAdded.indexOf(route.getRouteName());
-                data.set(index, data.get(index) + journey.getCo2());
+                data.set(index + 2, data.get(index + 2) + journey.getCo2());
             }
         }
 
         dataNames_Route.clear();
+        dataNames_Route.add("Electricity");
+        dataNames_Route.add("Natural Gas");
         dataNames_Route.addAll(routesAdded);
 
+        int i =0;
         for(String num: dataNames_Route)
         {
-            Log.i("Day", "3 " + num);
+            Log.i("Day", "3 " + num + " " + data.get(i));
+            i++;
         }
 
         if(CarbonTrackerModel.getModel().isTree())
@@ -242,9 +264,15 @@ public class DayManager {
         if(days == 1)
         {
             ArrayList<Day> days1 = new ArrayList<Day>();
-            days1.add(getDay(day,month,year));
-            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            try{
+                getDay(day,month,year).toString();
+                days1.add(getDay(day,month,year));
+            }
+            catch (java.lang.NullPointerException e)
+            {
+            }
             pastDays = days1;
+
         }
 
         for(int i=0;i<4;i++) {
@@ -252,7 +280,6 @@ public class DayManager {
         }
         for(Day dayObject: pastDays)
         {
-            Log.i("Day", "1 "+dayObject.toString());
 
             double electricityCO2 = dayObject.getElectricityCO2();
             double naturalGasCO2 = dayObject.getNaturalGasCO2();
