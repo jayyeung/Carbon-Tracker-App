@@ -199,8 +199,8 @@ public class Utility {
            endDay= endDay.minusDays(1);
             Log.i("month1",endDay.toString());
         }while (endDay.getMonthOfYear() ==endMonth);
+        co2EndMonth -= dailyCo2;
         if(startMonth!=endMonth) {
-            co2EndMonth -= dailyCo2;
             do {
                 co2StartMonth += dailyCo2;
                 startDay=startDay.plusDays(1);
