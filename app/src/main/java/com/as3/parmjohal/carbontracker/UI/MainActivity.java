@@ -2,11 +2,14 @@ package com.as3.parmjohal.carbontracker.UI;
 
 import android.animation.PropertyValuesHolder;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -29,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.as3.parmjohal.carbontracker.AlarmReceiver;
+import com.as3.parmjohal.carbontracker.Model.Car;
 import com.as3.parmjohal.carbontracker.Model.CarbonTrackerModel;
 import com.as3.parmjohal.carbontracker.Model.Day;
 import com.as3.parmjohal.carbontracker.Model.DayManager;
@@ -74,6 +79,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Random;
 
 /**
  * --MainActivity--
@@ -108,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         // add icon to dashboard action bar
         ActionBar actionBar = getSupportActionBar();
@@ -315,36 +325,44 @@ public class MainActivity extends AppCompatActivity {
         ////////////////
 
         if (option == option.DAILY) {
-            ArrayList<PieEntry> entries = new ArrayList<>();
-            // Journey
-            ArrayList<Journey> day_journeys = day_manager.getDay_Journeys(day, month, year);
-            float total = 0;
-            if (day_journeys != null) {
-                for (Journey journey : day_journeys) { total += journey.getCo2(); }
-                entries.add(new PieEntry(total, getString(R.string.journey)));
-            }
+            is_mode = true;
 
-            // Utility
-            Day day_utilities = day_manager.getDay(day,month,year);
-            float totalElectricity = 0;
-            float totalGas = 0;
+            chart_container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chart_container.removeAllViewsInLayout();
+                    ArrayList<PieEntry> entries = new ArrayList<>();
 
-            if (day_utilities != null) {
-                totalElectricity += day_utilities.getElectricUtility();
-                if(totalElectricity!= 0) {
-                    entries.add(new PieEntry(totalElectricity, "Electricity"));
+                    if (is_mode) {
+                        // MODE
+                        ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 1);
+                        ArrayList<String> data_labels = day_manager.getDataNames_Mode();
+
+                        for (int i = 0; i < data_vals.size(); i++) {
+                            if (data_vals.get(i) > 0)
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                        }
+                        is_mode = false;
+                    }
+                    else {
+                        // ROUTE
+                        ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 1);
+                        ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                        for (int i = 0; i < data_vals.size(); i++) {
+                            if (data_vals.get(i) > 0)
+                                entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                        }
+                        is_mode = true;
+                    }
+
+                    final PieChart chart = new PieChart(getBaseContext());
+                    PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                    chart_container.addView(chart, params);
+                    setPieChart(chart, dataset, track_colors);
                 }
-
-                totalGas += day_utilities.getGasUtility();
-                if(totalGas!= 0) {
-                    entries.add(new PieEntry(totalGas, "Gas"));
-                }
-            }
-
-            PieChart chart = new PieChart(this);
-            PieDataSet dataset = new PieDataSet(entries, "CO₂");
-            chart_container.addView(chart, params);
-            setPieChart(chart, dataset, track_colors);
+            });
+            chart_container.performClick();
         }
 
         ////////////////
@@ -895,11 +913,9 @@ public class MainActivity extends AppCompatActivity {
                         public boolean onMenuItemClick(MenuItem item) {
 
                             if (item.getItemId() == R.id.delete) {
+                                model.getDayManager().removeUtility1(model.getUtilityManager().get(position));
                                 model.getUtilityManager().remove(position);
                                 model.getDayManager().recalculateDaysUtilities(model.getUtilityManager());
-                                for(int i = 0;i<model.getUtilityManager().size();i++){
-                                    model.getUtilityManager().get(i).toString();
-                                }
                                 restart();
                             } else if (item.getItemId() == R.id.edit) {
                                 model.setCurrentPos(position);

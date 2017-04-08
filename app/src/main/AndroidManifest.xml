@@ -65,6 +65,7 @@
         <activity
             android:name=".UI.UtilitiesActivity"
             android:screenOrientation="portrait" />
+
         <!-- Utility -->
         <activity
             android:name=".UI.CalenderActivity"
@@ -75,6 +76,8 @@
         <activity android:name=".UI.SelectCarImageActivity"
             android:theme="@style/Theme.AppCompat.Dialog"
             ></activity>
+
+        <receiver android:name=".AlarmReceiver" />
 
     </application>
 

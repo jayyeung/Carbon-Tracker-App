@@ -182,6 +182,13 @@ public class DayManager {
         {
             pastDays = getPast28Days(day,month,year);
         }
+        if(days == 1)
+        {
+            ArrayList<Day> days1 = new ArrayList<Day>();
+            days1.add(getDay(day,month,year));
+            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            pastDays = days1;
+        }
         ArrayList<Journey> allJourneys_365Days = new ArrayList<>();
 
         for(Day dayObject: pastDays)
@@ -231,6 +238,14 @@ public class DayManager {
 
         if(days == 28)
             pastDays = getPast28Days(day,month,year);
+
+        if(days == 1)
+        {
+            ArrayList<Day> days1 = new ArrayList<Day>();
+            days1.add(getDay(day,month,year));
+            Log.i("Day", "JKAJHKHSA"+ getDay(day,month,year).toString());
+            pastDays = days1;
+        }
 
         for(int i=0;i<4;i++) {
             data.add(0.0);
@@ -605,6 +620,20 @@ public class DayManager {
             }
         }
         return null;
+    }
+    public void removeUtility1(Utility utility) {
+        for(int i =0; i<days.size();i++) {
+            if( checkDayExists(days.get(i).getRawDate(),utility.getStartDate(),utility.getEndDate())){
+                days.get(i).setTotalUtility(days.get(i).getTotalUtility()-utility.getDailyCo2());
+                if(utility.isElectricity()){
+                    days.get(i).setElectricUtility(days.get(i).getElectricUtility()-utility.getDailyCo2());
+
+                }
+                else{
+                    days.get(i).setGasUtility(days.get(i).getGasUtility()-utility.getDailyCo2());
+                }
+            }
+        }
     }
 
 
