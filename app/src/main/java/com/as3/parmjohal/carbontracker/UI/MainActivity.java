@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out, pulse;
 
     private enum Chart_options { DAILY, MONTHLY, YEARLY };
+    private boolean is_mode = true;
 
     CarbonTrackerModel model;
     DayManager day_manager;
@@ -415,9 +416,49 @@ public class MainActivity extends AppCompatActivity {
 
             chart_type.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
+
+                    is_mode = true;
+
+                    chart_container.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chart_container.removeAllViewsInLayout();
+                            ArrayList<PieEntry> entries = new ArrayList<>();
+
+                            if (is_mode) {
+                                // MODE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 28);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Mode();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0)
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                }
+                                is_mode = false;
+                            }
+                            else {
+                                // ROUTE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 28);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0)
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                }
+                                is_mode = true;
+                            }
+
+                            final PieChart chart = new PieChart(getBaseContext());
+                            PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                            chart_container.addView(chart, params);
+                            setPieChart(chart, dataset, track_colors);
+                        }
+                    });
+                    chart_container.performClick();
+
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -488,36 +529,55 @@ public class MainActivity extends AppCompatActivity {
 
             chart_type.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     chart_type.setImageResource(R.drawable.line_chart_icon);
                     chart_container.removeAllViewsInLayout();
-                    ArrayList<PieEntry> entries = new ArrayList<>();
-                    // Bus
-                    /*
-                    ArrayList<Double> journeys = day_manager.getPast365Days_JourneysCO2(31, 12, year);
-                    float total = 0;
-                    if (journeys != null) {
-                        for (Double val : journeys) { total += val; }
-                        entries.add(new PieEntry(total, "Bus"));
-                    }
-                    // Utility
-                    ArrayList<Double> utilities = day_manager.getPast365Days_UtilityCO2(31, 12, year);
-                    total = 0;
-                    if (journeys != null) {
-                        for (Double val : utilities) { total += val; }
-                        entries.add(new PieEntry(total, getString(R.string.utility)));
-                    }
-                    PieChart chart = new PieChart(getBaseContext());
-                    PieDataSet dataset = new PieDataSet(entries, "CO₂");
-                    chart_container.addView(chart, params);
-                    setPieChart(chart, dataset, track_colors);
+
+                    is_mode = true;
+
+                    chart_container.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            chart_container.removeAllViewsInLayout();
+                            ArrayList<PieEntry> entries = new ArrayList<>();
+
+                            if (is_mode) {
+                                // MODE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Mode(day, month, year, 365);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Mode();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0)
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                }
+                                is_mode = false;
+                            }
+                            else {
+                                // ROUTE
+                                ArrayList<Double> data_vals = day_manager.getPieGraphData_Route(day, month, year, 365);
+                                ArrayList<String> data_labels = day_manager.getDataNames_Route();
+
+                                for (int i = 0; i < data_vals.size(); i++) {
+                                    if (data_vals.get(i) > 0)
+                                        entries.add(new PieEntry(data_vals.get(i).floatValue(), data_labels.get(i)));
+                                }
+                                is_mode = true;
+                            }
+
+                            final PieChart chart = new PieChart(getBaseContext());
+                            PieDataSet dataset = new PieDataSet(entries, "CO₂");
+                            chart_container.addView(chart, params);
+                            setPieChart(chart, dataset, track_colors);
+                        }
+                    });
+                    chart_container.performClick();
+
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             setGraph(option, inp_day, inp_month, inp_year);
                         }
                     });
-                    */
                 }
             });
         }

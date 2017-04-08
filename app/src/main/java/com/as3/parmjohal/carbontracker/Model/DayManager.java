@@ -208,10 +208,10 @@ public class DayManager {
         dataNames_Route.clear();
         dataNames_Route.addAll(routesAdded);
 
-//        for(String num: dataNames_Route)
-//        {
-//            Log.i("Day", "3 " + num);
-//        }
+        for(String num: dataNames_Route)
+        {
+            Log.i("Day", "3 " + num);
+        }
 
         if(CarbonTrackerModel.getModel().isTree())
         {
