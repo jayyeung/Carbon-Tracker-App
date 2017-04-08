@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
  */
 
 public class EditCarActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_IMAGE = 1328;
     private CarbonTrackerModel model;
     private String make;
     private String carModel;
@@ -43,7 +46,9 @@ public class EditCarActivity extends AppCompatActivity {
     private Car carClicked;
     private boolean carIsClicked = false;
     private EditText editName;
+    private Button imageButton;
     private int pos;
+    private int image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,8 @@ public class EditCarActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setupMakeSpinner();
-
+        image= model.getCurrentCar().getCarImage();
+        setCarImageButton();
         editName = (EditText) findViewById(R.id.editName);
         editName.setText(model.getCurrentCar().getName());
     }
@@ -101,6 +107,19 @@ public class EditCarActivity extends AppCompatActivity {
 
 
     }
+    private void setCarImageButton() {
+        Button car = (Button) findViewById(R.id.carButton);
+        car.setBackground((getDrawable(image)));
+        car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SelectCarImageActivity.makeIntent(EditCarActivity.this);
+                startActivityForResult(intent,REQUEST_CODE_IMAGE);
+
+            }
+        });
+    }
+
 
     private void setupModelSpinner() {
         final Spinner modelSelection = (Spinner) findViewById(R.id.modelSpinner);
@@ -173,8 +192,6 @@ public class EditCarActivity extends AppCompatActivity {
     private void setupListView() {
 
         carList = model.getVehicleData().getPossibleCars(make,carModel,year);
-
-
         ArrayAdapter<Car> adapter = new EditCarActivity.MyListAdaptder();
         ListView list = (ListView) findViewById(R.id.carList);
         list.setAdapter(adapter);
@@ -268,6 +285,7 @@ public class EditCarActivity extends AppCompatActivity {
 
                     model.getCurrentCar().setName(carNameString);
                     Car editCar = model.getCarManager().edit(carClicked);
+                    model.getCurrentCar().setCarImage(image);
                     model.getCurrentCar().setCarData(editCar);
                     model.getJourneyManager().recalculateCarbon();
                     for (int i = 0; i < model.getCarManager().getCarCollection().size(); i++) {
@@ -301,6 +319,23 @@ public class EditCarActivity extends AppCompatActivity {
         return false;
 
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case (REQUEST_CODE_IMAGE):
+                if (resultCode == Activity.RESULT_OK) {
+                    image = data.getIntExtra("image",R.drawable.car1);
+                    setCarImageButton();
+                    break;
+                }
+
+
+            default:
+                break;
+
+        }
+
+    }
+
 
     public static Intent makeIntent(Context context) {
             Intent intent = new Intent(context, EditCarActivity.class);
