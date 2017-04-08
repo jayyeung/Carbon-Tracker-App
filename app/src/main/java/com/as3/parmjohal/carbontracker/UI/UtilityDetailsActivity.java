@@ -29,7 +29,7 @@ public class UtilityDetailsActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK, intent);
 
         setContentView(R.layout.activity_utility_details);
-        setTitle("Utility Data");
+        setTitle(getString(R.string.utilitydata));
 
         model = CarbonTrackerModel.getCarbonTrackerModel(this);
         utility = model.getCurrentUtility();
@@ -39,16 +39,16 @@ public class UtilityDetailsActivity extends AppCompatActivity {
 
         TextView daily = (TextView) findViewById(R.id.display_daily);
         TextView dateText = (TextView) findViewById(R.id.date);
-        dateText.setText("From " + utility.getDateInfo2() + " to " + utility.getEndDateInfo());
+        dateText.setText(getString(R.string.from) + utility.getDateInfo2() + getString(R.string.tooooo) + utility.getEndDateInfo());
 
         ImageView utilityImage = (ImageView) findViewById(R.id.imageView);
         utilityImage.setImageDrawable(getDrawable(utility.getuImage()));
 
         TextView bill = (TextView) findViewById(R.id.display_BillType);
         if (utility.isElectricity()) {
-            bill.setText("Electricity");
+            bill.setText(R.string.electro);
         } else {
-            bill.setText("Natural Gas");
+            bill.setText(R.string.gasssss);
         }
         if (model.isTree()) {
             setupTextView(R.id.display_CO2, String.format("%.2f", CarbonTrackerModel.convertCO2_toTrees(utility.getTotalCo2())));

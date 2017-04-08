@@ -159,5 +159,9 @@
     <string name="target_day">32.79 kg of CO₂ per day</string>
     <string name="target_month">997.5 kg of CO₂ per month</string>
     <string name="target_year">11970 kg of CO₂ per year</string>
+    <string name="utilitydata">Utility Data</string>
+    <string name="tooooo">to</string>
+    <string name="electro">Electricity</string>
+    <string name="gasssss">Natural Gas</string>
 
 </resources>

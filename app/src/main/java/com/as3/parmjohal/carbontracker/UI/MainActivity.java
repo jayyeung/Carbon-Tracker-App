@@ -433,12 +433,14 @@ public class MainActivity extends AppCompatActivity {
 
             if(model.isTree())
             {
-                setGeneralChartStylings(chart, dataset,  1125f/20, 997.5f/20);
+                setGeneralChartStylings(chart, dataset,  36.9f/20,32.79f/20);
+                chart.setStep(2);
             }
             else {
-                setGeneralChartStylings(chart, dataset,  1125f, 997.5f);
+                setGeneralChartStylings(chart, dataset,  36.9f, 32.79f);
+                chart.setStep(37);
             }
-            chart.setStep(1125);
+
 
             // sexy animation
             int entry_size = dataset.getEntries().size();
@@ -543,6 +545,8 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Double> month_journey_CO2 = day_manager.getPast365Days_JourneysCO2(31, 12, year, model.getJourneyManager().getJourneyCollection());
             ArrayList<Double> month_utility_CO2 = day_manager.getPast365Days_UtilityCO2(31, 12, year, model.getUtilityManager());
+            Collections.reverse(month_journey_CO2);
+            Collections.reverse(month_utility_CO2);
 
             //// JOURNEY
             BarSet dataset = new BarSet();
@@ -561,14 +565,15 @@ public class MainActivity extends AppCompatActivity {
             chart.setRoundCorners(Tools.fromDpToPx(50));
             if(model.isTree())
             {
-                setGeneralChartStylings(chart, dataset, 13500f/20, 11970f/20);
+                setGeneralChartStylings(chart, dataset, 1125f/20, 997.5f/20);
+                chart.setStep(56);
             }
             else {
-                setGeneralChartStylings(chart, dataset, 13500f, 11970f);
+                setGeneralChartStylings(chart, dataset, 1125f, 997.5f);
+                chart.setStep(1125);
             }
             chart.setAxisLabelsSpacing(24f);
             chart.setFontSize(18);
-            chart.setStep(13500);
             // chart.setYLabels(AxisRenderer.LabelPosition.NONE);
 
             // sexy animation
